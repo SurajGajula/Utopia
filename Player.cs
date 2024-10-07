@@ -9,36 +9,34 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (canMove)
+        if (!canMove) return;
+        if (Input.touchCount > 0)
         {
-            if (Input.touchCount > 0)
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Began)
             {
-                Touch touch = Input.GetTouch(0);
+                startTouchPosition = touch.position;
+            }
+            else if (touch.phase == TouchPhase.Moved)
+            {
+                currentTouchPosition = touch.position;
 
-                if (touch.phase == TouchPhase.Began)
+                if (Mathf.Abs(currentTouchPosition.x - startTouchPosition.x) > 1)
                 {
-                    startTouchPosition = touch.position;
-                }
-                else if (touch.phase == TouchPhase.Moved)
-                {
-                    currentTouchPosition = touch.position;
-
-                    if (Mathf.Abs(currentTouchPosition.x - startTouchPosition.x) > 1)
-                    {
-                        direction = Mathf.Sign(currentTouchPosition.x - startTouchPosition.x);
-                    }
-                }
-                if (direction != 0)
-                {
-                    transform.Translate(direction * 0.025f, 0, 0);
-                    transform.localScale = new Vector3(direction * 0.5f, 0.5f, 1);
+                    direction = Mathf.Sign(currentTouchPosition.x - startTouchPosition.x);
                 }
             }
-            else
+            if (direction != 0)
             {
-                direction = 0;
+                transform.Translate(direction * 0.025f, 0, 0);
+                transform.localScale = new Vector3(direction * 0.5f, 0.5f, 1);
             }
         }
-        camera.transform.position = new Vector3(transform.position.x + 4, 1, -10);
+        else
+        {
+            direction = 0;
+        }
+        camera.transform.position = new Vector3(transform.position.x + 6, 1, -10);
     }
 }
