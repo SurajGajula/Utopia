@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
+using TMPro;
 
 public class Battle : MonoBehaviour
 {
@@ -10,7 +12,7 @@ public class Battle : MonoBehaviour
     public Healthbar[] enemybars;
     public int chain;
     public Player player;
-    public Battle battleUI;
+    public TextMeshProUGUI[] skills;
     public void PSkill()
     {
         if (canSkill && chain > 0)
@@ -40,6 +42,11 @@ public class Battle : MonoBehaviour
             allies[i].health -= 10;
             allybars[i].SetFill(allies[i].health);
         }
+        if (allies.Any(ally => ally.health <= 0))
+        {
+            BattleEnd();
+            return;
+        }
         canSkill = true;
         chain = 3;
     }
@@ -55,5 +62,12 @@ public class Battle : MonoBehaviour
             Destroy(allies[i].gameObject);
         }
         gameObject.SetActive(false);
+    }
+    public void SetSkills(int index)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            skills[i].text = allies[index].skillnames[i];
+        }
     }
 }
