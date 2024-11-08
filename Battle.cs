@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine.UI;
 using System.Threading.Tasks;
 using TMPro;
+using System.Collections.Generic;
 public class Battle : MonoBehaviour
 {
     public Stats[] allies;
@@ -18,10 +19,12 @@ public class Battle : MonoBehaviour
     public Menu menu;
     public GameObject battlescreen;
     public GameObject damagefab;
+    public string[] StatusNames;
+    public Sprite[] StatusIcons;
     public async void BattleStart()
     {
         battlescreen.SetActive(true);
-        menu.gameObject.SetActive(false);
+        menu.MenuScreen.SetActive(false);
         await InitializeAllies();
         await InitializeEnemy();
         SetSkills(0);
@@ -32,34 +35,46 @@ public class Battle : MonoBehaviour
     {
         for (int i = 0; i < 3; i++)
         {
-            GameObject allyInstance = Instantiate(menu.allies[i].gameObject, new Vector3(-2 * (i - 1), -1, 0), Quaternion.identity);
+            GameObject allyInstance = Instantiate(menu.allies[i].gameObject, new Vector3(-2 * (i - 1), 1 - i, 0), Quaternion.identity);
             allyInstance.name = allyInstance.name.Replace("(Clone)", "");
             allies[i] = allyInstance.GetComponent<Stats>();
             await allies[i].GetStats(allies[i].gameObject.name);
+            allybars[i].ResetStatuses();
             allybars[i].maxHealth = allies[i].health;
             allybars[i].SetFill(allies[i].health);
         }
     }
     private async Task InitializeEnemy()
     {
-        GameObject enemyInstance = Instantiate(menu.enemies[0].gameObject, new Vector3(10, 0.89f, 0), Quaternion.identity);
+        GameObject enemyInstance = Instantiate(menu.enemies[0].gameObject, new Vector3(11, 1.5f, 0), Quaternion.identity);
+        enemyInstance.name = enemyInstance.name.Replace("(Clone)", "");
         enemy = enemyInstance.GetComponent<Stats>();
-        await enemy.GetStats("The Power Disinter", false);
+        await enemy.GetStats(enemy.gameObject.name, false);
+        enemybar.ResetStatuses();
         enemybar.maxHealth = enemy.health;
         enemybar.SetFill(enemy.health);
     }
-    public void PSkill(int index)
+    public void PSkillWrapper(int index)
+    {
+        StartCoroutine(PSkill(index));
+    }
+    public IEnumerator PSkill(int index)
     {
         if (pChain > 0)
         {
-            int damage = 10;
-            StartCoroutine(ShowDamage(damage));
-            enemy.health -= damage;
-            enemybar.SetFill(enemy.health);
+            for (int i = 0; i < allies[curAlly].skillhits[index]; i++)
+            {
+                yield return new WaitForSeconds(0.25f);
+                int damage = DamageCalc(index);
+                StartCoroutine(ShowDamage(damage));
+                enemy.health -= damage;
+                enemybar.SetFill(enemy.health);
+            }
+            yield return new WaitForSeconds(1f);
             if (enemy.health <= 0)
             {
                 BattleEnd(true);
-                return;
+                yield break;
             }
             pChain -= 1;
             if (pChain == 0)
@@ -76,10 +91,14 @@ public class Battle : MonoBehaviour
         {
             int target = Random.Range(0, 3);
             int index = Random.Range(0, 3);
-            int damage = 10;
-            StartCoroutine(ShowDamage(damage, target));
-            allies[target].health -= damage;
-            allybars[target].SetFill(allies[target].health);
+            for (int i = 0; i < enemy.skillhits[index]; i++)
+            {
+                yield return new WaitForSeconds(0.25f);
+                int damage = DamageCalc(index, target);
+                StartCoroutine(ShowDamage(damage, target));
+                allies[target].health -= damage;
+                allybars[target].SetFill(allies[target].health);
+            }
             yield return new WaitForSeconds(1f);
             eChain -= 1;
             SetChain();
@@ -97,13 +116,12 @@ public class Battle : MonoBehaviour
         Destroy(enemy.gameObject);
         if (won)
         {
-            pChain = 0;
             foreach (var ally in allies)
             {
                 await ally.PutExp(ally.gameObject.name, 100);
             }
         }
-        menu.gameObject.SetActive(true);
+        menu.MenuScreen.SetActive(true);
         System.Array.ForEach(allies, ally => Destroy(ally.gameObject));
         battlescreen.gameObject.SetActive(false);
     }
@@ -121,16 +139,39 @@ public class Battle : MonoBehaviour
     }
     public IEnumerator ShowDamage(int damage, int target = 0)
     {
-        Vector3 spawn = (pChain == 0 ? allies[target].transform.position + Vector3.left : enemy.transform.position + Vector3.right) + Vector3.up;
-        GameObject damageTextInstance = Instantiate(damagefab, spawn, Quaternion.identity);
-        damageTextInstance.transform.SetParent(transform, true);
+        Vector3 spawnOffset = (pChain == 0 ? Vector3.left : Vector3.right) + Vector3.up;
+        Vector3 spawn = (pChain == 0 ? allies[target].transform.position : enemy.transform.position) + spawnOffset;
+        GameObject damageTextInstance = Instantiate(damagefab, spawn, Quaternion.identity, transform);
         TextMeshProUGUI damageText = damageTextInstance.GetComponent<TextMeshProUGUI>();
         damageText.text = damage.ToString();
-        for (float elapsedTime = 0f; elapsedTime < 0.5f; elapsedTime += Time.deltaTime)
+        float elapsedTime = 0f;
+        Vector3 moveVector = Vector3.up * 2;
+        while (elapsedTime < 0.5f)
         {
-            damageTextInstance.transform.Translate(Vector3.up * 2 * Time.deltaTime);
+            damageTextInstance.transform.Translate(moveVector * Time.deltaTime);
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
         Destroy(damageTextInstance);
+    }
+    public int DamageCalc(int index, int target = 0)
+    {
+        bool isPlayerTurn = pChain > 0;
+        int damage = isPlayerTurn ? allies[curAlly].attack : enemy.attack;
+        string skillStatus = isPlayerTurn ? allies[curAlly].skillstatuses[index] : enemy.skillstatuses[index];
+        List<string> targetStatuses = isPlayerTurn ? enemy.statuses : allies[target].statuses;
+        Healthbar targetBar = isPlayerTurn ? enemybar : allybars[target];
+        if (targetStatuses.Contains("Break"))
+        {
+            damage *= 2;
+            targetStatuses.Remove("Break");
+            targetBar.SetStatus("Break", false);
+        }
+        if (skillStatus == "Break")
+        {
+            targetStatuses.Add("Break");
+            targetBar.SetStatus("Break");
+        }
+        return damage;
     }
 }

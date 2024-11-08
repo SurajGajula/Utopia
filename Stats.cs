@@ -1,4 +1,5 @@
 using UnityEngine;
+using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using System.Collections.Generic;
@@ -10,10 +11,17 @@ public class Stats : MonoBehaviour
     public int level;
     public int exp;
     public string[] skillnames;
+    public string[] skillstatuses;
+    public int[] skillhits;
+    public List<string> statuses;
     private AmazonDynamoDBClient dynamoDBClient;
     private void Awake()
     {
-        dynamoDBClient = new AmazonDynamoDBClient();
+        var config = new AmazonDynamoDBConfig
+        {
+            RegionEndpoint = RegionEndpoint.USWest1
+        };
+        dynamoDBClient = new AmazonDynamoDBClient(config);
     }
     public async Task GetStats(string name, bool ally = true)
     {
@@ -66,9 +74,9 @@ public class Stats : MonoBehaviour
             int newHealth = int.Parse(healthValue.N);
             int newExp = int.Parse(expValue.N) + addedexp;
             int newLevel = int.Parse(levelValue.N);
-            if (newExp >= 1000)
+            if (newExp >= 1000 * newLevel)
             {
-                newExp %= 1000;
+                newExp %= 1000 * newLevel;
                 newLevel++;
                 newAttack += 10;
                 newHealth += 100;
