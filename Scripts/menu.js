@@ -1,5 +1,5 @@
-import { pSkill, startBattle, setCur } from "Scripts/battle.js";
-import { loadOwned, loadEnemies } from "Scripts/character.js";
+import { pSkill, startBattle, setCur } from "/Scripts/battle.js";
+import { loadOwned, loadEnemies } from "/Scripts/character.js";
 export function handleButton1(button) {
     button.addEventListener('click', async () => {
         document.getElementById('MenuUI').classList.add('hidden');
