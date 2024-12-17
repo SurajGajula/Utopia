@@ -38,7 +38,7 @@ export async function handleCallback() {
             AWS.config.update({
                 region: cognitoConfig.region,
                 credentials: new AWS.CognitoIdentityCredentials({
-                    IdentityPoolId: 'us-west-1:9e8e8481-b6d4-4199-bbdc-9d4ad09dfe58',
+                    IdentityPoolId: 'us-west-1:be5f5c85-6e5f-421a-a20d-11f7b049b5d18',
                     Logins: {
                         [`cognito-idp.${cognitoConfig.region}.amazonaws.com/${cognitoConfig.userPoolId}`]: tokens.id_token
                     }

@@ -4,15 +4,6 @@ if (!isAuthenticated()) {
         signIn();
     }
 }
-AWS.config.update({
-    region: 'us-west-1',
-    credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: 'us-west-1:9e8e8481-b6d4-4199-bbdc-9d4ad09dfe58',
-        Logins: isAuthenticated() ? {
-            [`cognito-idp.us-west-1.amazonaws.com/us-west-1_RAU6R6pD0`]: localStorage.getItem('idToken')
-        } : {}
-    })
-});
 const docClient = new AWS.DynamoDB.DocumentClient();
 export class Character {
     constructor(health, attack, skillstatuses) {
