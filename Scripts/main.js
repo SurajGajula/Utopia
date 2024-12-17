@@ -1,4 +1,4 @@
-import { handleButton1, handleButton2, handleButton3, handleStart, handleSkill, handleClose, handleAlly } from '/Scripts/menu.js';
+import { handleButton1, handleButton2, handleButton3, handleSkill, handleClose, handleAlly } from '/Scripts/menu.js';
 const startButton = document.getElementById('startButton');
 const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');
@@ -7,7 +7,6 @@ const skill1 = document.getElementById('skill1');
 const skill2 = document.getElementById('skill2');
 const skill3 = document.getElementById('skill3');
 const closeButton = document.getElementById('closeButton');
-handleStart(startButton);
 handleButton1(button1);
 handleButton2(button2);
 handleButton3(button3);

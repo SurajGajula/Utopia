@@ -27,13 +27,6 @@ export function handleSkill(button, index) {
         pSkill(index);
     });
 }
-export function handleStart(button) {
-    button.addEventListener('click', () => {
-        button.style.display = 'none';
-        document.getElementById('title').style.display = 'none';
-        document.getElementById('MenuUI').classList.remove('hidden');
-    });
-}
 export function handleClose(button) {
     button.addEventListener('click', () => {
         button.classList.add('hidden');
