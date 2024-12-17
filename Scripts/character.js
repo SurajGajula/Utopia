@@ -1,3 +1,6 @@
+AWS.config.update({
+    region: 'us-west-1'
+});
 const docClient = new AWS.DynamoDB.DocumentClient();
 export class Character {
     constructor(health, attack, skillstatuses) {
