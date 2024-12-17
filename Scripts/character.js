@@ -1,9 +1,4 @@
-import { isAuthenticated, signIn, handleCallback } from './auth.js';
-if (!isAuthenticated()) {
-    if (!handleCallback()) {
-        signIn();
-    }
-}
+import { isAuthenticated, signIn, handleCallback } from '/Scripts/auth.js';
 const docClient = new AWS.DynamoDB.DocumentClient();
 export class Character {
     constructor(health, attack, skillstatuses) {
