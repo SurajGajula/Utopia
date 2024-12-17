@@ -1,5 +1,8 @@
 AWS.config.update({
-    region: 'us-west-1'
+    region: 'us-west-1',
+    credentials: new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: 'us-west-1:9e8e8481-b6d4-4199-bbdc-9d4ad09dfe58'
+    })
 });
 const docClient = new AWS.DynamoDB.DocumentClient();
 export class Character {
