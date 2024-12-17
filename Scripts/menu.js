@@ -48,14 +48,6 @@ export function handleClose(button) {
     });
 }
 
-export function handleStart(button) {
-    button.addEventListener('click', () => {
-        button.style.display = 'none';
-        document.getElementById('title').style.display = 'none';
-        document.getElementById('MenuUI').classList.remove('hidden');
-    });
-}
-
 export function handleSkill(button, index) {
     button.addEventListener('click', () => {
         pSkill(index);

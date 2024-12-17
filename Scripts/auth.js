@@ -11,15 +11,8 @@ const cognitoConfig = {
 AWS.config.region = cognitoConfig.region;
 
 export function signIn() {
-    const redirectUri = 'https://d84l1y8p4kdic.cloudfront.net';
-    const queryParams = new URLSearchParams({
-        client_id: cognitoConfig.clientId,
-        response_type: 'code',
-        scope: 'openid',
-        redirect_uri: redirectUri
-    });
-
-    const loginUrl = `https://${cognitoConfig.domain}.auth.${cognitoConfig.region}.amazoncognito.com/login?${queryParams.toString()}`;
+    const redirectUri = 'https://main.d22za2x5ln55me.amplifyapp.com/';
+    const loginUrl = `https://${cognitoConfig.domain}.auth.${cognitoConfig.region}.amazoncognito.com/login?client_id=${cognitoConfig.clientId}&redirect_uri=${redirectUri}&response_type=code&scope=email+openid`;
     window.location.href = loginUrl;
 }
 
@@ -39,7 +32,7 @@ export async function handleCallback() {
                     grant_type: 'authorization_code',
                     client_id: cognitoConfig.clientId,
                     code: code,
-                    redirect_uri: 'https://d84l1y8p4kdic.cloudfront.net'
+                    redirect_uri: 'https://main.d22za2x5ln55me.amplifyapp.com/'
                 })
             });
 
@@ -69,4 +62,9 @@ if (window.location.search.includes('code=')) {
     handleCallback();
 } else {
     signIn();
+}
+
+// Export a function to check if credentials exist
+export function isAuthenticated() {
+    return AWS.config.credentials !== null;
 }
