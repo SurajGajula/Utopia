@@ -1,6 +1,6 @@
 import { pSkill, startBattle, setCur } from "/Scripts/battle.js";
 import { loadOwned, loadEnemies } from "/Scripts/character.js";
-import { isAuthenticated, signIn, handleCallback, getUserId } from './auth.js';
+import { isAuthenticated, signIn, handleCallback } from './auth.js';
 export function handleStart(button) {
     const shouldStartGame = handleCallback();
     if (shouldStartGame) {
@@ -25,8 +25,6 @@ export function handleButton1(button) {
     button.addEventListener('click', async () => {
         document.getElementById('MenuUI').classList.add('hidden');
         document.getElementById('closeButton').classList.remove('hidden');
-        const id = getUserId();
-        console.log(id);
         showEnemies(await loadEnemies());
         document.getElementById('Enemies').classList.remove('hidden');
     });
