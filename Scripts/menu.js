@@ -1,5 +1,26 @@
 import { pSkill, startBattle, setCur } from "/Scripts/battle.js";
 import { loadOwned, loadEnemies } from "/Scripts/character.js";
+import { isAuthenticated, signIn, handleCallback } from './auth.js';
+export function handleStart(button) {
+    const shouldStartGame = handleCallback();
+    if (shouldStartGame) {
+        startGame();
+        return;
+    }
+    button.addEventListener('click', () => {
+        if (isAuthenticated()) {
+            startGame();
+        } else {
+            signIn();
+        }
+    });
+}
+function startGame() {
+    const startButton = document.getElementById('startButton');
+    startButton.style.display = 'none';
+    document.getElementById('title').style.display = 'none';
+    document.getElementById('MenuUI').classList.remove('hidden');
+}
 export function handleButton1(button) {
     button.addEventListener('click', async () => {
         document.getElementById('MenuUI').classList.add('hidden');
@@ -25,13 +46,6 @@ export function handleButton3(button) {
 export function handleSkill(button, index) {
     button.addEventListener('click', () => {
         pSkill(index);
-    });
-}
-export function handleStart(button) {
-    button.addEventListener('click', () => {
-        button.style.display = 'none';
-        document.getElementById('title').style.display = 'none';
-        document.getElementById('MenuUI').classList.remove('hidden');
     });
 }
 export function handleClose(button) {

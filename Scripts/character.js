@@ -1,7 +1,16 @@
+import { isAuthenticated, signIn, handleCallback } from './auth.js';
+if (!isAuthenticated()) {
+    if (!handleCallback()) {
+        signIn();
+    }
+}
 AWS.config.update({
     region: 'us-west-1',
     credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: 'us-west-1:9e8e8481-b6d4-4199-bbdc-9d4ad09dfe58'
+        IdentityPoolId: 'us-west-1:9e8e8481-b6d4-4199-bbdc-9d4ad09dfe58',
+        Logins: isAuthenticated() ? {
+            [`cognito-idp.us-west-1.amazonaws.com/us-west-1_RAU6R6pD0`]: localStorage.getItem('idToken')
+        } : {}
     })
 });
 const docClient = new AWS.DynamoDB.DocumentClient();
@@ -13,6 +22,10 @@ export class Character {
         this.skillstatuses = skillstatuses;
     }
     static async loadFromDb(characterName) {
+        if (!isAuthenticated()) {
+            signIn();
+            return;
+        }
         const params = {
             TableName: "Utopia",
             Key: {
@@ -34,6 +47,10 @@ export class Character {
     }
 }
 export async function loadOwned() {
+    if (!isAuthenticated()) {
+        signIn();
+        return;
+    }
     const params = {
         TableName: 'Utopia',
         FilterExpression: 'attribute_exists(#owned) AND #owned = :ownedValue AND #id = :idValue',
@@ -55,6 +72,10 @@ export async function loadOwned() {
     }
 }
 export async function loadEnemies() {
+    if (!isAuthenticated()) {
+        signIn();
+        return;
+    }
     const params = {
         TableName: 'Utopia',
         KeyConditionExpression: '#id = :idValue',
@@ -76,6 +97,10 @@ export async function loadEnemies() {
     }
 }
 export async function storeBattle() {
+    if (!isAuthenticated()) {
+        signIn();
+        return;
+    }
     const params = {
         TableName: "Utopia",
         Key: {
@@ -106,6 +131,10 @@ export async function storeBattle() {
     }
 }
 export async function storeExp() {
+    if (!isAuthenticated()) {
+        signIn();
+        return;
+    }
     const params = {
         TableName: "Utopia",
         Key: {
