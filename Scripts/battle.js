@@ -1,4 +1,4 @@
-import { Character, storeBattle, storeExp } from './character.js'; 
+import { Character, storeBattle, storeExp } from 'Scripts/character.js'; 
 let hbar1, hbar2, hbar3, hbar4;
 let char1, char2, char3, char4;
 let redirect = [0, 0, 0, 0];
