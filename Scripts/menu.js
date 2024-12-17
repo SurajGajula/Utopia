@@ -1,53 +1,44 @@
+// menu.js
 import { pSkill, startBattle, setCur } from "/Scripts/battle.js";
 import { loadOwned, loadEnemies } from "/Scripts/character.js";
-import { isAuthenticated, signIn, handleCallback } from './auth.js';
-export function handleStart(button) {
-    const shouldStartGame = handleCallback();
-    if (shouldStartGame) {
-        startGame();
-        return;
-    }
-    button.addEventListener('click', () => {
-        if (isAuthenticated()) {
-            startGame();
-        } else {
-            signIn();
-        }
-    });
-}
-function startGame() {
-    const startButton = document.getElementById('startButton');
-    startButton.style.display = 'none';
-    document.getElementById('title').style.display = 'none';
-    document.getElementById('MenuUI').classList.remove('hidden');
-}
+
 export function handleButton1(button) {
     button.addEventListener('click', async () => {
+        const enemies = await loadEnemies();
+        if (!enemies) {
+            console.log('Not authenticated');
+            return;
+        }
+
         document.getElementById('MenuUI').classList.add('hidden');
         document.getElementById('closeButton').classList.remove('hidden');
-        showEnemies(await loadEnemies());
+        showEnemies(enemies);
         document.getElementById('Enemies').classList.remove('hidden');
     });
 }
+
 export function handleButton2(button) {
     button.addEventListener('click', async () => {
+        const owned = await loadOwned();
+        if (!owned) {
+            console.log('Not authenticated');
+            return;
+        }
+
         document.getElementById('MenuUI').classList.add('hidden');
         document.getElementById('closeButton').classList.remove('hidden');
-        showOwned(await loadOwned());
+        showOwned(owned);
         document.getElementById('Owned').classList.remove('hidden');
     });
 }
+
 export function handleButton3(button) {
     button.addEventListener('click', () => {
         document.getElementById('MenuUI').classList.add('hidden');
         document.getElementById('closeButton').classList.remove('hidden');
     });
 }
-export function handleSkill(button, index) {
-    button.addEventListener('click', () => {
-        pSkill(index);
-    });
-}
+
 export function handleClose(button) {
     button.addEventListener('click', () => {
         button.classList.add('hidden');
@@ -56,9 +47,25 @@ export function handleClose(button) {
         document.getElementById('Enemies').classList.add('hidden');
     });
 }
+
+export function handleStart(button) {
+    button.addEventListener('click', () => {
+        button.style.display = 'none';
+        document.getElementById('title').style.display = 'none';
+        document.getElementById('MenuUI').classList.remove('hidden');
+    });
+}
+
+export function handleSkill(button, index) {
+    button.addEventListener('click', () => {
+        pSkill(index);
+    });
+}
+
 export function handleAlly(index) {
     setCur(index);
 }
+
 function showOwned(items) {
     const container = document.getElementById("Owned");
     container.innerHTML = '';
@@ -72,22 +79,26 @@ function showOwned(items) {
             </div>
             <div class="card-content">
                 <h3>${itemData.Name}</h3>
-                <p>Attack: ${itemData.Attack}</p>
-                <p>Health: ${itemData.Health}</p>
                 <p>Level: ${itemData.Level}</p>
+                <p>Health: ${itemData.Health}</p>
+                <p>Attack: ${itemData.Attack}</p>
                 <p>Exp: ${itemData.Exp}</p>
+                <p>Threshold: ${itemData.Threshold}</p>
             </div>
         `;
         container.appendChild(element);
     });
 }
+
 function showEnemies(items) {
     const container = document.getElementById("Enemies");
     container.innerHTML = '';
     items.forEach(item => {
         const element = document.createElement('div');
         element.classList.add('item-card');
-        element.classList.add('clickable');
+        element.addEventListener('click', () => {
+            startBattle(item.Name);
+        });
         const itemData = item;
         element.innerHTML = `
             <div class="card-image">
@@ -95,19 +106,11 @@ function showEnemies(items) {
             </div>
             <div class="card-content">
                 <h3>${itemData.Name}</h3>
-                <p>Attack: ${itemData.Attack}</p>
-                <p>Health: ${itemData.Health}</p>
                 <p>Level: ${itemData.Level}</p>
-                <p>Defeated: ${itemData.Defeated}</p>
+                <p>Health: ${itemData.Health}</p>
+                <p>Attack: ${itemData.Attack}</p>
             </div>
-        `; 
-        element.addEventListener('click', async () => {
-            document.getElementById('Enemies').classList.add('hidden');
-            document.getElementById('closeButton').classList.add('hidden');
-            await startBattle(itemData.Name);
-            document.getElementById('BattleUI').classList.remove('hidden');
-        });
-        element.style.cursor = 'pointer';        
+        `;
         container.appendChild(element);
     });
 }
