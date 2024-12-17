@@ -10,6 +10,11 @@ let docClient = null;
 
 // Function to redirect to login
 export function redirectToLogin() {
+    // Check if we're already at the login URL to prevent loops
+    if (window.location.href.includes('amazoncognito.com')) {
+        return;
+    }
+
     const loginParams = new URLSearchParams({
         client_id: CLIENT_ID,
         redirect_uri: REDIRECT_URI,
@@ -34,9 +39,7 @@ export async function initializeAWS() {
     const authCode = getAuthCode();
     
     if (!authCode) {
-        // No auth code present, need to login
-        redirectToLogin();
-        return;
+        throw new Error('No authentication code present');
     }
 
     try {
@@ -61,6 +64,7 @@ export async function initializeAWS() {
         // Clear the authorization code from URL
         window.history.replaceState({}, document.title, window.location.pathname);
         
+        return true;
     } catch (error) {
         console.error('Failed to initialize AWS:', error);
         throw error;
@@ -105,4 +109,3 @@ async function exchangeAuthCode(code) {
 
     return await response.json();
 }
-

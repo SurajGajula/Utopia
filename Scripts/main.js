@@ -2,23 +2,15 @@ import { handleButton1, handleButton2, handleButton3, handleSkill, handleClose, 
 import { initializeAWS, isAuthenticating, redirectToLogin } from './auth.js';
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // Check if we're in the authentication flow
         if (!isAuthenticating()) {
-            // If not authenticating, redirect to login
             redirectToLogin();
             return;
         }
-        
-        // Initialize AWS (this will handle the auth code exchange)
+
         await initializeAWS();
-        console.log('Application ready');
-        
-        // Continue with your application initialization
-        // Load your game components, etc.
-        
+        console.log('Application ready'); 
     } catch (error) {
         console.error('Failed to initialize application:', error);
-        // Handle initialization error
         redirectToLogin();
     }
 });
