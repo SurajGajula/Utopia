@@ -17,7 +17,7 @@ export function signIn() {
 }
 export async function handleCallback() {
     const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');  
+    const code = urlParams.get('code');
     if (code) {
         try {
             const tokenEndpoint = `https://${cognitoConfig.domain}.auth.${cognitoConfig.region}.amazoncognito.com/oauth2/token`;
@@ -33,18 +33,7 @@ export async function handleCallback() {
                     redirect_uri: 'https://d84l1y8p4kdic.cloudfront.net'
                 })
             });
-
             const tokens = await tokenResponse.json();
-            
-            // Get user info using the access token
-            const userInfoEndpoint = `https://${cognitoConfig.domain}.auth.${cognitoConfig.region}.amazoncognito.com/oauth2/userInfo`;
-            const userInfoResponse = await fetch(userInfoEndpoint, {
-                headers: {
-                    'Authorization': `Bearer ${tokens.access_token}`
-                }
-            });
-            const userInfo = await userInfoResponse.json();
-            localStorage.setItem('userId', userInfo.sub);
             localStorage.setItem('authCode', code);
             AWS.config.update({
                 region: cognitoConfig.region,
@@ -65,7 +54,4 @@ export async function handleCallback() {
 }
 export function isAuthenticated() {
     return !!localStorage.getItem('authCode');
-}
-export function getUserId() {
-    return localStorage.getItem('userId');
 }
