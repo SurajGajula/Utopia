@@ -38,19 +38,26 @@ export async function handleCallback() {
 
             const tokens = await response.json();
 
+            // First clear any existing credentials
+            AWS.config.credentials = null;
+
             // Configure AWS credentials with Identity Pool
             AWS.config.credentials = new AWS.CognitoIdentityCredentials({
                 IdentityPoolId: cognitoConfig.identityPoolId,
                 Logins: {
                     [`cognito-idp.${cognitoConfig.region}.amazonaws.com/${cognitoConfig.userPoolId}`]: tokens.id_token
                 }
+            }, {
+                region: cognitoConfig.region
             });
 
             // Refresh the credentials
+            await AWS.config.credentials.clearCachedId();
             await AWS.config.credentials.getPromise();
             return true;
         } catch (error) {
             console.error('Error during authentication:', error);
+            signIn(); // Redirect back to sign in if there's an error
             return false;
         }
     }
@@ -66,5 +73,5 @@ if (window.location.search.includes('code=')) {
 
 // Export a function to check if credentials exist
 export function isAuthenticated() {
-    return AWS.config.credentials !== null;
+    return AWS.config.credentials && !AWS.config.credentials.expired;
 }
