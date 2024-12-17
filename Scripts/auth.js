@@ -1,28 +1,23 @@
-// auth.js
 const cognitoConfig = {
     userPoolId: 'us-west-1_RAU6R6pD0',
     clientId: '45gfll4redstf4g8hq4fa2jkob',
     domain: 'us-west-1rau6r6pd0',
     region: 'us-west-1'
 };
-
 export function signIn() {
     const redirectUri = 'https://d84l1y8p4kdic.cloudfront.net';
     const queryParams = new URLSearchParams({
         client_id: cognitoConfig.clientId,
         response_type: 'code',
-        scope: 'email openid profile',  // Added 'profile' scope to get user info
+        scope: 'email openid',
         redirect_uri: redirectUri
     });
-
     const loginUrl = `https://${cognitoConfig.domain}.auth.${cognitoConfig.region}.amazoncognito.com/login?${queryParams.toString()}`;
     window.location.href = loginUrl;
 }
-
 export async function handleCallback() {
     const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    
+    const code = urlParams.get('code');  
     if (code) {
         try {
             const tokenEndpoint = `https://${cognitoConfig.domain}.auth.${cognitoConfig.region}.amazoncognito.com/oauth2/token`;
@@ -38,7 +33,10 @@ export async function handleCallback() {
                     redirect_uri: 'https://d84l1y8p4kdic.cloudfront.net'
                 })
             });
+
             const tokens = await tokenResponse.json();
+            
+            // Get user info using the access token
             const userInfoEndpoint = `https://${cognitoConfig.domain}.auth.${cognitoConfig.region}.amazoncognito.com/oauth2/userInfo`;
             const userInfoResponse = await fetch(userInfoEndpoint, {
                 headers: {
@@ -47,7 +45,7 @@ export async function handleCallback() {
             });
             const userInfo = await userInfoResponse.json();
             localStorage.setItem('userId', userInfo.sub);
-            console.log('User ID:', userInfo.sub);
+            localStorage.setItem('authCode', code);
             AWS.config.update({
                 region: cognitoConfig.region,
                 credentials: new AWS.CognitoIdentityCredentials({
