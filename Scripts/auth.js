@@ -5,7 +5,7 @@ const cognitoConfig = {
     region: 'us-west-1'
 };
 export function signIn() {
-    const redirectUri = 'https://d84l1y8p4kdic.cloudfront.net';
+    const redirectUri = 'https://main.d22za2x5ln55me.amplifyapp.com/';
     const queryParams = new URLSearchParams({
         client_id: cognitoConfig.clientId,
         response_type: 'code',
