@@ -1,4 +1,4 @@
-import { isAuthenticated, signIn, handleCallback } from '/Scripts/auth.js';
+import { isAuthenticated, signIn, ensureAuthenticated } from '/Scripts/auth.js';
 const docClient = new AWS.DynamoDB.DocumentClient();
 export class Character {
     constructor(health, attack, skillstatuses) {
@@ -8,8 +8,7 @@ export class Character {
         this.skillstatuses = skillstatuses;
     }
     static async loadFromDb(characterName) {
-        if (!isAuthenticated()) {
-            signIn();
+        if (!await ensureAuthenticated()) {
             return;
         }
         const params = {
@@ -33,8 +32,7 @@ export class Character {
     }
 }
 export async function loadOwned() {
-    if (!isAuthenticated()) {
-        signIn();
+    if (!await ensureAuthenticated()) {
         return;
     }
     const params = {
@@ -58,8 +56,7 @@ export async function loadOwned() {
     }
 }
 export async function loadEnemies() {
-    if (!isAuthenticated()) {
-        signIn();
+    if (!await ensureAuthenticated()) {
         return;
     }
     const params = {
@@ -83,8 +80,7 @@ export async function loadEnemies() {
     }
 }
 export async function storeBattle() {
-    if (!isAuthenticated()) {
-        signIn();
+    if (!await ensureAuthenticated()) {
         return;
     }
     const params = {
@@ -117,8 +113,7 @@ export async function storeBattle() {
     }
 }
 export async function storeExp() {
-    if (!isAuthenticated()) {
-        signIn();
+    if (!await ensureAuthenticated()) {
         return;
     }
     const params = {
