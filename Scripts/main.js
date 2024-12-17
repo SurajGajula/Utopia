@@ -1,19 +1,29 @@
 import { handleButton1, handleButton2, handleButton3, handleSkill, handleClose, handleAlly } from '/Scripts/menu.js';
 import { initializeAWS, isAuthenticating, redirectToLogin } from './auth.js';
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         if (!isAuthenticating()) {
+            console.log('No auth code present, redirecting to login');
             redirectToLogin();
             return;
         }
 
-        await initializeAWS();
+        const success = await initializeAWS();
+        if (!success) {
+            console.log('AWS initialization failed, redirecting to login');
+            redirectToLogin();
+            return;
+        }
+
         console.log('Application ready'); 
     } catch (error) {
         console.error('Failed to initialize application:', error);
-        redirectToLogin();
+        // Don't redirect on error, just log it
+        console.error(error);
     }
 });
+
 
 const startButton = document.getElementById('startButton');
 const button1 = document.getElementById('button1');

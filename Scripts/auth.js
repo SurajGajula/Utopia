@@ -10,10 +10,14 @@ let docClient = null;
 
 // Function to redirect to login
 export function redirectToLogin() {
-    // Check if we're already at the login URL to prevent loops
-    if (window.location.href.includes('amazoncognito.com')) {
+    // Only redirect if we haven't already started the auth process
+    if (sessionStorage.getItem('authStarted')) {
+        console.log('Auth process already started, skipping redirect');
         return;
     }
+
+    // Mark that we've started the auth process
+    sessionStorage.setItem('authStarted', 'true');
 
     const loginParams = new URLSearchParams({
         client_id: CLIENT_ID,
@@ -36,13 +40,14 @@ export async function initializeAWS() {
     // Configure region
     AWS.config.update({ region: REGION });
     
-    const authCode = getAuthCode();
-    
-    if (!authCode) {
-        throw new Error('No authentication code present');
-    }
-
     try {
+        const authCode = getAuthCode();
+        
+        if (!authCode) {
+            console.log('No auth code present');
+            return false;
+        }
+
         // Exchange auth code for tokens
         const tokens = await exchangeAuthCode(authCode);
         
@@ -64,10 +69,15 @@ export async function initializeAWS() {
         // Clear the authorization code from URL
         window.history.replaceState({}, document.title, window.location.pathname);
         
+        // Clear the auth started flag since we're successfully authenticated
+        sessionStorage.removeItem('authStarted');
+        
         return true;
     } catch (error) {
         console.error('Failed to initialize AWS:', error);
-        throw error;
+        // Clear auth started flag on error so we can try again
+        sessionStorage.removeItem('authStarted');
+        return false;
     }
 }
 
@@ -104,6 +114,8 @@ async function exchangeAuthCode(code) {
     });
 
     if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Token exchange failed:', errorText);
         throw new Error('Failed to exchange authorization code');
     }
 
