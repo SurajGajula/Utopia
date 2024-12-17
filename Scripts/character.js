@@ -1,6 +1,10 @@
-// character.js
+AWS.config.update({
+    region: 'us-west-1',
+    credentials: new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: 'us-west-1:88200be6-614d-42b4-86d5-ee57e0fa5cdf'
+    })
+});
 const docClient = new AWS.DynamoDB.DocumentClient();
-
 export class Character {
     constructor(health, attack, skillstatuses) {
         this.health = health;
@@ -8,14 +12,7 @@ export class Character {
         this.max = health;
         this.skillstatuses = skillstatuses;
     }
-
     static async loadFromDb(characterName) {
-        // Check if AWS credentials exist
-        if (!AWS.config.credentials) {
-            console.log('Not authenticated');
-            return null;
-        }
-
         const params = {
             TableName: "Utopia",
             Key: {
@@ -23,7 +20,6 @@ export class Character {
                 ID: "0001"
             }
         };
-
         try {
             const data = await docClient.get(params).promise();
             return new Character(
@@ -33,17 +29,11 @@ export class Character {
             );
         } catch (err) {
             console.error(err);
-            return null;
+            throw err;
         }
     }
 }
-
 export async function loadOwned() {
-    if (!AWS.config.credentials) {
-        console.log('Not authenticated');
-        return null;
-    }
-
     const params = {
         TableName: 'Utopia',
         FilterExpression: 'attribute_exists(#owned) AND #owned = :ownedValue AND #id = :idValue',
@@ -56,22 +46,15 @@ export async function loadOwned() {
             ':idValue': '0001'
         }
     };
-
     try {
         const data = await docClient.scan(params).promise();
         return data.Items;
     } catch (error) {
         console.error(error);
-        return null;
+        throw error;
     }
 }
-
 export async function loadEnemies() {
-    if (!AWS.config.credentials) {
-        console.log('Not authenticated');
-        return null;
-    }
-
     const params = {
         TableName: 'Utopia',
         KeyConditionExpression: '#id = :idValue',
@@ -84,22 +67,15 @@ export async function loadEnemies() {
             ':idValue': '0001'
         }
     };
-
     try {
         const data = await docClient.query(params).promise();
         return data.Items;
     } catch (error) {
         console.error(error);
-        return null;
+        throw error;
     }
 }
-
 export async function storeBattle() {
-    if (!AWS.config.credentials) {
-        console.log('Not authenticated');
-        return null;
-    }
-
     const params = {
         TableName: "Utopia",
         Key: {
@@ -107,7 +83,6 @@ export async function storeBattle() {
             ID: "0001"
         }
     };
-
     try {
         const data = await docClient.get(params).promise();
         const updateParams = {
@@ -127,16 +102,10 @@ export async function storeBattle() {
         await docClient.update(updateParams).promise();
     } catch (err) {
         console.error(err);
-        return null;
+        throw err;
     }
 }
-
 export async function storeExp() {
-    if (!AWS.config.credentials) {
-        console.log('Not authenticated');
-        return null;
-    }
-
     const params = {
         TableName: "Utopia",
         Key: {
@@ -144,7 +113,6 @@ export async function storeExp() {
             ID: "0001"
         }
     };
-
     try {
         const data = await docClient.get(params).promise();
         const enemyparams = {
@@ -155,7 +123,6 @@ export async function storeExp() {
             }
         };
         const enemydata = await docClient.get(enemyparams).promise();
-        
         const updateExp = [0, 1, 2].map(index => {
             const allyparams = {
                 TableName: "Utopia",
@@ -174,7 +141,6 @@ export async function storeExp() {
             return docClient.update(allyparams).promise();        
         });
         await Promise.all(updateExp);
-        
         const updateLevels = [0, 1, 2].map(async index => {
             const allyparams = {
                 TableName: "Utopia",
@@ -209,6 +175,6 @@ export async function storeExp() {
         await Promise.all(updateLevels);        
     } catch (err) {
         console.error(err);
-        return null;
+        throw err;
     }
 }
