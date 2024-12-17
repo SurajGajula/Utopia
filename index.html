@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utopia</title>
+    <link rel="stylesheet" href="Styles/main.css">
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1400.0.min.js"></script>
+</head>
+<body>
+    <p id="title">Utopia</p>
+    <button id="startButton">Start</button>
+    <button id="closeButton" class="hidden">X</button>
+    <div id="MenuUI" class="hidden">
+        <div class="RightUI">
+            <button id="button1">Challenge</button>
+            <button id="button2">Allies</button>
+            <button id="button3">Garden</button>
+        </div>
+        <img src="Sprites/Ally1.svg" class="svg-image">
+    </div>
+    <div id="Owned" class="hidden"></div>
+    <div id="Enemies" class="hidden"></div>
+    <div id="BattleUI" class="hidden">
+        <div id="Allies">
+            <img id="Ally1" src="Sprites/Ally3.svg" class="svg-image">
+            <img id="Ally2" src="Sprites/Ally2.svg" class="svg-image">
+            <img id="Ally3" src="Sprites/Ally1.svg" class="svg-image">
+        </div>
+        <div id="Enemy">
+            <img src="Sprites/Enemy1.svg" class="svg-image">
+        </div>
+        <div class="AllyBars">
+            <div class="health-bar" id="health-bar"></div>
+            <div class="health-bar" id="health-bar"></div>
+            <div class="health-bar" id="health-bar"></div>
+        </div>
+        <div class="EnemyBar">
+            <div class="health-bar" id="health-bar"></div>
+        </div>
+        <div id="Skills">
+            <button id="skill1">Skill 1</button>
+            <button id="skill2">Skill 2</button>
+            <button id="skill3">Skill 3</button>
+        </div>
+    </div>
+    <script type="module" src="scripts/main.js"></script>
+</body>
+</html>
