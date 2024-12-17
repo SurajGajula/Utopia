@@ -11,7 +11,7 @@ const cognitoConfig = {
 AWS.config.region = cognitoConfig.region;
 
 export function signIn() {
-    const redirectUri = 'https://main.d22za2x5ln55me.amplifyapp.com/';
+    const redirectUri = encodeURIComponent('https://main.d22za2x5ln55me.amplifyapp.com/');
     const loginUrl = `https://${cognitoConfig.domain}.auth.${cognitoConfig.region}.amazoncognito.com/login?client_id=${cognitoConfig.clientId}&redirect_uri=${redirectUri}&response_type=code&scope=email+openid`;
     window.location.href = loginUrl;
 }
@@ -22,25 +22,34 @@ export async function handleCallback() {
     
     if (code) {
         try {
+            const redirectUri = 'https://main.d22za2x5ln55me.amplifyapp.com/';
             const tokenEndpoint = `https://${cognitoConfig.domain}.auth.${cognitoConfig.region}.amazoncognito.com/oauth2/token`;
+            
+            const params = new URLSearchParams();
+            params.append('grant_type', 'authorization_code');
+            params.append('client_id', cognitoConfig.clientId);
+            params.append('code', code);
+            params.append('redirect_uri', redirectUri);
+
             const response = await fetch(tokenEndpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                body: new URLSearchParams({
-                    grant_type: 'authorization_code',
-                    client_id: cognitoConfig.clientId,
-                    code: code,
-                    redirect_uri: 'https://main.d22za2x5ln55me.amplifyapp.com/'
-                })
+                body: params.toString()
             });
 
             if (!response.ok) {
-                throw new Error('Token endpoint returned ' + response.status);
+                const errorData = await response.text();
+                console.error('Token endpoint error:', errorData);
+                throw new Error(`Token endpoint returned ${response.status}: ${errorData}`);
             }
 
             const tokens = await response.json();
+            
+            if (!tokens.id_token) {
+                throw new Error('No ID token received');
+            }
 
             // Configure AWS credentials with Identity Pool
             AWS.config.credentials = new AWS.CognitoIdentityCredentials({
