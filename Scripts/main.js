@@ -1,6 +1,8 @@
 import { handleButton1, handleButton2, handleButton3, handleSkill, handleClose, handleAlly } from '/Scripts/menu.js';
 import { navigateToLogin } from './auth.js';
-navigateToLogin();
+if (!window.location.search.includes('code=')) {
+    navigateToLogin();
+}
 const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');
 const button3 = document.getElementById('button3');
