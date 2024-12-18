@@ -3,6 +3,7 @@ import { navigateToLogin } from './auth.js';
 if (!window.location.search.includes('code=')) {
     navigateToLogin();
 }
+const urlParams = new URLSearchParams(window.location.search);
 const code = urlParams.get('code');
 if (code) {
     console.log('Authorization code received:', code);
