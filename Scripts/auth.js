@@ -84,11 +84,8 @@ function getAuthCode() {
     return urlParams.get('code');
 }
 
-// auth.js
-// Exchange authorization code for tokens
 async function exchangeAuthCode(code) {
-    // Notice the uppercase RAU6R6PD0 in the URL
-    const tokenEndpoint = `https://${USER_POOL_ID.toLowerCase()}.auth.${REGION}.amazoncognito.com/oauth2/token`;
+    const tokenEndpoint = `https://cognito-idp.${REGION}.amazonaws.com/${USER_POOL_ID}/oauth2/token`;
     
     console.log('Token endpoint:', tokenEndpoint); // For debugging
     
@@ -105,7 +102,7 @@ async function exchangeAuthCode(code) {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: params.toString() // Ensure params are properly stringified
+            body: params.toString()
         });
 
         if (!response.ok) {
