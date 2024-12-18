@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
+
 const startButton = document.getElementById('startButton');
 const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');

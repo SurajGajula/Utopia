@@ -3,10 +3,15 @@ const IDENTITY_POOL_ID = 'us-west-1:be5f5c85-6e5f-421a-a20d-11f7b049b5d1';
 const USER_POOL_ID = 'us-west-1_RAU6R6pD0';
 const CLIENT_ID = '45gfll4redstf4g8hq4fa2jkob';
 const REGION = 'us-west-1';
-const LOGIN_URL = 'https://us-west-1rau6r6pd0.auth.us-west-1.amazoncognito.com/login';
+const COGNITO_DOMAIN = 'us-west-1rau6r6pd0.auth.us-west-1.amazoncognito.com';
 const REDIRECT_URI = 'https://main.d22za2x5ln55me.amplifyapp.com/';
 
 let docClient = null;
+
+// Function to generate random state
+function generateState() {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+}
 
 // Function to redirect to login
 export function redirectToLogin() {
@@ -16,17 +21,20 @@ export function redirectToLogin() {
         return;
     }
 
-    // Mark that we've started the auth process
+    // Generate and store state
+    const state = generateState();
+    sessionStorage.setItem('authState', state);
     sessionStorage.setItem('authStarted', 'true');
 
     const loginParams = new URLSearchParams({
         client_id: CLIENT_ID,
-        redirect_uri: REDIRECT_URI,
         response_type: 'code',
-        scope: 'email openid'
+        scope: 'email openid',
+        redirect_uri: REDIRECT_URI,
+        state: state
     });
 
-    window.location.href = `${LOGIN_URL}?${loginParams.toString()}`;
+    window.location.href = `https://${COGNITO_DOMAIN}/login?${loginParams.toString()}`;
 }
 
 // Initialize AWS with authenticated credentials
@@ -36,9 +44,17 @@ export async function initializeAWS() {
     
     try {
         const authCode = getAuthCode();
+        const state = getState();
         
         if (!authCode) {
             console.log('No auth code present');
+            return false;
+        }
+
+        // Verify state
+        const savedState = sessionStorage.getItem('authState');
+        if (state !== savedState) {
+            console.error('State mismatch - possible CSRF attack');
             return false;
         }
 
@@ -60,8 +76,11 @@ export async function initializeAWS() {
         docClient = new AWS.DynamoDB.DocumentClient();
         console.log('AWS initialized successfully with authenticated user');
         
-        // Clear the authorization code from URL
+        // Clear the authorization code and state from URL
         window.history.replaceState({}, document.title, window.location.pathname);
+        
+        // Clear auth state from session storage
+        sessionStorage.removeItem('authState');
         
         return true;
     } catch (error) {
@@ -70,24 +89,23 @@ export async function initializeAWS() {
     }
 }
 
-// Get the initialized DocumentClient
-export function getDocClient() {
-    if (!docClient) {
-        throw new Error('AWS has not been initialized. Call initializeAWS first.');
-    }
-    return docClient;
-}
-
-// Function to get the authorization code from URL
+// Get the authorization code from URL
 function getAuthCode() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('code');
 }
 
+// Get the state from URL
+function getState() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('state');
+}
+
+// Exchange authorization code for tokens
 async function exchangeAuthCode(code) {
     const tokenEndpoint = `https://cognito-idp.${REGION}.amazonaws.com/${USER_POOL_ID}/oauth2/token`;
     
-    console.log('Token endpoint:', tokenEndpoint); // For debugging
+    console.log('Token endpoint:', tokenEndpoint);
     
     const params = new URLSearchParams({
         grant_type: 'authorization_code',
@@ -117,3 +135,15 @@ async function exchangeAuthCode(code) {
         throw error;
     }
 }
+
+// Add logout functionality
+export function logout() {
+    sessionStorage.clear();
+    const logoutParams = new URLSearchParams({
+        client_id: CLIENT_ID,
+        logout_uri: REDIRECT_URI
+    });
+    
+    window.location.href = `https://${COGNITO_DOMAIN}/logout?${logoutParams.toString()}`;
+}
+
