@@ -84,9 +84,13 @@ function getAuthCode() {
     return urlParams.get('code');
 }
 
+// auth.js
 // Exchange authorization code for tokens
 async function exchangeAuthCode(code) {
-    const tokenEndpoint = `https://${USER_POOL_ID}.auth.${REGION}.amazoncognito.com/oauth2/token`;
+    // Notice the uppercase RAU6R6PD0 in the URL
+    const tokenEndpoint = `https://${USER_POOL_ID.toLowerCase()}.auth.${REGION}.amazoncognito.com/oauth2/token`;
+    
+    console.log('Token endpoint:', tokenEndpoint); // For debugging
     
     const params = new URLSearchParams({
         grant_type: 'authorization_code',
@@ -95,19 +99,24 @@ async function exchangeAuthCode(code) {
         redirect_uri: REDIRECT_URI
     });
 
-    const response = await fetch(tokenEndpoint, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: params
-    });
+    try {
+        const response = await fetch(tokenEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: params.toString() // Ensure params are properly stringified
+        });
 
-    if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Token exchange failed:', errorText);
-        throw new Error('Failed to exchange authorization code');
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Token exchange failed:', errorText);
+            throw new Error(`Token exchange failed: ${response.status} ${response.statusText}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Network error during token exchange:', error);
+        throw error;
     }
-
-    return await response.json();
 }
