@@ -1,25 +1,54 @@
 // auth.js
-const { S3Client } = AWS.S3;
-const { fromCognitoIdentityPool } = AWS.CognitoIdentityCredentials;
-
 const IDENTITY_POOL_ID = 'us-west-1:be5f5c85-6e5f-421a-a20d-11f7b049b5d1';
 const USER_POOL_ID = 'us-west-1_RAU6R6pD0';
 const CLIENT_ID = '45gfll4redstf4g8hq4fa2jkob';
 const REGION = 'us-west-1';
-const COGNITO_DOMAIN = 'us-west-1rau6r6pd0.auth.us-west-1.amazoncognito.com';
+const COGNITO_DOMAIN = `${USER_POOL_ID}.auth.${REGION}.amazoncognito.com`;
 const REDIRECT_URI = 'https://main.d22za2x5ln55me.amplifyapp.com/';
-const COGNITO_IDP_ID = `cognito-idp.${REGION}.amazonaws.com/${USER_POOL_ID}`;
 
-let s3Client = null;
+// Exchange authorization code for tokens
+async function exchangeAuthCode(code) {
+    const tokenEndpoint = `https://${COGNITO_DOMAIN}/oauth2/token`;
+    
+    // Create authorization header
+    const credentials = btoa(CLIENT_ID); // No client secret for public client
+    const authHeader = `Basic ${credentials}`;
+    
+    // Create form data exactly as specified
+    const formData = new URLSearchParams({
+        grant_type: 'authorization_code',
+        client_id: CLIENT_ID,
+        code: code,
+        redirect_uri: REDIRECT_URI
+    }).toString();
 
-// Function to generate nonce
-function generateNonce() {
-    return Math.random().toString(36).substring(2, 15);
-}
+    try {
+        console.log('Token endpoint:', tokenEndpoint);
+        console.log('Form data:', formData);
+        
+        const response = await fetch(tokenEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': authHeader
+            },
+            body: formData
+        });
 
-// Function to generate state
-function generateState() {
-    return Math.random().toString(36).substring(2, 15);
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Token exchange failed. Status:', response.status);
+            console.error('Error details:', errorText);
+            throw new Error(`Token exchange failed: ${response.status} ${response.statusText}`);
+        }
+
+        const tokens = await response.json();
+        console.log('Token exchange successful');
+        return tokens.id_token;
+    } catch (error) {
+        console.error('Network error during token exchange:', error);
+        throw error;
+    }
 }
 
 // Function to redirect to login
@@ -29,65 +58,25 @@ export function redirectToLogin() {
         return;
     }
 
-    const nonce = generateNonce();
     const state = generateState();
+    const nonce = generateNonce();
 
-    // Store nonce and state in session storage
-    sessionStorage.setItem('nonce', nonce);
     sessionStorage.setItem('state', state);
+    sessionStorage.setItem('nonce', nonce);
     sessionStorage.setItem('authStarted', 'true');
 
     const loginParams = new URLSearchParams({
         client_id: CLIENT_ID,
         response_type: 'code',
-        scope: 'email openid',
+        scope: 'email openid profile',
         redirect_uri: REDIRECT_URI,
         state: state,
         nonce: nonce
     });
 
-    window.location.href = `https://${COGNITO_DOMAIN}/oauth2/authorize?${loginParams.toString()}`;
-}
-
-// Get token from URL
-async function getToken() {
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get('code');
-    if (!code) return null;
-    return exchangeAuthCode(code);
-}
-
-// Exchange authorization code for tokens
-async function exchangeAuthCode(code) {
-    const tokenEndpoint = `https://${COGNITO_DOMAIN}/oauth2/token`;
-    
-    const params = new URLSearchParams();
-    params.append('grant_type', 'authorization_code');
-    params.append('client_id', CLIENT_ID);
-    params.append('code', code);
-    params.append('redirect_uri', REDIRECT_URI);
-
-    try {
-        const response = await fetch(tokenEndpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: params.toString()
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('Token exchange failed:', errorText);
-            throw new Error(`Token exchange failed: ${response.status} ${response.statusText}`);
-        }
-
-        const tokens = await response.json();
-        return tokens.id_token;
-    } catch (error) {
-        console.error('Network error during token exchange:', error);
-        throw error;
-    }
+    const loginUrl = `https://${COGNITO_DOMAIN}/oauth2/authorize?${loginParams.toString()}`;
+    console.log('Redirecting to:', loginUrl);
+    window.location.href = loginUrl;
 }
 
 // Initialize AWS with authenticated credentials
@@ -99,20 +88,30 @@ export async function initializeAWS() {
             return false;
         }
 
+        // Configure AWS
+        AWS.config.region = REGION;
+        
         // Create credentials object
         const credentials = new AWS.CognitoIdentityCredentials({
             IdentityPoolId: IDENTITY_POOL_ID,
             Logins: {
-                [COGNITO_IDP_ID]: idToken
+                [`cognito-idp.${REGION}.amazonaws.com/${USER_POOL_ID}`]: idToken
             }
-        }, {
-            region: REGION
         });
 
-        // Initialize AWS config
-        AWS.config.update({
-            region: REGION,
-            credentials: credentials
+        // Set the credentials
+        AWS.config.credentials = credentials;
+
+        // Wait for credentials to be refreshed
+        await new Promise((resolve, reject) => {
+            credentials.get((err) => {
+                if (err) {
+                    console.error('Error getting credentials:', err);
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
         });
 
         // Initialize S3 client
@@ -129,7 +128,26 @@ export async function initializeAWS() {
     }
 }
 
-// Get the initialized S3 client
+// Helper functions
+function generateState() {
+    return Math.random().toString(36).substring(2, 15);
+}
+
+function generateNonce() {
+    return Math.random().toString(36).substring(2, 15);
+}
+
+async function getToken() {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    if (!code) {
+        console.log('No authorization code found in URL');
+        return null;
+    }
+    console.log('Authorization code found, exchanging for token');
+    return exchangeAuthCode(code);
+}
+
 export function getS3Client() {
     if (!s3Client) {
         throw new Error('AWS has not been initialized. Call initializeAWS first.');
@@ -137,10 +155,11 @@ export function getS3Client() {
     return s3Client;
 }
 
-// Add logout functionality
 export function logout() {
     sessionStorage.clear();
     s3Client = null;
+    AWS.config.credentials = null;
+    
     const logoutParams = new URLSearchParams({
         client_id: CLIENT_ID,
         logout_uri: REDIRECT_URI
