@@ -1,6 +1,6 @@
 // auth.js
-import { S3Client } from "@aws-sdk/client-s3";
-import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
+const { S3Client } = AWS.S3;
+const { fromCognitoIdentityPool } = AWS.CognitoIdentityCredentials;
 
 const IDENTITY_POOL_ID = 'us-west-1:be5f5c85-6e5f-421a-a20d-11f7b049b5d1';
 const USER_POOL_ID = 'us-west-1_RAU6R6pD0';
@@ -50,7 +50,7 @@ export function redirectToLogin() {
 }
 
 // Get token from URL
-function getToken() {
+async function getToken() {
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
     if (!code) return null;
@@ -83,7 +83,7 @@ async function exchangeAuthCode(code) {
         }
 
         const tokens = await response.json();
-        return tokens.id_token; // Return the ID token
+        return tokens.id_token;
     } catch (error) {
         console.error('Network error during token exchange:', error);
         throw error;
@@ -99,20 +99,24 @@ export async function initializeAWS() {
             return false;
         }
 
-        // Create the login data object
-        const loginData = {
-            [COGNITO_IDP_ID]: idToken
-        };
-
-        // Initialize the S3 client with Cognito Identity Pool credentials
-        s3Client = new S3Client({
-            region: REGION,
-            credentials: fromCognitoIdentityPool({
-                clientConfig: { region: REGION },
-                identityPoolId: IDENTITY_POOL_ID,
-                logins: loginData
-            })
+        // Create credentials object
+        const credentials = new AWS.CognitoIdentityCredentials({
+            IdentityPoolId: IDENTITY_POOL_ID,
+            Logins: {
+                [COGNITO_IDP_ID]: idToken
+            }
+        }, {
+            region: REGION
         });
+
+        // Initialize AWS config
+        AWS.config.update({
+            region: REGION,
+            credentials: credentials
+        });
+
+        // Initialize S3 client
+        s3Client = new AWS.S3();
 
         // Clear the authorization code from URL
         window.history.replaceState({}, document.title, window.location.pathname);
