@@ -29,12 +29,6 @@ export function redirectToLogin() {
     window.location.href = `${LOGIN_URL}?${loginParams.toString()}`;
 }
 
-// Function to get the authorization code from URL
-function getAuthCode() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('code');
-}
-
 // Initialize AWS with authenticated credentials
 export async function initializeAWS() {
     // Configure region
@@ -69,14 +63,9 @@ export async function initializeAWS() {
         // Clear the authorization code from URL
         window.history.replaceState({}, document.title, window.location.pathname);
         
-        // Clear the auth started flag since we're successfully authenticated
-        sessionStorage.removeItem('authStarted');
-        
         return true;
     } catch (error) {
         console.error('Failed to initialize AWS:', error);
-        // Clear auth started flag on error so we can try again
-        sessionStorage.removeItem('authStarted');
         return false;
     }
 }
@@ -89,9 +78,10 @@ export function getDocClient() {
     return docClient;
 }
 
-// Check if we're in a post-authentication state
-export function isAuthenticating() {
-    return !!getAuthCode();
+// Function to get the authorization code from URL
+function getAuthCode() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('code');
 }
 
 // Exchange authorization code for tokens
