@@ -3,6 +3,10 @@ import { navigateToLogin } from './auth.js';
 if (!window.location.search.includes('code=')) {
     navigateToLogin();
 }
+const code = urlParams.get('code');
+if (code) {
+    console.log('Authorization code received:', code);
+}
 const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');
 const button3 = document.getElementById('button3');

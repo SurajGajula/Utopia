@@ -13,10 +13,3 @@ export const navigateToLogin = () => {
         `scope=${cognitoConfig.scope.replace(' ', '+')}`;
     window.location.href = loginUrl;
 };
-export const handleAuthRedirect = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    if (code) {
-        console.log('Authorization code received:', code);
-    }
-};
