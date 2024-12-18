@@ -1,5 +1,5 @@
 import { handleButton1, handleButton2, handleButton3, handleSkill, handleClose, handleAlly } from '/Scripts/menu.js';
-import { initializeAWS, redirectToLogin } from './auth.js';
+import { initializeAWS, redirectToLogin, getS3Client } from './auth.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     try {
@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         if (success) {
             console.log('Application ready');
-            // Continue with your application initialization
+            const s3Client = getS3Client();
+            // Now you can use s3Client for S3 operations
         } else {
             console.log('Failed to initialize. Please refresh the page to try again.');
         }
@@ -19,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Application error:', error);
     }
 });
+
 
 
 const startButton = document.getElementById('startButton');
