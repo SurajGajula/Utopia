@@ -3,7 +3,7 @@ export const navigateToLogin = () => {
         cognitoDomain: 'https://us-west-1rau6r6pd0.auth.us-west-1.amazoncognito.com',
         clientId: '45gfll4redstf4g8hq4fa2jkob',
         redirectUri: 'https://main.d22za2x5ln55me.amplifyapp.com/',
-        responseType: 'code',
+        responseType: 'token',
         scope: 'email openid'
     };
     const loginUrl = `${cognitoConfig.cognitoDomain}/login/continue?` + 

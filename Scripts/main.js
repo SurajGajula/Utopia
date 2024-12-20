@@ -4,9 +4,9 @@ if (!window.location.search.includes('code=')) {
     navigateToLogin();
 }
 const urlParams = new URLSearchParams(window.location.search);
-const code = urlParams.get('code');
-if (code) {
-    console.log('Authorization code received:', code);
+const token = urlParams.get('token');
+if (token) {
+    console.log('Access token received:', token);
 }
 const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');
