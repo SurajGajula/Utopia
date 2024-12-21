@@ -6,7 +6,23 @@ if (!window.location.search.includes('code=')) {
 const urlParams = new URLSearchParams(window.location.search);
 const code = urlParams.get('code');
 if (code) {
-    console.log('Authorization code received:', code);
+    try {
+        const processAuth = async () => {
+            try {
+                const sub = await exchangeCodeForSub(code);
+                sessionStorage.setItem('userSub', sub);
+                console.log('User sub:', sub);
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } catch (error) {
+                console.error('Error processing authentication:', error);
+            }
+        };
+        processAuth();
+    } catch (error) {
+        console.error('Error in auth process:', error);
+    }
+} else {
+    navigateToLogin();
 }
 const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');

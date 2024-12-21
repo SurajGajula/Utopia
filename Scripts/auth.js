@@ -13,3 +13,26 @@ export const navigateToLogin = () => {
         `scope=${cognitoConfig.scope.replace(' ', '+')}`;
     window.location.href = loginUrl;
 };
+export const exchangeCodeForSub = async (code) => {
+    try {
+        const lambdaUrl = 'https://ynfalkk00f.execute-api.us-west-1.amazonaws.com/GetUID';
+        const response = await fetch(lambdaUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                code: code
+            })
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to exchange code');
+        }
+        const data = await response.json();
+        return data.sub;
+    } catch (error) {
+        console.error('Error exchanging code:', error);
+        throw error;
+    }
+};
