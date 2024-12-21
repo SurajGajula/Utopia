@@ -17,7 +17,7 @@ export class Character {
             TableName: "Utopia",
             Key: {
                 Name: characterName,
-                ID: "0001"
+                ID: sessionStorage.getItem('userSub')
             }
         };
         try {
@@ -43,7 +43,7 @@ export async function loadOwned() {
         },
         ExpressionAttributeValues: {
             ':ownedValue': true,
-            ':idValue': '0001'
+            ':idValue': sessionStorage.getItem('userSub')
         }
     };
     try {
@@ -64,7 +64,7 @@ export async function loadEnemies() {
             '#id': 'ID'
         },
         ExpressionAttributeValues: {
-            ':idValue': '0001'
+            ':idValue': sessionStorage.getItem('userSub')
         }
     };
     try {
@@ -80,7 +80,7 @@ export async function storeBattle() {
         TableName: "Utopia",
         Key: {
             Name: "Battle",
-            ID: "0001"
+            ID: sessionStorage.getItem('userSub')
         }
     };
     try {
@@ -89,7 +89,7 @@ export async function storeBattle() {
             TableName: "Utopia",
             Key: {
                 Name: data.Item.Enemy,
-                ID: "0001"
+                ID: sessionStorage.getItem('userSub')
             },
             UpdateExpression: "SET #defeated = :result",
             ExpressionAttributeNames: {
@@ -110,7 +110,7 @@ export async function storeExp() {
         TableName: "Utopia",
         Key: {
             Name: "Battle",
-            ID: "0001"
+            ID: sessionStorage.getItem('userSub')
         }
     };
     try {
@@ -119,7 +119,7 @@ export async function storeExp() {
             TableName: "Utopia",
             Key: {
                 Name: data.Item.Enemy,
-                ID: "0001"
+                ID: sessionStorage.getItem('userSub')
             }
         };
         const enemydata = await docClient.get(enemyparams).promise();
@@ -128,7 +128,7 @@ export async function storeExp() {
                 TableName: "Utopia",
                 Key: {
                     Name: data.Item.Party[index],
-                    ID: "0001"
+                    ID: sessionStorage.getItem('userSub')
                 },
                 UpdateExpression: "SET #exp = #exp + :expgain",
                 ExpressionAttributeNames: {
@@ -146,7 +146,7 @@ export async function storeExp() {
                 TableName: "Utopia",
                 Key: {
                     Name: data.Item.Party[index],
-                    ID: "0001"
+                    ID: sessionStorage.getItem('userSub')
                 },
                 UpdateExpression: "SET #level = #level + :one, #attack = #attack + :ten, #health = #health + :hundred, #threshold = #threshold + :thousand",
                 ConditionExpression: "#exp > #threshold",
