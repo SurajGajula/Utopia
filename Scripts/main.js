@@ -1,5 +1,5 @@
 import { handleButton1, handleButton2, handleButton3, handleSkill, handleClose, handleAlly } from '/Scripts/menu.js';
-import { navigateToLogin } from './auth.js';
+import { navigateToLogin, exchangeCodeForSub } from './auth.js';
 if (!window.location.search.includes('code=')) {
     navigateToLogin();
 }
