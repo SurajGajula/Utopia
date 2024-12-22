@@ -1,4 +1,4 @@
-import { initializeAWS } from '/Scripts/auth';
+import { initializeAWS } from '/Scripts/auth.js';
 AWS.config.update({ region: 'us-west-1' });
 const docClient = new AWS.DynamoDB.DocumentClient();
 export class Character {
