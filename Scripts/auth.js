@@ -1,18 +1,3 @@
-export const navigateToLogin = () => {
-    const cognitoConfig = {
-        cognitoDomain: 'https://us-west-1rau6r6pd0.auth.us-west-1.amazoncognito.com',
-        clientId: '45gfll4redstf4g8hq4fa2jkob',
-        redirectUri: 'https://main.d22za2x5ln55me.amplifyapp.com/',
-        responseType: 'code',
-        scope: 'email openid'
-    };
-    const loginUrl = `${cognitoConfig.cognitoDomain}/login/continue?` + 
-        `client_id=${cognitoConfig.clientId}&` +
-        `redirect_uri=${encodeURIComponent(cognitoConfig.redirectUri)}&` +
-        `response_type=${cognitoConfig.responseType}&` +
-        `scope=${cognitoConfig.scope.replace(' ', '+')}`;
-    window.location.href = loginUrl;
-};
 export const exchangeCodeForSub = async (code) => {
     try {
         const lambdaUrl = 'https://ynfalkk00f.execute-api.us-west-1.amazonaws.com/GetUID';
@@ -45,7 +30,7 @@ export const exchangeCodeForSub = async (code) => {
 
         // Set up AWS credentials with the id_token
         const REGION = 'us-west-1';
-        const USER_POOL_ID = 'us-west-1_rau6r6pd0';
+        const USER_POOL_ID = 'us-west-1_RAU6R6pD0'; // Fixed capitalization
         const IDENTITY_POOL_ID = 'us-west-1:be5f5c85-6e5f-421a-a20d-11f7b049b5d1';
 
         // Clear any existing credentials
@@ -97,32 +82,3 @@ export const exchangeCodeForSub = async (code) => {
         throw error;
     }
 };
-
-// Add a helper function to verify the token
-function verifyToken(idToken) {
-    if (!idToken) {
-        console.error('No token provided');
-        return false;
-    }
-
-    try {
-        const parts = idToken.split('.');
-        if (parts.length !== 3) {
-            console.error('Token is not in JWT format');
-            return false;
-        }
-
-        const payload = JSON.parse(atob(parts[1]));
-        console.log('Token verification:', {
-            issuer: payload.iss,
-            expires: new Date(payload.exp * 1000),
-            isExpired: Date.now() > payload.exp * 1000,
-            audience: payload.aud
-        });
-
-        return true;
-    } catch (e) {
-        console.error('Token verification failed:', e);
-        return false;
-    }
-}
