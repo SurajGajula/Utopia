@@ -102,7 +102,7 @@ export function setCur(value) {
     cur = value;
 }
 function spawnDamageNumber(target, damageAmount) {
-    const elementId = target >= 0 && target <= 2 ? `Ally${target + 1}` : 'enemy';
+    const elementId = target >= 0 && target <= 2 ? `Ally${target + 1}` : 'Enemy';
     const targetElement = document.querySelector(`#${elementId}`);
     if (!targetElement) return;
     const damageElement = document.createElement('div');
