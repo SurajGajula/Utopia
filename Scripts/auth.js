@@ -25,22 +25,104 @@ export const exchangeCodeForSub = async (code) => {
                 code: code
             })
         });
+
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.error || 'Failed to exchange code');
         }
+
         const data = await response.json();
-        AWS.config.region = 'us-west-1';
-        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-            IdentityPoolId: 'us-west-1:be5f5c85-6e5f-421a-a20d-11f7b049b5d1',
+        
+        // Store tokens
+        sessionStorage.setItem('id_token', data.id_token);
+        sessionStorage.setItem('userSub', data.sub);
+
+        // Debug: Log token info
+        console.log('Received token data:', {
+            hasIdToken: !!data.id_token,
+            hasSub: !!data.sub
+        });
+
+        // Set up AWS credentials with the id_token
+        const REGION = 'us-west-1';
+        const USER_POOL_ID = 'us-west-1_rau6r6pd0';
+        const IDENTITY_POOL_ID = 'us-west-1:be5f5c85-6e5f-421a-a20d-11f7b049b5d1';
+
+        // Clear any existing credentials
+        AWS.config.credentials = null;
+
+        // Set the region
+        AWS.config.update({ region: REGION });
+
+        // Create new credentials with the exact provider name format
+        const credentials = new AWS.CognitoIdentityCredentials({
+            IdentityPoolId: IDENTITY_POOL_ID,
             Logins: {
-                'cognito-idp.us-west-1.amazonaws.com/us-west-1_rau6r6pd0': data.id_token
+                [`cognito-idp.${REGION}.amazonaws.com/${USER_POOL_ID}`]: data.id_token
             }
         });
+
+        // Set the credentials
+        AWS.config.credentials = credentials;
+
+        // Debug: Log the configuration
+        console.log('AWS Configuration:', {
+            region: AWS.config.region,
+            identityPoolId: IDENTITY_POOL_ID,
+            userPoolId: USER_POOL_ID,
+            providerName: `cognito-idp.${REGION}.amazonaws.com/${USER_POOL_ID}`
+        });
+
+        // Refresh the credentials
         await AWS.config.credentials.refreshPromise();
+
         return data.sub;
     } catch (error) {
         console.error('Error exchanging code:', error);
+        // Add detailed error logging
+        if (error.message.includes('Invalid login token')) {
+            const idToken = sessionStorage.getItem('id_token');
+            try {
+                // Decode the token to check its contents
+                const payload = JSON.parse(atob(idToken.split('.')[1]));
+                console.error('Token details:', {
+                    iss: payload.iss,
+                    exp: new Date(payload.exp * 1000),
+                    isExpired: Date.now() > payload.exp * 1000
+                });
+            } catch (e) {
+                console.error('Failed to decode token:', e);
+            }
+        }
         throw error;
     }
 };
+
+// Add a helper function to verify the token
+function verifyToken(idToken) {
+    if (!idToken) {
+        console.error('No token provided');
+        return false;
+    }
+
+    try {
+        const parts = idToken.split('.');
+        if (parts.length !== 3) {
+            console.error('Token is not in JWT format');
+            return false;
+        }
+
+        const payload = JSON.parse(atob(parts[1]));
+        console.log('Token verification:', {
+            issuer: payload.iss,
+            expires: new Date(payload.exp * 1000),
+            isExpired: Date.now() > payload.exp * 1000,
+            audience: payload.aud
+        });
+
+        return true;
+    } catch (e) {
+        console.error('Token verification failed:', e);
+        return false;
+    }
+}
