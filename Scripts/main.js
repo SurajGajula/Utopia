@@ -1,14 +1,22 @@
 import { handleButton1, handleButton2, handleButton3, handleSkill, handleClose, handleAlly } from '/Scripts/menu.js';
 import { navigateToLogin, exchangeCodeForSub, initializeAWS } from '/Scripts/auth.js';
+const loadingOverlay = document.querySelector('.loading-overlay');
+loadingOverlay.classList.add('active');
 if (!window.location.search.includes('code=')) {
-    navigateToLogin();
+    try {
+        await navigateToLogin();
+    } catch (error) {
+        console.error('Error navigating to login:', error);
+    } finally {
+        loadingOverlay.classList.remove('active');
+    }
 }
+
 const urlParams = new URLSearchParams(window.location.search);
 const code = urlParams.get('code');
 if (code) {
     try {
         const processAuth = async () => {
-            const loadingOverlay = document.querySelector('.loading-overlay');          
             try {
                 loadingOverlay.classList.add('active');
                 await exchangeCodeForSub(code);
@@ -22,9 +30,17 @@ if (code) {
         processAuth();
     } catch (error) {
         console.error('Error in auth process:', error);
+        loadingOverlay.classList.remove('active');
     }
 } else {
-    navigateToLogin();
+    try {
+        loadingOverlay.classList.add('active');
+        await navigateToLogin();
+    } catch (error) {
+        console.error('Error navigating to login:', error);
+    } finally {
+        loadingOverlay.classList.remove('active');
+    }
 }
 window.addEventListener('load', async () => {
     try {
