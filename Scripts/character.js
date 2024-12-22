@@ -1,12 +1,3 @@
-AWS.config.update({
-    region: 'us-west-1',
-    credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: 'us-west-1:be5f5c85-6e5f-421a-a20d-11f7b049b5d1',
-        Logins: {
-            'cognito-idp.us-west-1.amazonaws.com/us-west-1_rau6r6pd0': sessionStorage.getItem('id_token')
-        }
-    })
-});
 const docClient = new AWS.DynamoDB.DocumentClient();
 export class Character {
     constructor(health, attack, skillstatuses) {
