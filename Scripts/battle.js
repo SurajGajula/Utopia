@@ -1,9 +1,6 @@
 import { Character, storeBattle, storeExp } from '/Scripts/character.js'; 
 let hbar1, hbar2, hbar3, hbar4;
 let char1, char2, char3, char4;
-let redirect = [0, 0, 0, 0];
-let corrosion = [0, 0, 0, 0];
-let vulnerability = [0, 0, 0, 0];
 let cur;
 export let count;
 export async function startBattle(enemy) {
@@ -37,45 +34,11 @@ async function endBattle(result) {
 }
 export function damage(index, target, skill) {
     const targetBar = [hbar1, hbar2, hbar3, hbar4][target];
-    const indexBar = [hbar1, hbar2, hbar3, hbar4][index];
     const indexChar = [char1, char2, char3, char4][index];
     const targetChar = [char1, char2, char3, char4][target];
-    if (corrosion[index] > 0) {
-        indexChar.health -= 10 % corrosion[index];
-        spawnDamageNumber(index, 10 % corrosion[index]);
-        indexBar.style.width = (indexChar.health/indexChar.max) * 100 + '%';
-        corrosion[index] -= 1;
-        if (corrosion[index] % 10 == 0) {
-            corrosion[index] = 0;
-        }
-    }
-    if (redirect[index] > 0) {
-        redirect[index] -= indexChar.attack;
-        spawnDamageNumber(target, indexChar.attack);
-        if (redirect[index] <= 0) {
-            redirect[index] = 0;
-        }
-        return;
-    }
-    if (vulnerability[target] > 0) {
-        targetChar.health -= indexChar.attack * 2;
-        spawnDamageNumber(target, indexChar.attack * 2);
-        vulnerability[target] = 0;
-    }
-    else {
-        targetChar.health -= indexChar.attack;
-        spawnDamageNumber(target, indexChar.attack);
-    }
+    targetChar.health -= indexChar.attack;
+    spawnDamageNumber(target, indexChar.attack);
     targetBar.style.width = (targetChar.health/targetChar.max) * 100 + '%';
-    if (indexChar.skillstatuses[skill] == 'Redirect') {
-        redirect[target] = indexChar.attack;
-    }
-    if (indexChar.skillstatuses[skill] == 'Corrosion') {
-        corrosion[target] = indexChar.attack + 3;
-    }
-    if (indexChar.skillstatuses[skill] == 'Vulnerability') {
-        vulnerability[target] = 1;
-    }
     if (char4.health <= 0) {
         return endBattle(true);
     }
@@ -118,7 +81,7 @@ function spawnDamageNumber(target, damageAmount) {
         damageElement.style.top = `${rect.top}px`;
     } else {
         damageElement.style.left = `${rect.right}px`;
-        damageElement.style.top = `${rect.top - 50}px`;
+        damageElement.style.top = `${rect.top + 50}px`;
     }
     document.body.appendChild(damageElement);
     requestAnimationFrame(() => {
