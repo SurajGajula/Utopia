@@ -1,5 +1,5 @@
 import { handleButton1, handleButton2, handleButton3, handleSkill, handleClose, handleAlly } from '/Scripts/menu.js';
-import { navigateToLogin, exchangeCodeForSub } from '/Scripts/auth.js';
+import { navigateToLogin, exchangeCodeForSub, initializeAWS } from '/Scripts/auth.js';
 if (!window.location.search.includes('code=')) {
     navigateToLogin();
 }
@@ -24,6 +24,16 @@ if (code) {
 } else {
     navigateToLogin();
 }
+window.addEventListener('load', async () => {
+    try {
+        if (sessionStorage.getItem('id_token')) {
+            await initializeAWS();
+            console.log('AWS initialized successfully');
+        }
+    } catch (error) {
+        console.error('Failed to initialize AWS:', error);
+    }
+});
 const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');
 const button3 = document.getElementById('button3');

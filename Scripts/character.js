@@ -1,12 +1,10 @@
-AWS.config.update({
-    region: 'us-west-1',
-    credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: 'us-west-1:be5f5c85-6e5f-421a-a20d-11f7b049b5d1',
-        Logins: {
-            'cognito-idp.us-west-1.amazonaws.com/us-west-1_RAU6R6pD0': sessionStorage.getItem('id_token')
-        }
-    })
-});
+import { initializeAWS } from './auth.js';
+
+// Create a function to get the DynamoDB client
+const getDynamoClient = async () => {
+    await initializeAWS();
+    return new AWS.DynamoDB.DocumentClient();
+};
 const docClient = new AWS.DynamoDB.DocumentClient();
 export class Character {
     constructor(health, attack, skillstatuses) {
@@ -16,6 +14,7 @@ export class Character {
         this.skillstatuses = skillstatuses;
     }
     static async loadFromDb(characterName) {
+        const docClient = await getDynamoClient();
         const params = {
             TableName: "Utopia",
             Key: {
@@ -37,6 +36,7 @@ export class Character {
     }
 }
 export async function loadOwned() {
+    const docClient = await getDynamoClient();
     const params = {
         TableName: 'Utopia',
         FilterExpression: 'attribute_exists(#owned) AND #owned = :ownedValue AND #id = :idValue',
@@ -58,6 +58,7 @@ export async function loadOwned() {
     }
 }
 export async function loadEnemies() {
+    const docClient = await getDynamoClient();
     const params = {
         TableName: 'Utopia',
         KeyConditionExpression: '#id = :idValue',
@@ -79,6 +80,7 @@ export async function loadEnemies() {
     }
 }
 export async function storeBattle() {
+    const docClient = await getDynamoClient();
     const params = {
         TableName: "Utopia",
         Key: {
@@ -109,6 +111,7 @@ export async function storeBattle() {
     }
 }
 export async function storeExp() {
+    const docClient = await getDynamoClient();
     const params = {
         TableName: "Utopia",
         Key: {
