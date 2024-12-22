@@ -30,6 +30,14 @@ export const exchangeCodeForSub = async (code) => {
             throw new Error(errorData.error || 'Failed to exchange code');
         }
         const data = await response.json();
+        sessionStorage.setItem('id_token', data.id_token);
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+            IdentityPoolId: 'us-west-1:be5f5c85-6e5f-421a-a20d-11f7b049b5d1',
+            Logins: {
+                'cognito-idp.us-west-1.amazonaws.com/us-west-1_rau6r6pd0': data.id_token
+            }
+        });
+        await AWS.config.credentials.refreshPromise();
         return data.sub;
     } catch (error) {
         console.error('Error exchanging code:', error);

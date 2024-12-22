@@ -1,7 +1,10 @@
 AWS.config.update({
     region: 'us-west-1',
     credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: 'us-west-1:88200be6-614d-42b4-86d5-ee57e0fa5cdf'
+        IdentityPoolId: 'us-west-1:be5f5c85-6e5f-421a-a20d-11f7b049b5d1',
+        Logins: {
+            'cognito-idp.us-west-1.amazonaws.com/us-west-1_rau6r6pd0': sessionStorage.getItem('id_token')
+        }
     })
 });
 const docClient = new AWS.DynamoDB.DocumentClient();
@@ -13,6 +16,7 @@ export class Character {
         this.skillstatuses = skillstatuses;
     }
     static async loadFromDb(characterName) {
+        await AWS.config.credentials.refreshPromise();
         const params = {
             TableName: "Utopia",
             Key: {
@@ -34,6 +38,7 @@ export class Character {
     }
 }
 export async function loadOwned() {
+    await AWS.config.credentials.refreshPromise();
     const params = {
         TableName: 'Utopia',
         FilterExpression: 'attribute_exists(#owned) AND #owned = :ownedValue AND #id = :idValue',
@@ -55,6 +60,7 @@ export async function loadOwned() {
     }
 }
 export async function loadEnemies() {
+    await AWS.config.credentials.refreshPromise();
     const params = {
         TableName: 'Utopia',
         KeyConditionExpression: '#id = :idValue',
@@ -76,6 +82,7 @@ export async function loadEnemies() {
     }
 }
 export async function storeBattle() {
+    await AWS.config.credentials.refreshPromise();
     const params = {
         TableName: "Utopia",
         Key: {
@@ -106,6 +113,7 @@ export async function storeBattle() {
     }
 }
 export async function storeExp() {
+    await AWS.config.credentials.refreshPromise();
     const params = {
         TableName: "Utopia",
         Key: {
