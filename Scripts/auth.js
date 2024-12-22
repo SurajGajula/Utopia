@@ -1,4 +1,4 @@
-export const navigateToLogin = async () => {
+export const navigateToLogin = () => {
     const cognitoConfig = {
         cognitoDomain: 'https://us-west-1rau6r6pd0.auth.us-west-1.amazoncognito.com',
         clientId: '45gfll4redstf4g8hq4fa2jkob',
