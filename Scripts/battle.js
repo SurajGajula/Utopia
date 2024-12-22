@@ -102,20 +102,23 @@ export function setCur(value) {
     cur = value;
 }
 function spawnDamageNumber(target, damageAmount) {
-    const elementId = target >= 0 && target <= 2 ? `Ally${target + 1}` : 'Enemy';
+    const elementId = target != 3 ? `Ally${target + 1}` : 'Enemy';
     const targetElement = document.querySelector(`#${elementId}`);
     if (!targetElement) return;
     const damageElement = document.createElement('div');
     damageElement.className = 'damage-number';
     damageElement.textContent = damageAmount;
+    if (target === 3) {
+        damageElement.style.fontSize = '48px';
+    }
     const rect = targetElement.getBoundingClientRect();
     damageElement.style.position = 'absolute';
-    if (target >= 0 && target <= 2) {
+    if (target != 3) {
         damageElement.style.left = `${rect.left}px`;
         damageElement.style.top = `${rect.top}px`;
     } else {
-        damageElement.style.left = `${rect.right - 50}px`;
-        damageElement.style.top = `${rect.top}px`;
+        damageElement.style.left = `${rect.right}px`;
+        damageElement.style.top = `${rect.top - 50}px`;
     }
     document.body.appendChild(damageElement);
     requestAnimationFrame(() => {
