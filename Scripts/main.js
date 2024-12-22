@@ -8,13 +8,17 @@ const code = urlParams.get('code');
 if (code) {
     try {
         const processAuth = async () => {
+            const loadingOverlay = document.querySelector('.loading-overlay');          
             try {
+                loadingOverlay.classList.add('active');
                 await exchangeCodeForSub(code);
                 window.history.replaceState({}, document.title, window.location.pathname);
             } catch (error) {
                 console.error('Error processing authentication:', error);
+            } finally {
+                loadingOverlay.classList.remove('active');
             }
-        };
+        };        
         processAuth();
     } catch (error) {
         console.error('Error in auth process:', error);
