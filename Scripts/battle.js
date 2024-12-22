@@ -42,6 +42,7 @@ export function damage(index, target, skill) {
     const targetChar = [char1, char2, char3, char4][target];
     if (corrosion[index] > 0) {
         indexChar.health -= 10 % corrosion[index];
+        spawnDamageNumber(index, 10 % corrosion[index]);
         indexBar.style.width = (indexChar.health/indexChar.max) * 100 + '%';
         corrosion[index] -= 1;
         if (corrosion[index] % 10 == 0) {
@@ -50,6 +51,7 @@ export function damage(index, target, skill) {
     }
     if (redirect[index] > 0) {
         redirect[index] -= indexChar.attack;
+        spawnDamageNumber(target, indexChar.attack);
         if (redirect[index] <= 0) {
             redirect[index] = 0;
         }
@@ -57,10 +59,12 @@ export function damage(index, target, skill) {
     }
     if (vulnerability[target] > 0) {
         targetChar.health -= indexChar.attack * 2;
+        spawnDamageNumber(target, indexChar.attack * 2);
         vulnerability[target] = 0;
     }
     else {
         targetChar.health -= indexChar.attack;
+        spawnDamageNumber(target, indexChar.attack);
     }
     targetBar.style.width = (targetChar.health/targetChar.max) * 100 + '%';
     if (indexChar.skillstatuses[skill] == 'Redirect') {
@@ -96,4 +100,29 @@ function eSkill() {
 }
 export function setCur(value) {
     cur = value;
+}
+function spawnDamageNumber(target, damageAmount) {
+    const elementId = target >= 0 && target <= 2 ? `Ally${target + 1}` : 'enemy';
+    const targetElement = document.querySelector(`#${elementId}`);
+    if (!targetElement) return;
+    const damageElement = document.createElement('div');
+    damageElement.className = 'damage-number';
+    damageElement.textContent = damageAmount;
+    const rect = targetElement.getBoundingClientRect();
+    damageElement.style.position = 'absolute';
+    if (target >= 0 && target <= 2) {
+        damageElement.style.left = `${rect.left}px`;
+        damageElement.style.top = `${rect.top}px`;
+    } else {
+        damageElement.style.left = `${rect.right - 50}px`;
+        damageElement.style.top = `${rect.top}px`;
+    }
+    document.body.appendChild(damageElement);
+    requestAnimationFrame(() => {
+        damageElement.style.transform = 'translateY(-50px)';
+        damageElement.style.opacity = '0';
+    });
+    setTimeout(() => {
+        document.body.removeChild(damageElement);
+    }, 1000);
 }
