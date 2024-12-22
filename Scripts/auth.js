@@ -35,7 +35,6 @@ export const initializeAWS = async () => {
                     console.error('Error getting credentials:', err);
                     reject(err);
                 } else {
-                    console.log('Successfully loaded credentials');
                     resolve();
                 }
             });

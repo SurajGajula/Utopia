@@ -26,7 +26,6 @@ window.addEventListener('load', async () => {
     try {
         if (sessionStorage.getItem('id_token')) {
             await initializeAWS();
-            console.log('AWS initialized successfully');
         }
     } catch (error) {
         console.error('Failed to initialize AWS:', error);
