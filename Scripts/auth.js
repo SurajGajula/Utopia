@@ -30,6 +30,7 @@ export const exchangeCodeForSub = async (code) => {
             throw new Error(errorData.error || 'Failed to exchange code');
         }
         const data = await response.json();
+        console.log('Lambda response:', data.id_token);
         sessionStorage.setItem('id_token', data.id_token);
         AWS.config.credentials = new AWS.CognitoIdentityCredentials({
             IdentityPoolId: 'us-west-1:be5f5c85-6e5f-421a-a20d-11f7b049b5d1',
