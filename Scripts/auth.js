@@ -18,24 +18,34 @@ export const initializeAWS = async () => {
     if (!idToken) {
         throw new Error('No ID token found');
     }
+
     const REGION = 'us-west-1';
     const USER_POOL_ID = 'us-west-1_RAU6R6pD0';
     const IDENTITY_POOL_ID = 'us-west-1:be5f5c85-6e5f-421a-a20d-11f7b049b5d1';
+
+    // Clear existing configuration
+    AWS.config = new AWS.Config();
+    
+    // Set region
     AWS.config.update({ region: REGION });
-    AWS.config.credentials = null;
+
+    // Set credentials
     const credentials = new AWS.CognitoIdentityCredentials({
         IdentityPoolId: IDENTITY_POOL_ID,
         Logins: {
             [`cognito-idp.${REGION}.amazonaws.com/${USER_POOL_ID}`]: idToken
         }
     });
+
     AWS.config.credentials = credentials;
+
+    // Wait for credentials to be refreshed
     try {
-        await credentials.refreshPromise();
+        await credentials.getPromise();
         return true;
     } catch (error) {
         console.error('Failed to initialize AWS credentials:', error);
-        return false;
+        throw error;
     }
 };
 export const exchangeCodeForSub = async (code) => {
