@@ -9,9 +9,7 @@ if (code) {
     try {
         const processAuth = async () => {
             try {
-                const sub = await exchangeCodeForSub(code);
-                sessionStorage.setItem('userSub', sub);
-                console.log('User sub:', sub);
+                await exchangeCodeForSub(code);
                 window.history.replaceState({}, document.title, window.location.pathname);
             } catch (error) {
                 console.error('Error processing authentication:', error);
