@@ -13,12 +13,33 @@ export const navigateToLogin = () => {
         `scope=${cognitoConfig.scope.replace(' ', '+')}`;
     window.location.href = loginUrl;
 };
+export const initializeAWS = async () => {
+    const idToken = sessionStorage.getItem('id_token');
+    if (!idToken) {
+        throw new Error('No ID token found');
+    }
+    const REGION = 'us-west-1';
+    const USER_POOL_ID = 'us-west-1_RAU6R6pD0';
+    const IDENTITY_POOL_ID = 'us-west-1:be5f5c85-6e5f-421a-a20d-11f7b049b5d1';
+    AWS.config.update({ region: REGION });
+    AWS.config.credentials = null;
+    const credentials = new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: IDENTITY_POOL_ID,
+        Logins: {
+            [`cognito-idp.${REGION}.amazonaws.com/${USER_POOL_ID}`]: idToken
+        }
+    });
+    AWS.config.credentials = credentials;
+    try {
+        await credentials.refreshPromise();
+        return true;
+    } catch (error) {
+        console.error('Failed to initialize AWS credentials:', error);
+        return false;
+    }
+};
 export const exchangeCodeForSub = async (code) => {
     try {
-        const REGION = 'us-west-1';
-        const USER_POOL_ID = 'us-west-1_RAU6R6pD0';
-        const IDENTITY_POOL_ID = 'us-west-1:be5f5c85-6e5f-421a-a20d-11f7b049b5d1';
-        AWS.config.update({ region: REGION });
         const lambdaUrl = 'https://ynfalkk00f.execute-api.us-west-1.amazonaws.com/GetUID';
         const response = await fetch(lambdaUrl, {
             method: 'POST',
@@ -36,15 +57,8 @@ export const exchangeCodeForSub = async (code) => {
         const data = await response.json();
         sessionStorage.setItem('id_token', data.id_token);
         sessionStorage.setItem('userSub', data.sub);
-        AWS.config.credentials = null;
-        const credentials = new AWS.CognitoIdentityCredentials({
-            IdentityPoolId: IDENTITY_POOL_ID,
-            Logins: {
-                [`cognito-idp.${REGION}.amazonaws.com/${USER_POOL_ID}`]: data.id_token
-            }
-        });
-        AWS.config.credentials = credentials;
-        await AWS.config.credentials.refreshPromise();
+        await initializeAWS();
+
         return data.sub;
     } catch (error) {
         console.error('Error exchanging code:', error);

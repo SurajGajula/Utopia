@@ -1,3 +1,4 @@
+import { initializeAWS } from '/Scripts/auth';
 AWS.config.update({ region: 'us-west-1' });
 const docClient = new AWS.DynamoDB.DocumentClient();
 export class Character {
@@ -8,7 +9,7 @@ export class Character {
         this.skillstatuses = skillstatuses;
     }
     static async loadFromDb(characterName) {
-        await AWS.config.credentials.refreshPromise();
+        await initializeAWS();
         const params = {
             TableName: "Utopia",
             Key: {
@@ -30,7 +31,7 @@ export class Character {
     }
 }
 export async function loadOwned() {
-    await AWS.config.credentials.refreshPromise();
+    await initializeAWS();
     const params = {
         TableName: 'Utopia',
         FilterExpression: 'attribute_exists(#owned) AND #owned = :ownedValue AND #id = :idValue',
@@ -52,7 +53,7 @@ export async function loadOwned() {
     }
 }
 export async function loadEnemies() {
-    await AWS.config.credentials.refreshPromise();
+    await initializeAWS();
     const params = {
         TableName: 'Utopia',
         KeyConditionExpression: '#id = :idValue',
@@ -74,7 +75,7 @@ export async function loadEnemies() {
     }
 }
 export async function storeBattle() {
-    await AWS.config.credentials.refreshPromise();
+    await initializeAWS();
     const params = {
         TableName: "Utopia",
         Key: {
@@ -105,7 +106,7 @@ export async function storeBattle() {
     }
 }
 export async function storeExp() {
-    await AWS.config.credentials.refreshPromise();
+    await initializeAWS();
     const params = {
         TableName: "Utopia",
         Key: {
