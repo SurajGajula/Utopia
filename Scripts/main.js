@@ -11,8 +11,6 @@ if (code) {
             try {
                 await exchangeCodeForSub(code);
                 window.history.replaceState({}, document.title, window.location.pathname);
-                console.log(sessionStorage.getItem('id_token'))
-                console.log(sessionStorage.getItem('userSub'))
             } catch (error) {
                 console.error('Error processing authentication:', error);
             }

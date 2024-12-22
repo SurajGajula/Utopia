@@ -1,11 +1,8 @@
 import { initializeAWS } from './auth.js';
-
-// Create a function to get the DynamoDB client
 const getDynamoClient = async () => {
     await initializeAWS();
     return new AWS.DynamoDB.DocumentClient();
 };
-const docClient = new AWS.DynamoDB.DocumentClient();
 export class Character {
     constructor(health, attack, skillstatuses) {
         this.health = health;
