@@ -260,7 +260,7 @@ button:hover {
 #Info {
     position: absolute;
     top: 20px;
-    left: 37.5%;
+    left: 36.25%;
     transform: translateX(-50%);
     text-align: center;
     z-index: 1;
