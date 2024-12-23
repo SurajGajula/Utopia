@@ -252,3 +252,14 @@ button:hover {
     transition: all 1s ease-out;
     z-index: 1000;
 }
+#BattleUI {
+    position: relative;
+}
+#Info {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 1;
+}

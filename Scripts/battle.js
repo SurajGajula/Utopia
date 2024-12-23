@@ -1,8 +1,8 @@
-import { Character, storeBattle, storeExp } from '/Scripts/character.js'; 
+import { Character, storeBattle, storeExp } from '/Scripts/character.js';
 let hbar1, hbar2, hbar3, hbar4;
 let char1, char2, char3, char4;
-let cur;
-export let count;
+let cur, count, combo, turn;
+let comboDisplay, turnDisplay;
 export async function startBattle(enemy) {
     const healthBars = Array.from(document.querySelectorAll('.health-bar'));
     [hbar1, hbar2, hbar3, hbar4] = healthBars;
@@ -19,11 +19,22 @@ export async function startBattle(enemy) {
     } catch (err) {
         console.error(err);
     }
+    comboDisplay = document.createElement('div');
+    turnDisplay = document.createElement('div');
+    comboDisplay.textContent = `Combo: ${combo}`;
+    turnDisplay.textContent = `Turn: ${turn}`;
+    const infoDiv = document.getElementById('Info');
+    infoDiv.innerHTML = '';
+    infoDiv.appendChild(comboDisplay);
+    infoDiv.appendChild(turnDisplay);
     cur = 0;
     count = 0;
+    combo = 0;
+    turn = 0;
+    updateDisplays();
 }
 async function endBattle(result) {
-    if(result) {
+    if (result) {
         await Promise.all([
             storeBattle(),
             storeExp()
@@ -36,9 +47,12 @@ export function damage(index, target, skill) {
     const targetBar = [hbar1, hbar2, hbar3, hbar4][target];
     const indexChar = [char1, char2, char3, char4][index];
     const targetChar = [char1, char2, char3, char4][target];
-    targetChar.health -= indexChar.attack;
-    spawnDamageNumber(target, indexChar.attack);
-    targetBar.style.width = (targetChar.health/targetChar.max) * 100 + '%';
+    damageAmount = indexChar.attack;
+    targetChar.health -= damageAmount;
+    spawnDamageNumber(target, damageAmount);
+    combo += 10;
+    updateDisplays();
+    targetBar.style.width = (targetChar.health / targetChar.max) * 100 + '%';
     if (char4.health <= 0) {
         return endBattle(true);
     }
@@ -59,6 +73,8 @@ function eSkill() {
     const skill = Math.floor(Math.random() * 3);
     damage(3, target, skill);
     count = 0;
+    turn += 1;
+    updateDisplays();
     document.getElementById('Skills').classList.remove('hidden');
 }
 export function setCur(value) {
@@ -77,7 +93,7 @@ function spawnDamageNumber(target, damageAmount) {
     const rect = targetElement.getBoundingClientRect();
     damageElement.style.position = 'absolute';
     if (target != 3) {
-        damageElement.style.left = `${rect.left}px`;
+        damageElement.style.left = `${rect.left + 25}px`;
         damageElement.style.top = `${rect.top}px`;
     } else {
         damageElement.style.left = `${rect.right - 50}px`;
@@ -91,4 +107,10 @@ function spawnDamageNumber(target, damageAmount) {
     setTimeout(() => {
         document.body.removeChild(damageElement);
     }, 1000);
+}
+function updateDisplays() {
+    if (comboDisplay && turnDisplay) {
+        comboDisplay.textContent = `Combo: ${combo}`;
+        turnDisplay.textContent = `Turn: ${turn}`;
+    }
 }
