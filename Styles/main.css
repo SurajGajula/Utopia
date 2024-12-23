@@ -97,7 +97,7 @@ button:hover {
     height: auto;
     position: fixed;
     top: 50px;
-    left: 75px;
+    left: 50px;
     display: flex;
     flex-direction: column;
     gap: 50px;
@@ -107,7 +107,7 @@ button:hover {
     height: auto;
     position: fixed;
     top: 50px;
-    right: 75px;
+    right: 50px;
     display: flex;
     flex-direction: column;
     gap: 50px;
@@ -260,7 +260,7 @@ button:hover {
 #Info {
     position: absolute;
     top: 20px;
-    left: 40%;
+    left: 30%;
     transform: translateX(-50%);
     text-align: center;
     z-index: 1;
