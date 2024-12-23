@@ -10,7 +10,7 @@ export async function startBattle(enemy) {
         bar.style.width = '100%';
     });
     try {
-        const [char1, char2, char3, char4] = await Promise.all([
+        [char1, char2, char3, char4] = await Promise.all([
             Character.loadAlly(0),
             Character.loadAlly(1),
             Character.loadAlly(2),
