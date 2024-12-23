@@ -92,7 +92,7 @@ function spawnDamageNumber(target, damageAmount) {
         damageElement.style.left = `${rect.left + 25}px`;
         damageElement.style.top = `${rect.top}px`;
     } else {
-        damageElement.style.left = `${rect.right - 75}px`;
+        damageElement.style.left = `${rect.right - 125}px`;
         damageElement.style.top = `${rect.top + 50}px`;
     }
     document.body.appendChild(damageElement);
