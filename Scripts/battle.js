@@ -1,7 +1,7 @@
 import { Character, storeBattle, storeExp } from '/Scripts/character.js';
 let hbar1, hbar2, hbar3, hbar4;
 let char1, char2, char3, char4;
-let cur, count, combo, turn;
+let count, combo, turn;
 let comboDisplay, turnDisplay;
 export async function startBattle(enemy) {
     const healthBars = Array.from(document.querySelectorAll('.health-bar'));
@@ -27,7 +27,6 @@ export async function startBattle(enemy) {
     infoDiv.innerHTML = '';
     infoDiv.appendChild(comboDisplay);
     infoDiv.appendChild(turnDisplay);
-    cur = 0;
     count = 0;
     combo = 0;
     turn = 0;
@@ -43,7 +42,7 @@ async function endBattle(result) {
     document.getElementById('BattleUI').classList.add('hidden');
     document.getElementById('MenuUI').classList.remove('hidden');
 }
-export function damage(index, target, skill) {
+export function damage(index, target) {
     const targetBar = [hbar1, hbar2, hbar3, hbar4][target];
     const indexChar = [char1, char2, char3, char4][index];
     const targetChar = [char1, char2, char3, char4][target];
@@ -66,7 +65,7 @@ export function damage(index, target, skill) {
     }
 }
 export function pSkill(index) {
-    damage(cur, 3, index);
+    damage(index, 3);
 }
 function eSkill() {
     const target = Math.floor(Math.random() * 3);
@@ -76,9 +75,6 @@ function eSkill() {
     turn += 1;
     updateDisplays();
     document.getElementById('Skills').classList.remove('hidden');
-}
-export function setCur(value) {
-    cur = value;
 }
 function spawnDamageNumber(target, damageAmount) {
     const elementId = target != 3 ? `Ally${target + 1}` : 'Enemy';
@@ -96,7 +92,7 @@ function spawnDamageNumber(target, damageAmount) {
         damageElement.style.left = `${rect.left + 25}px`;
         damageElement.style.top = `${rect.top}px`;
     } else {
-        damageElement.style.left = `${rect.right - 50}px`;
+        damageElement.style.left = `${rect.right - 75}px`;
         damageElement.style.top = `${rect.top + 50}px`;
     }
     document.body.appendChild(damageElement);

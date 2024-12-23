@@ -1,4 +1,4 @@
-import { pSkill, startBattle, setCur } from "/Scripts/battle.js";
+import { pSkill, startBattle } from "/Scripts/battle.js";
 import { loadOwned, loadEnemies } from "/Scripts/character.js";
 export function handleButton1(button) {
     button.addEventListener('click', async () => {
@@ -34,9 +34,6 @@ export function handleClose(button) {
         document.getElementById('Owned').classList.add('hidden');
         document.getElementById('Enemies').classList.add('hidden');
     });
-}
-export function handleAlly(index) {
-    setCur(index);
 }
 function showOwned(items) {
     const container = document.getElementById("Owned");

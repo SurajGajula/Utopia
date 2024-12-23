@@ -49,12 +49,3 @@ handleSkill(skill1, 0);
 handleSkill(skill2, 1);
 handleSkill(skill3, 2);
 handleClose(closeButton);
-document.addEventListener('DOMContentLoaded', function() {
-    const allies = document.querySelectorAll('#Allies img');
-    allies.forEach(ally => {
-        ally.addEventListener('click', function() {
-            const idNumber = parseInt(this.id.replace('Ally', '')) - 1;
-            handleAlly(idNumber);
-        });
-    });
-});
