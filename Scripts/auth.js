@@ -1,17 +1,9 @@
 export const navigateToLogin = () => {
-    const cognitoConfig = {
-        cognitoDomain: 'https://us-west-1rau6r6pd0.auth.us-west-1.amazoncognito.com',
-        clientId: '45gfll4redstf4g8hq4fa2jkob',
-        redirectUri: 'https://main.d22za2x5ln55me.amplifyapp.com/',
-        responseType: 'code',
-        scope: 'email openid'
-    };
-    const loginUrl = `${cognitoConfig.cognitoDomain}/login/continue?` + 
-        `client_id=${cognitoConfig.clientId}&` +
-        `redirect_uri=${encodeURIComponent(cognitoConfig.redirectUri)}&` +
-        `response_type=${cognitoConfig.responseType}&` +
-        `scope=${cognitoConfig.scope.replace(' ', '+')}`;
-    window.location.href = loginUrl;
+    window.location.href = `https://us-west-1rau6r6pd0.auth.us-west-1.amazoncognito.com/login/continue?` + 
+        `client_id=45gfll4redstf4g8hq4fa2jkob&` +
+        `redirect_uri=${encodeURIComponent('https://main.d22za2x5ln55me.amplifyapp.com/')}&` +
+        `response_type=code&` +
+        `scope=email+openid`;;
 };
 export const initializeAWS = async () => {
     try {
@@ -19,14 +11,11 @@ export const initializeAWS = async () => {
         if (!idToken) {
             throw new Error('No ID token found');
         }
-        const REGION = 'us-west-1';
-        const USER_POOL_ID = 'us-west-1_RAU6R6pD0';
-        const IDENTITY_POOL_ID = 'us-west-1:be5f5c85-6e5f-421a-a20d-11f7b049b5d1';
-        AWS.config.region = REGION;
+        AWS.config.region = 'us-west-1';
         AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-            IdentityPoolId: IDENTITY_POOL_ID,
+            IdentityPoolId: 'us-west-1:be5f5c85-6e5f-421a-a20d-11f7b049b5d1',
             Logins: {
-                [`cognito-idp.${REGION}.amazonaws.com/${USER_POOL_ID}`]: idToken
+                [`cognito-idp.us-west-1.amazonaws.com/us-west-1_RAU6R6pD0`]: idToken
             }
         });
         return new Promise((resolve, reject) => {

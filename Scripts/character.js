@@ -9,12 +9,41 @@ export class Character {
         this.attack = attack;
         this.max = health;
     }
-    static async loadFromDb(characterName) {
+    static async loadEnemy(enemyName) {
         const docClient = await getDynamoClient();
         const params = {
             TableName: "Utopia",
             Key: {
-                Name: characterName,
+                Name: enemyName,
+                ID: sessionStorage.getItem('userSub')
+            }
+        };
+        try {
+            const data = await docClient.get(params).promise();
+            return new Character(
+                data.Item.Health,
+                data.Item.Attack
+            );
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
+    }
+    static async loadAlly(index) {
+        const docClient = await getDynamoClient();
+        const allyparams = {
+            TableName: "Utopia",
+            Key: {
+                Name: 'Battle',
+                ID: sessionStorage.getItem('userSub')
+            }
+        };
+        const allyData = await docClient.get(allyparams).promise();
+        const allyName = allyData.Item.Party[index];
+        const params = {
+            TableName: "Utopia",
+            Key: {
+                Name: allyName,
                 ID: sessionStorage.getItem('userSub')
             }
         };

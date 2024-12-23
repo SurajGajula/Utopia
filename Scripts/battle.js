@@ -10,10 +10,12 @@ export async function startBattle(enemy) {
         bar.style.width = '100%';
     });
     try {
-        char1 = await Character.loadFromDb('Ally1');
-        char2 = await Character.loadFromDb('Ally2');
-        char3 = await Character.loadFromDb('Ally3');
-        char4 = await Character.loadFromDb(enemy);
+        const [char1, char2, char3, char4] = await Promise.all([
+            Character.loadAlly(0),
+            Character.loadAlly(1),
+            Character.loadAlly(2),
+            Character.loadEnemy(enemy)
+        ]);
         const enemyImage = document.querySelector('#Enemy img');
         enemyImage.src = `Sprites/${enemy}.svg`;
     } catch (err) {
