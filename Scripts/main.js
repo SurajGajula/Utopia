@@ -1,4 +1,4 @@
-import { handleButton1, handleButton2, handleButton3, handleSkill, handleClose, handleAlly } from '/Scripts/menu.js';
+import { handleButton1, handleButton2, handleButton3, handleSkill, handleClose } from '/Scripts/menu.js';
 import { navigateToLogin, exchangeCodeForSub, initializeAWS } from '/Scripts/auth.js';
 if (!window.location.search.includes('code=')) {
     navigateToLogin();
