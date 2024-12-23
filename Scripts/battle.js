@@ -47,7 +47,7 @@ export function damage(index, target, skill) {
     const targetBar = [hbar1, hbar2, hbar3, hbar4][target];
     const indexChar = [char1, char2, char3, char4][index];
     const targetChar = [char1, char2, char3, char4][target];
-    damageAmount = indexChar.attack;
+    let damageAmount = indexChar.attack;
     targetChar.health -= damageAmount;
     spawnDamageNumber(target, damageAmount);
     combo += 10;
