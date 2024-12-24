@@ -62,6 +62,7 @@ export function damage(index, target) {
         else if (skilllevels[index] == 0) {
             skilllevels[index] += 1;
         }
+        displayUpgrade(index);
     }
     let damageAmount = indexChar.attack;
     targetChar.health -= damageAmount;
@@ -78,6 +79,8 @@ export function damage(index, target) {
     count += 1;
     if (count == 3) {
         document.getElementById('Skills').classList.add('hidden');
+        skilllevels = [0, 0, 0];
+        displayUpgrade(index);
         eSkill();
     }
 }
@@ -90,7 +93,6 @@ function eSkill() {
     damage(3, target, skill);
     count = 0;
     turn += 1;
-    skilllevels = [0, 0, 0];
     updateDisplays();
     document.getElementById('Skills').classList.remove('hidden');
 }
@@ -126,5 +128,13 @@ function updateDisplays() {
     if (comboDisplay && turnDisplay) {
         comboDisplay.textContent = `Combo: ${combo}`;
         turnDisplay.textContent = `Turn: ${turn}`;
+    }
+}
+function displayUpgrade(index) {
+    const skillBtn = document.getElementById(`skill${index}`);
+    if (skilllevels[index] != 0) {
+        skillBtn.textContent += '+';
+    } else {
+        skillBtn.textContent = skillBtn.textContent.replace(/\+/g, '');
     }
 }
