@@ -52,12 +52,14 @@ export async function damage(index, target) {
     const targetChar = [char1, char2, char3, char4][target];
     let hits = 1;
     let damageAmount = indexChar.attack;
+    let comboAmount = 10;
     if (index != 3) {
         if (combo >= 100 && skilllevels[index] == 1) {
             skilllevels[index] += 1;
             combo -= 100;
             hits = indexChar.skillplus[0];
-            damageAmount *= 1 + indexChar.skillplus[1];
+            damageAmount *= indexChar.skillplus[1];
+            comboAmount *= indexChar.skillplus[2];  
         }
         else if (combo >= 1000 && skilllevels[index] == 2) {
             combo -= 1000;
@@ -72,7 +74,7 @@ export async function damage(index, target) {
         targetChar.health -= damageAmount;
         spawnDamageNumber(target, damageAmount);
         targetBar.style.width = (targetChar.health / targetChar.max) * 100 + '%';
-        combo += 10;
+        combo += comboAmount;
         updateDisplays();
         await new Promise(resolve => setTimeout(resolve, 1000));
     }
