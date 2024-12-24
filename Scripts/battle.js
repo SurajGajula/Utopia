@@ -131,7 +131,7 @@ function updateDisplays() {
     }
 }
 function displayUpgrade(index) {
-    const skillBtn = document.getElementById(`skill${index}`);
+    const skillBtn = document.getElementById(`skill${index + 1}`);
     if (skilllevels[index] != 0) {
         skillBtn.textContent += '+';
     } else {
