@@ -69,9 +69,9 @@ export async function damage(index, target) {
         let damageAmount = indexChar.attack;
         targetChar.health -= damageAmount;
         spawnDamageNumber(target, damageAmount);
+        combo += 10;
         await new Promise(resolve => setTimeout(resolve, 200));
     }
-    combo += 10;
     if (index != 3) {
         if (combo >= 100 && skilllevels[index] == 1) {
             displayUpgrade(index);
