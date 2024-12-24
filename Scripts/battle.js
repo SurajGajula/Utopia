@@ -3,6 +3,7 @@ let hbar1, hbar2, hbar3, hbar4;
 let char1, char2, char3, char4;
 let count, combo, turn;
 let comboDisplay, turnDisplay;
+let skilllevels;
 export async function startBattle(enemy) {
     const healthBars = Array.from(document.querySelectorAll('.health-bar'));
     [hbar1, hbar2, hbar3, hbar4] = healthBars;
@@ -32,6 +33,7 @@ export async function startBattle(enemy) {
     count = 0;
     combo = 0;
     turn = 0;
+    skilllevels = [0, 0, 0];
     updateDisplays();
 }
 async function endBattle(result) {
@@ -48,6 +50,19 @@ export function damage(index, target) {
     const targetBar = [hbar1, hbar2, hbar3, hbar4][target];
     const indexChar = [char1, char2, char3, char4][index];
     const targetChar = [char1, char2, char3, char4][target];
+    if (index != 3) {
+        if (combo >= 100 && skilllevels[index] == 1) {
+            skilllevels[index] += 1;
+            combo -= 100
+        }
+        else if (combo >= 1000 && skilllevels[index] == 2) {
+            skilllevels[index] += 1;
+            combo -= 1000
+        }
+        else if (skilllevels[index] == 0) {
+            skilllevels[index] += 1;
+        }
+    }
     let damageAmount = indexChar.attack;
     targetChar.health -= damageAmount;
     spawnDamageNumber(target, damageAmount);
@@ -75,6 +90,7 @@ function eSkill() {
     damage(3, target, skill);
     count = 0;
     turn += 1;
+    skilllevels = [0, 0, 0];
     updateDisplays();
     document.getElementById('Skills').classList.remove('hidden');
 }
