@@ -90,7 +90,9 @@ export function damage(index, target) {
     if (count == 3) {
         document.getElementById('Skills').classList.add('hidden');
         skilllevels = [0, 0, 0];
-        displayUpgrade(index);
+        displayUpgrade(0);
+        displayUpgrade(1);
+        displayUpgrade(2);
         eSkill();
     }
 }
