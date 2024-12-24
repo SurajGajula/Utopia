@@ -50,7 +50,7 @@ export async function damage(index, target) {
     const targetBar = [hbar1, hbar2, hbar3, hbar4][target];
     const indexChar = [char1, char2, char3, char4][index];
     const targetChar = [char1, char2, char3, char4][target];
-    const hits = 1;
+    let hits = 1;
     if (index != 3) {
         if (combo >= 100 && skilllevels[index] == 1) {
             skilllevels[index] += 1;
