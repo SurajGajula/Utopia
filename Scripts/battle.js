@@ -56,18 +56,28 @@ export function damage(index, target) {
             combo -= 100
         }
         else if (combo >= 1000 && skilllevels[index] == 2) {
-            skilllevels[index] += 1;
             combo -= 1000
         }
         else if (skilllevels[index] == 0) {
             skilllevels[index] += 1;
         }
-        displayUpgrade(index);
     }
     let damageAmount = indexChar.attack;
     targetChar.health -= damageAmount;
     spawnDamageNumber(target, damageAmount);
     combo += 10;
+    if (index != 3) {
+        if (combo >= 100 && skilllevels[index] == 1) {
+            displayUpgrade(index);
+        }
+        else if (combo >= 1000 && skilllevels[index] == 2) {
+            displayUpgrade(index);
+        }
+        else {
+            skilllevels[index] = 0;
+            displayUpgrade(index);
+        }
+    }
     updateDisplays();
     targetBar.style.width = (targetChar.health / targetChar.max) * 100 + '%';
     if (char4.health <= 0) {
