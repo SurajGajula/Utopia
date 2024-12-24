@@ -46,25 +46,31 @@ async function endBattle(result) {
     document.getElementById('BattleUI').classList.add('hidden');
     document.getElementById('MenuUI').classList.remove('hidden');
 }
-export function damage(index, target) {
+export async function damage(index, target) {
     const targetBar = [hbar1, hbar2, hbar3, hbar4][target];
     const indexChar = [char1, char2, char3, char4][index];
     const targetChar = [char1, char2, char3, char4][target];
+    const hits = 1;
     if (index != 3) {
         if (combo >= 100 && skilllevels[index] == 1) {
             skilllevels[index] += 1;
-            combo -= 100
+            combo -= 100;
+            hits = indexChar.skillplus[0];
         }
         else if (combo >= 1000 && skilllevels[index] == 2) {
-            combo -= 1000
+            combo -= 1000;
+            hits = indexChar.skillplusplus[0];
         }
         else if (skilllevels[index] == 0) {
             skilllevels[index] += 1;
         }
     }
-    let damageAmount = indexChar.attack;
-    targetChar.health -= damageAmount;
-    spawnDamageNumber(target, damageAmount);
+    for (let i = 0; i < hits; i++) {
+        let damageAmount = indexChar.attack;
+        targetChar.health -= damageAmount;
+        spawnDamageNumber(target, damageAmount);
+        await new Promise(resolve => setTimeout(resolve, 200));
+    }
     combo += 10;
     if (index != 3) {
         if (combo >= 100 && skilllevels[index] == 1) {
@@ -96,13 +102,13 @@ export function damage(index, target) {
         eSkill();
     }
 }
-export function pSkill(index) {
-    damage(index, 3);
+export async function pSkill(index) {
+    await damage(index, 3);
 }
-function eSkill() {
+async function eSkill() {
     const target = Math.floor(Math.random() * 3);
     const skill = Math.floor(Math.random() * 3);
-    damage(3, target, skill);
+    await damage(3, target, skill);
     count = 0;
     turn += 1;
     updateDisplays();
@@ -111,7 +117,6 @@ function eSkill() {
 function spawnDamageNumber(target, damageAmount) {
     const elementId = target != 3 ? `Ally${target + 1}` : 'Enemy';
     const targetElement = document.querySelector(`#${elementId}`);
-    if (!targetElement) return;
     const damageElement = document.createElement('div');
     damageElement.className = 'damage-number';
     damageElement.textContent = damageAmount;

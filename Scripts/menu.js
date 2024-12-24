@@ -22,9 +22,9 @@ export function handleButton3(button) {
         document.getElementById('closeButton').classList.remove('hidden');
     });
 }
-export function handleSkill(button, index) {
-    button.addEventListener('click', () => {
-        pSkill(index);
+export async function handleSkill(button, index) {
+    button.addEventListener('click', async () => {
+        await pSkill(index);
     });
 }
 export function handleClose(button) {
