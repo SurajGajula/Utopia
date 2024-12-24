@@ -51,11 +51,13 @@ export async function damage(index, target) {
     const indexChar = [char1, char2, char3, char4][index];
     const targetChar = [char1, char2, char3, char4][target];
     let hits = 1;
+    let damageAmount = indexChar.attack;
     if (index != 3) {
         if (combo >= 100 && skilllevels[index] == 1) {
             skilllevels[index] += 1;
             combo -= 100;
             hits = indexChar.skillplus[0];
+            damageAmount *= 1 + indexChar.skillplus[1];
         }
         else if (combo >= 1000 && skilllevels[index] == 2) {
             combo -= 1000;
@@ -67,7 +69,6 @@ export async function damage(index, target) {
     }
     document.getElementById('Skills').classList.add('hidden');
     for (let i = 0; i < hits; i++) {
-        let damageAmount = indexChar.attack;
         targetChar.health -= damageAmount;
         spawnDamageNumber(target, damageAmount);
         targetBar.style.width = (targetChar.health / targetChar.max) * 100 + '%';
