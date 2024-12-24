@@ -65,13 +65,16 @@ export async function damage(index, target) {
             skilllevels[index] += 1;
         }
     }
+    document.getElementById('Skills').classList.add('hidden');
     for (let i = 0; i < hits; i++) {
         let damageAmount = indexChar.attack;
         targetChar.health -= damageAmount;
         spawnDamageNumber(target, damageAmount);
+        targetBar.style.width = (targetChar.health / targetChar.max) * 100 + '%';
         combo += 10;
         await new Promise(resolve => setTimeout(resolve, 1000));
     }
+    document.getElementById('Skills').classList.remove('hidden');
     if (index != 3) {
         if (combo >= 100 && skilllevels[index] == 1) {
             displayUpgrade(index);
@@ -85,7 +88,6 @@ export async function damage(index, target) {
         }
     }
     updateDisplays();
-    targetBar.style.width = (targetChar.health / targetChar.max) * 100 + '%';
     if (char4.health <= 0) {
         return endBattle(true);
     }
