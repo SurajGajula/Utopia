@@ -1,12 +1,12 @@
 import { Character, storeBattle, storeExp } from '/Scripts/character.js';
 let hbar1, hbar2, hbar3, hbar4;
 let char1, char2, char3, char4;
-let count, combo, turn;
-let comboDisplay, turnDisplay;
+let count, combo;
+let comboDisplay;
 let skilllevels;
 export async function startBattle(enemy) {
     const healthBars = Array.from(document.querySelectorAll('.health-bar'));
-    [hbar1, hbar2, hbar3, hbar4] = healthBars;
+    [hbar3, hbar2, hbar1, hbar4] = healthBars;
     healthBars.forEach(bar => {
         bar.style.width = '100%';
     });
@@ -23,18 +23,14 @@ export async function startBattle(enemy) {
         console.error(err);
     }
     comboDisplay = document.createElement('div');
-    turnDisplay = document.createElement('div');
     comboDisplay.textContent = `Combo: ${combo}`;
-    turnDisplay.textContent = `Turn: ${turn}`;
     const infoDiv = document.getElementById('Info');
     infoDiv.innerHTML = '';
     infoDiv.appendChild(comboDisplay);
-    infoDiv.appendChild(turnDisplay);
     count = 0;
     combo = 0;
-    turn = 0;
     skilllevels = [0, 0, 0];
-    updateDisplays();
+    displayCombo();
 }
 async function endBattle(result) {
     if (result) {
@@ -75,7 +71,7 @@ export async function damage(index, target) {
         spawnDamageNumber(target, damageAmount);
         targetBar.style.width = (targetChar.health / targetChar.max) * 100 + '%';
         combo += comboAmount;
-        updateDisplays();
+        displayCombo();
         await new Promise(resolve => setTimeout(resolve, 1000));
     }
     if (index != 3) {
@@ -112,8 +108,7 @@ async function eSkill() {
     const skill = Math.floor(Math.random() * 3);
     await damage(3, target, skill);
     count = 0;
-    turn += 1;
-    updateDisplays();
+    displayCombo();
     document.getElementById('Skills').classList.remove('hidden');
     skilllevels = [0, 0, 0];
     displayUpgrade(0);
@@ -147,11 +142,8 @@ function spawnDamageNumber(target, damageAmount) {
         document.body.removeChild(damageElement);
     }, 1000);
 }
-function updateDisplays() {
-    if (comboDisplay && turnDisplay) {
-        comboDisplay.textContent = `Combo: ${combo}`;
-        turnDisplay.textContent = `Turn: ${turn}`;
-    }
+function displayCombo() {
+    comboDisplay.textContent = `Combo: ${combo}`;
 }
 function displayUpgrade(index) {
     const skillBtn = document.getElementById(`skill${index + 1}`);
