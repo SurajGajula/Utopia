@@ -72,9 +72,9 @@ export async function damage(index, target) {
         spawnDamageNumber(target, damageAmount);
         targetBar.style.width = (targetChar.health / targetChar.max) * 100 + '%';
         combo += 10;
+        updateDisplays();
         await new Promise(resolve => setTimeout(resolve, 1000));
     }
-    document.getElementById('Skills').classList.remove('hidden');
     if (index != 3) {
         if (combo >= 100 && skilllevels[index] == 1) {
             displayUpgrade(index);
@@ -87,7 +87,6 @@ export async function damage(index, target) {
             displayUpgrade(index);
         }
     }
-    updateDisplays();
     if (char4.health <= 0) {
         return endBattle(true);
     }
@@ -96,12 +95,10 @@ export async function damage(index, target) {
     }
     count += 1;
     if (count == 3) {
-        skilllevels = [0, 0, 0];
-        displayUpgrade(0);
-        displayUpgrade(1);
-        displayUpgrade(2);
-        document.getElementById('Skills').classList.add('hidden');
         eSkill();
+    }
+    else {
+        document.getElementById('Skills').classList.remove('hidden');
     }
 }
 export async function pSkill(index) {
@@ -115,6 +112,10 @@ async function eSkill() {
     turn += 1;
     updateDisplays();
     document.getElementById('Skills').classList.remove('hidden');
+    skilllevels = [0, 0, 0];
+    displayUpgrade(0);
+    displayUpgrade(1);
+    displayUpgrade(2);
 }
 function spawnDamageNumber(target, damageAmount) {
     const elementId = target != 3 ? `Ally${target + 1}` : 'Enemy';
