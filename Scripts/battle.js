@@ -70,7 +70,7 @@ export async function damage(index, target) {
         targetChar.health -= damageAmount;
         spawnDamageNumber(target, damageAmount);
         combo += 10;
-        await new Promise(resolve => setTimeout(resolve, 200));
+        await new Promise(resolve => setTimeout(resolve, 1000));
     }
     if (index != 3) {
         if (combo >= 100 && skilllevels[index] == 1) {
