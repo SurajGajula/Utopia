@@ -6,7 +6,7 @@ let comboDisplay;
 let skilllevels;
 export async function startBattle(enemy) {
     const healthBars = Array.from(document.querySelectorAll('.health-bar'));
-    [hbar3, hbar2, hbar1, hbar4] = healthBars;
+    [hbar1, hbar2, hbar3, hbar4] = healthBars;
     healthBars.forEach(bar => {
         bar.style.width = '100%';
     });
