@@ -1,5 +1,6 @@
 import { handleButton1, handleButton2, handleButton3, handleSkill, handleClose } from '/Scripts/menu.js';
 import { navigateToLogin, exchangeCodeForSub, initializeAWS } from '/Scripts/auth.js';
+import { dailyPulls, loadPulls } from '/Scripts/character.js';
 if (!window.location.search.includes('code=')) {
     navigateToLogin();
 }
@@ -12,6 +13,8 @@ if (code) {
             try {
                 loadingOverlay.classList.add('active');
                 await exchangeCodeForSub(code);
+                await dailyPulls();
+                await updatePullsDisplay();
                 window.history.replaceState({}, document.title, window.location.pathname);
             } catch (error) {
                 console.error('Error processing authentication:', error);
@@ -35,6 +38,15 @@ window.addEventListener('load', async () => {
         console.error('Failed to initialize AWS:', error);
     }
 });
+async function updatePullsDisplay() {
+    try {
+        const pullsCount = await loadPulls();
+        const pullsDisplay = document.getElementById('pullsDisplay');
+        pullsDisplay.textContent = `Pulls: ${pullsCount}`;
+    } catch (error) {
+        console.error('Error updating pulls display:', error);
+    }
+}
 const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');
 const button3 = document.getElementById('button3');

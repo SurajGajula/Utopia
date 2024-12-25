@@ -182,8 +182,8 @@ export async function storeExp() {
                     Name: data.Item.Party[index],
                     ID: sessionStorage.getItem('userSub')
                 },
-                UpdateExpression: "SET #level = #level + :one, #attack = #attack + :ten, #health = #health + :hundred, #threshold = #threshold + :thousand",
-                ConditionExpression: "#exp > #threshold",
+                UpdateExpression: "SET #level = #level + :one, #attack = #attack + :ten, #health = #health + :hundred, #exp = #exp - #threshold, #threshold = #threshold + :thousand",
+                ConditionExpression: "#exp >= #threshold",
                 ExpressionAttributeNames: {
                     '#level': "Level",
                     '#attack': "Attack",
@@ -210,5 +210,65 @@ export async function storeExp() {
     } catch (err) {
         console.error(err);
         throw err;
+    }
+}
+export async function dailyPulls() {
+    try {
+        const docClient = await getDynamoClient();
+        const pstDate = new Date().toLocaleString("en-US", {
+            timeZone: "America/Los_Angeles"
+        });
+        const currentDayPST = new Date(pstDate).getDate();
+        const params = {
+            TableName: "Utopia",
+            Key: {
+                Name: "Pulls",
+                ID: sessionStorage.getItem('userSub')
+            }
+        };
+        const data = await docClient.get(params).promise();
+        if (data.Item.date < currentDayPST) {
+            const updateParams = {
+                TableName: "Utopia",
+                Key: {
+                    Name: "Pulls",
+                    ID: sessionStorage.getItem('userSub')
+                },
+                UpdateExpression: "SET #date = :currentDay, #count = #count + :addCount",
+                ExpressionAttributeNames: {
+                    "#date": "date",
+                    "#count": "count"
+                },
+                ExpressionAttributeValues: {
+                    ":currentDay": currentDayPST,
+                    ":addCount": 100
+                },
+                ReturnValues: "ALL_NEW"
+            };
+            const updatedData = await docClient.update(updateParams).promise();
+            return updatedData.Attributes;
+        }
+        return data.Item;
+    } catch (error) {
+        console.error('Error in dailyPulls:', error);
+        throw error;
+    }
+}
+export async function loadPulls() {
+    try {
+        const userSub = sessionStorage.getItem('userSub');
+        const docClient = await getDynamoClient();
+        const params = {
+            TableName: "Utopia",
+            Key: {
+                Name: "Pulls",
+                ID: userSub
+            }
+        };
+        const data = await docClient.get(params).promise();
+        return data.Item.count;
+    } catch (error) {
+        console.error('Error in loadPulls:', error);
+        throw error;
     }
 }
