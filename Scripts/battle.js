@@ -55,7 +55,7 @@ export async function damage(index, target) {
             combo -= 100;
             hits = indexChar.skillplus[0];
             damageAmount *= indexChar.skillplus[1];
-            comboAmount *= indexChar.skillplus[2];  
+            comboAmount *= indexChar.skillplus[2];
         }
         else if (combo >= 1000 && skilllevels[index] == 2) {
             combo -= 1000;
@@ -156,8 +156,8 @@ function displayUpgrade(index) {
     }
 }
 function attackSprite(index) {
-    const target = index != 3 ? 
-    document.querySelector(`#Ally${index + 1} img`) : document.querySelector('#Enemy img');
+    const elementId = index != 3 ? `Ally${index + 1}` : 'Enemy';
+    const target = document.querySelector(`#${elementId} img`);
     const currentSrc = target.src;
     if (currentSrc.includes('Attack')) {
         target.src = currentSrc.replace('Attack', '');
