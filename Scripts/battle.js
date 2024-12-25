@@ -156,7 +156,7 @@ function displayUpgrade(index) {
     }
 }
 function attackSprite(index) {
-    const elementId = index != 3 ? `Ally${index + 1}` : 'Enemy';
+    const elementId = index != 3 ? `Ally${index + 1}` : 'Enemy1';
     const target = document.querySelector(`#${elementId} img`);
     const currentSrc = target.src;
     if (currentSrc.includes('Attack')) {
