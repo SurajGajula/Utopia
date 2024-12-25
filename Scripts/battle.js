@@ -157,11 +157,11 @@ function displayUpgrade(index) {
 }
 function attackSprite(index) {
     const target = index != 3 ? 
-    document.getElementById(`Ally${index + 1}`) : document.getElementById('Enemy');
+    document.querySelector(`#Ally${index + 1} img`) : document.querySelector('#Enemy img');
     const currentSrc = target.src;
     if (currentSrc.includes('Attack')) {
         target.src = currentSrc.replace('Attack', '');
     } else {
-         target.src = currentSrc.replace('.svg', 'Attack.svg');
+        target.src = currentSrc.replace('.svg', 'Attack.svg');
     }
 }
