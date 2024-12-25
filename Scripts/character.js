@@ -256,17 +256,16 @@ export async function dailyPulls() {
 }
 export async function loadPulls() {
     try {
-        const userSub = sessionStorage.getItem('userSub');
         const docClient = await getDynamoClient();
         const params = {
             TableName: "Utopia",
             Key: {
                 Name: "Pulls",
-                ID: userSub
+                ID: sessionStorage.getItem('userSub')
             }
         };
         const data = await docClient.get(params).promise();
-        return data.Item.count;
+        return data.Item.Count;
     } catch (error) {
         console.error('Error in loadPulls:', error);
         throw error;
