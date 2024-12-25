@@ -236,8 +236,8 @@ export async function dailyPulls() {
                 },
                 UpdateExpression: "SET #date = :currentDay, #count = #count + :addCount",
                 ExpressionAttributeNames: {
-                    "#date": "date",
-                    "#count": "count"
+                    "#date": "Date",
+                    "#count": "Count"
                 },
                 ExpressionAttributeValues: {
                     ":currentDay": currentDayPST,
