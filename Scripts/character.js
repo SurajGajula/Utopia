@@ -227,7 +227,7 @@ export async function dailyPulls() {
             }
         };
         const data = await docClient.get(params).promise();
-        if (data.Item.date < currentDayPST) {
+        if (data.Item.Date < currentDayPST) {
             const updateParams = {
                 TableName: "Utopia",
                 Key: {
@@ -245,10 +245,8 @@ export async function dailyPulls() {
                 },
                 ReturnValues: "ALL_NEW"
             };
-            const updatedData = await docClient.update(updateParams).promise();
-            return updatedData.Attributes;
+            await docClient.update(updateParams).promise();
         }
-        return data.Item;
     } catch (error) {
         console.error('Error in dailyPulls:', error);
         throw error;
