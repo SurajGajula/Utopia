@@ -227,7 +227,7 @@ export async function dailyPulls() {
             }
         };
         const data = await docClient.get(params).promise();
-        if (data.Item.Date < currentDayPST) {
+        if (data.Item.Date != currentDayPST) {
             const updateParams = {
                 TableName: "Utopia",
                 Key: {
