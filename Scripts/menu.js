@@ -52,10 +52,18 @@ function showAllies(items) {
                 <p>Health: ${itemData.Health}</p>
                 <p>Level: ${itemData.Level}</p>
                 <p>Exp: ${itemData.Exp}</p>
+                <div class="card-buttons">
+                    <button onclick="handleParty('${itemData.Name}', 0)">Party 1</button>
+                    <button onclick="handleParty('${itemData.Name}', 1)">Party 2</button>
+                    <button onclick="handleParty('${itemData.Name}', 2)">Party 3</button>
+                </div>
             </div>
         `;
         container.appendChild(element);
     });
+}
+function handleParty(itemName, actionNumber) {
+    console.log(`Party ${actionNumber} triggered for ${itemName}`);
 }
 function showEnemies(items) {
     const container = document.getElementById("Enemies");
