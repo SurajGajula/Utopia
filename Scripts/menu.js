@@ -62,7 +62,7 @@ function showAllies(items) {
         container.appendChild(element);
     });
 }
-function handleParty(itemName, actionNumber) {
+window.handleParty = function(itemName, actionNumber) {
     console.log(`Party ${actionNumber} triggered for ${itemName}`);
 }
 function showEnemies(items) {
