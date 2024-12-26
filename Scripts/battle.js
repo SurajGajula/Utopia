@@ -17,6 +17,7 @@ export async function startBattle(enemy) {
             Character.loadAlly(2),
             Character.loadEnemy(enemy)
         ]);
+        console.log(char1.name, char2.name, char3.name)
         for (let i = 1; i <= 3; i++) {
             document.querySelector(`#Ally${i}`).src = `Sprites/${[char1, char2, char3][i - 1].name}.svg`;
         }
