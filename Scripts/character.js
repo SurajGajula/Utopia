@@ -63,17 +63,16 @@ export class Character {
         }
     }
 }
-export async function loadOwned() {
+export async function loadAllies() {
     const docClient = await getDynamoClient();
     const params = {
         TableName: 'Utopia',
-        FilterExpression: 'attribute_exists(#owned) AND #owned = :ownedValue AND #id = :idValue',
+        FilterExpression: 'attribute_exists(#level) AND #id = :idValue',
         ExpressionAttributeNames: {
-            '#owned': 'Owned',
+            '#level': 'Level',
             '#id': 'ID'
         },
         ExpressionAttributeValues: {
-            ':ownedValue': true,
             ':idValue': sessionStorage.getItem('userSub')
         }
     };
