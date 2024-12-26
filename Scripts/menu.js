@@ -73,8 +73,6 @@ function showEnemies(items) {
                 <h3>${itemData.Name}</h3>
                 <p>Attack: ${itemData.Attack}</p>
                 <p>Health: ${itemData.Health}</p>
-                <p>Level: ${itemData.Level}</p>
-                <p>Defeated: ${itemData.Defeated}</p>
             </div>
         `; 
         element.addEventListener('click', async () => {

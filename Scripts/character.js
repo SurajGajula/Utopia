@@ -14,10 +14,10 @@ export class Character {
     static async loadEnemy(enemyName) {
         const docClient = await getDynamoClient();
         const params = {
-            TableName: "Utopia",
+            TableName: "UtopiaEnemies",
             Key: {
                 Name: enemyName,
-                ID: sessionStorage.getItem('userSub')
+                ID: 'Sample'
             }
         };
         try {
@@ -88,15 +88,13 @@ export async function loadOwned() {
 export async function loadEnemies() {
     const docClient = await getDynamoClient();
     const params = {
-        TableName: 'Utopia',
+        TableName: 'UtopiaEnemies',
         KeyConditionExpression: '#id = :idValue',
-        FilterExpression: 'attribute_exists(#defeated)',
         ExpressionAttributeNames: {
-            '#defeated': 'Defeated',
             '#id': 'ID'
         },
         ExpressionAttributeValues: {
-            ':idValue': sessionStorage.getItem('userSub')
+            ':idValue': 'Sample'
         }
     };
     try {
