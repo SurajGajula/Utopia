@@ -54,6 +54,7 @@ export class Character {
         try {
             const data = await docClient.get(params).promise();
             return new Character(
+                data.Item.Name,
                 data.Item.Health,
                 data.Item.Attack,
                 data.Item.SkillPlus,
