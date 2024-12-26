@@ -235,3 +235,42 @@ export async function loadPulls() {
         throw error;
     }
 }
+export async function storeParty(allyName, index) {
+    try {
+        const docClient = await getDynamoClient();
+        const params = {
+            TableName: "Utopia",
+            Key: {
+                Name: "Battle",
+                ID: sessionStorage.getItem('userSub')
+            }
+        };
+        const data = await docClient.get(params).promise();
+        let party = data.Item.Party;
+        const currentIndex = party.indexOf(allyName);
+        if (currentIndex === -1) {
+            party[index] = allyName;
+        } 
+        else if (currentIndex !== index) {
+            const temp = party[index];
+            party[index] = allyName;
+            party[currentIndex] = temp;
+        }
+        const updateParams = {
+            TableName: "Utopia",
+            Key: {
+                Name: "Battle",
+                ID: sessionStorage.getItem('userSub')
+            },
+            UpdateExpression: "SET Party = :party",
+            ExpressionAttributeValues: {
+                ":party": party
+            }
+        };
+        await docClient.update(updateParams).promise();
+        return party;
+    } catch (error) {
+        console.error('Error in loadParty:', error);
+        throw error;
+    }
+}

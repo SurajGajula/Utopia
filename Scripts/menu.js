@@ -1,5 +1,5 @@
 import { pSkill, startBattle } from "/Scripts/battle.js";
-import { loadAllies, loadEnemies } from "/Scripts/character.js";
+import { loadAllies, loadEnemies, storeParty } from "/Scripts/character.js";
 export function handleButton1(button) {
     button.addEventListener('click', async () => {
         document.getElementById('MenuUI').classList.add('hidden');
@@ -62,8 +62,8 @@ function showAllies(items) {
         container.appendChild(element);
     });
 }
-window.handleParty = function(itemName, actionNumber) {
-    console.log(`Party ${actionNumber} triggered for ${itemName}`);
+window.handleParty = async function(itemName, index) {
+    await storeParty(itemName, index);
 }
 function showEnemies(items) {
     const container = document.getElementById("Enemies");
