@@ -105,37 +105,6 @@ export async function loadEnemies() {
         throw error;
     }
 }
-export async function storeBattle() {
-    const docClient = await getDynamoClient();
-    const params = {
-        TableName: "Utopia",
-        Key: {
-            Name: "Battle",
-            ID: sessionStorage.getItem('userSub')
-        }
-    };
-    try {
-        const data = await docClient.get(params).promise();
-        const updateParams = {
-            TableName: "Utopia",
-            Key: {
-                Name: data.Item.Enemy,
-                ID: sessionStorage.getItem('userSub')
-            },
-            UpdateExpression: "SET #defeated = :result",
-            ExpressionAttributeNames: {
-                "#defeated": "Defeated"
-            },
-            ExpressionAttributeValues: {
-                ":result": true
-            }
-        };
-        await docClient.update(updateParams).promise();
-    } catch (err) {
-        console.error(err);
-        throw err;
-    }
-}
 export async function storeExp() {
     const docClient = await getDynamoClient();
     const params = {

@@ -34,10 +34,7 @@ export async function startBattle(enemy) {
 }
 async function endBattle(result) {
     if (result) {
-        await Promise.all([
-            storeBattle(),
-            storeExp()
-        ]);
+        await storeExp();
     }
     document.getElementById('BattleUI').classList.add('hidden');
     document.getElementById('MenuUI').classList.remove('hidden');
