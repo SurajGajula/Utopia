@@ -18,7 +18,7 @@ export async function startBattle(enemy) {
             Character.loadEnemy(enemy)
         ]);
         for (let i = 1; i <= 3; i++) {
-            document.querySelector(`#Ally${i} img`).src = `Sprites/${[char1, char2, char3][i - 1].name}.svg`;
+            document.querySelector(`#Ally${i}`).src = `Sprites/${[char1, char2, char3][i - 1].name}.svg`;
         }
         document.querySelector('#Enemy img').src = `Sprites/${enemy}.svg`;
     } catch (err) {
