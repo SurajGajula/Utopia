@@ -1,5 +1,5 @@
 import { pSkill, startBattle } from "/Scripts/battle.js";
-import { loadOwned, loadEnemies } from "/Scripts/character.js";
+import { loadAllies, loadEnemies } from "/Scripts/character.js";
 export function handleButton1(button) {
     button.addEventListener('click', async () => {
         document.getElementById('MenuUI').classList.add('hidden');
@@ -12,7 +12,7 @@ export function handleButton2(button) {
     button.addEventListener('click', async () => {
         document.getElementById('MenuUI').classList.add('hidden');
         document.getElementById('closeButton').classList.remove('hidden');
-        showOwned(await loadOwned());
+        showAllies(await loadAllies());
         document.getElementById('Owned').classList.remove('hidden');
     });
 }
@@ -35,7 +35,7 @@ export function handleClose(button) {
         document.getElementById('Enemies').classList.add('hidden');
     });
 }
-function showOwned(items) {
+function showAllies(items) {
     const container = document.getElementById("Owned");
     container.innerHTML = '';
     items.forEach(item => {
