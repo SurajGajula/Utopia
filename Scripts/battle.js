@@ -65,6 +65,14 @@ export async function damage(index, target) {
             skilllevels[index] += 1;
         }
     }
+    else {
+        if (count % 9 === 6) {
+            damageAmount *= 2;
+        } 
+        else if (count % 9 === 0) {
+            damageAmount *= 4;
+        }
+    }
     attackSprite(index);
     document.getElementById('Skills').classList.add('hidden');
     for (let i = 0; i < hits; i++) {
@@ -95,7 +103,7 @@ export async function damage(index, target) {
         return endBattle(false);
     }
     count += 1;
-    if (count == 3) {
+    if (count % 3 == 0) {
         eSkill();
     }
     else {
@@ -109,7 +117,6 @@ async function eSkill() {
     const target = Math.floor(Math.random() * 3);
     const skill = Math.floor(Math.random() * 3);
     await damage(3, target, skill);
-    count = 0;
     displayCombo();
     document.getElementById('Skills').classList.remove('hidden');
     skilllevels = [0, 0, 0];
