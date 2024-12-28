@@ -4,7 +4,7 @@ const getDynamoClient = async () => {
     return new AWS.DynamoDB.DocumentClient();
 };
 export class Character {
-    constructor(name, health, attack, skillplus = null, skillplusplus = null) {
+    constructor(name, health, attack, skillplus, skillplusplus) {
         this.name = name;
         this.health = health;
         this.attack = attack;
@@ -26,7 +26,9 @@ export class Character {
             return new Character(
                 data.Item.Name,
                 data.Item.Health,
-                data.Item.Attack
+                data.Item.Attack,
+                data.Item.SkillPlus,
+                data.Item.SkillPlusPlus
             );
         } catch (err) {
             console.error(err);

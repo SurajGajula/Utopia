@@ -67,10 +67,14 @@ export async function damage(index, target) {
     }
     else {
         if (count % 9 === 6) {
-            damageAmount *= 2;
+            hits = indexChar.skillplus[0];
+            damageAmount *= indexChar.skillplus[1];
+            comboAmount *= indexChar.skillplus[2];
         } 
         else if (count % 9 === 0) {
-            damageAmount *= 4;
+            hits = indexChar.skillplusplus[0];
+            damageAmount *= indexChar.skillplusplus[1];
+            comboAmount *= indexChar.skillplusplus[2];
         }
         count -= 1;
     }
