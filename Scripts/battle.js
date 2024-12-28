@@ -72,6 +72,7 @@ export async function damage(index, target) {
         else if (count % 9 === 0) {
             damageAmount *= 4;
         }
+        count -= 1;
     }
     attackSprite(index);
     document.getElementById('Skills').classList.add('hidden');
