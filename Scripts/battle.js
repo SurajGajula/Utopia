@@ -104,7 +104,7 @@ export async function damage(index, target) {
         return endBattle(false);
     }
     count += 1;
-    if (count % 3 == 0) {
+    if (count % 3 == 0 && index != 3) {
         eSkill();
     }
     else {
