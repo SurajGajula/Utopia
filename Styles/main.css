@@ -123,7 +123,6 @@ button:hover {
     height: 20px;
     background: #0066ff;
     transition: width 0.3s ease-in-out;
-    margin-bottom: 5px;
 }
 .health-text {
     position: absolute;
