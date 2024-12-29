@@ -129,7 +129,7 @@ button:hover {
     position: absolute;
     top: 0;
     left: 0;
-    width: 50%;
+    width: 0%;
     height: 20px;
     background: #0066ff;
     transition: width 0.3s ease-in-out;

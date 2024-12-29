@@ -11,6 +11,8 @@ export class Character {
         this.max = health;
         this.skillplus = skillplus;
         this.skillplusplus = skillplusplus;
+        this.block = 0;
+        this.attack.maxblock = health;
     }
     static async loadEnemy(enemyName) {
         const docClient = await getDynamoClient();

@@ -1,14 +1,20 @@
 import { Character, storeExp } from '/Scripts/character.js';
 let hbar1, hbar2, hbar3, hbar4;
 let char1, char2, char3, char4;
+let bbar1, bbar2, bbar3, bbar4;
 let count, combo;
 let comboDisplay;
 let skilllevels;
 export async function startBattle(enemy) {
     const healthBars = Array.from(document.querySelectorAll('.health-bar'));
     [hbar1, hbar2, hbar3, hbar4] = healthBars;
+    const blockBars = Array.from(document.querySelectorAll('.block-bar'));
+    [bbar1, bbar2, bbar3, bbar4] = blockBars;
     healthBars.forEach(bar => {
         bar.style.width = '100%';
+    });
+    blockBars.forEach(bar => {
+        bar.style.width = '0%';
     });
     try {
         [char1, char2, char3, char4] = await Promise.all([
@@ -17,7 +23,6 @@ export async function startBattle(enemy) {
             Character.loadAlly(2),
             Character.loadEnemy(enemy)
         ]);
-        console.log(char1.name, char2.name, char3.name)
         for (let i = 1; i <= 3; i++) {
             document.querySelector(`#Ally${i}`).src = `Sprites/${[char1, char2, char3][i - 1].name}.svg`;
         }
@@ -43,9 +48,8 @@ async function endBattle(result) {
     document.getElementById('MenuUI').classList.remove('hidden');
 }
 export async function damage(index, target) {
-    const targetBar = [hbar1, hbar2, hbar3, hbar4][target];
     const indexChar = [char1, char2, char3, char4][index];
-    const targetChar = [char1, char2, char3, char4][target];
+    const indexBBar = [bbar1, bbar2, bbar3, bbar4][index];
     let hits = 1;
     let damageAmount = indexChar.attack;
     let comboAmount = 10;
@@ -56,6 +60,8 @@ export async function damage(index, target) {
             hits = indexChar.skillplus[0];
             damageAmount *= indexChar.skillplus[1];
             comboAmount *= indexChar.skillplus[2];
+            indexChar.block += indexChar.skillplus[3]
+            indexBBar.style.width = (targetChar.block / targetChar.maxblock) * 100 + '%';
         }
         else if (combo >= 1000 && skilllevels[index] == 2) {
             combo -= 1000;
@@ -81,9 +87,8 @@ export async function damage(index, target) {
     attackSprite(index);
     document.getElementById('Skills').classList.add('hidden');
     for (let i = 0; i < hits; i++) {
-        targetChar.health -= damageAmount;
         spawnDamageNumber(target, damageAmount);
-        targetBar.style.width = (targetChar.health / targetChar.max) * 100 + '%';
+        calcDamage(target, damageAmount);
         combo += comboAmount;
         displayCombo();
         await new Promise(resolve => setTimeout(resolve, 1000));
@@ -176,4 +181,20 @@ function attackSprite(index) {
     } else {
         target.src = currentSrc.replace('.svg', 'Attack.svg');
     }
+}
+function calcDamage(target, damageAmount){
+    const targetHBar = [hbar1, hbar2, hbar3, hbar4][target];
+    const targetBBar = [bbar1, bbar2, bbar3, bbar4][target];
+    const targetChar = [char1, char2, char3, char4][target];
+    if (damageAmount > targetChar.block){
+        damageAmount -= targetChar.block;
+        targetChar.block = 0;
+    }
+    else {
+        targetChar.block -= damageAmount;
+        damageAmount = 0;
+    }
+    targetBBar.style.width = ((targetChar.block - damageAmount) / targetChar.maxblock) * 100 + '%';
+    targetChar.health -= damageAmount;
+    targetHBar.style.width = (targetChar.health / targetChar.max) * 100 + '%';
 }
