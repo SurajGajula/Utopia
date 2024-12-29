@@ -100,7 +100,6 @@ button:hover {
     left: 50px;
     display: flex;
     flex-direction: column;
-    gap: 50px;
 }
 .EnemyBar {
     width: 800px;
@@ -110,19 +109,31 @@ button:hover {
     right: 50px;
     display: flex;
     flex-direction: column;
-    gap: 50px;
+}
+.bar-container {
+    position: relative;
+    width: 100%;
+    height: 20px;
+    margin-bottom: 50px;
 }
 .health-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 20px;
     background: #00ff1a;
     transition: width 0.3s ease-in-out;
 }
 .block-bar {
-    width: 0%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
     height: 20px;
     background: #0066ff;
     transition: width 0.3s ease-in-out;
+    z-index: 1;
 }
 .health-text {
     position: absolute;
