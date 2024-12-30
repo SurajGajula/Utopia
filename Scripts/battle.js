@@ -60,8 +60,8 @@ export async function damage(index, target) {
             hits = indexChar.skillplus[0];
             damageAmount *= indexChar.skillplus[1];
             comboAmount *= indexChar.skillplus[2];
-            indexChar.block += indexChar.skillplus[3]
-            indexBBar.style.width = (targetChar.block / targetChar.maxblock) * 100 + '%';
+            indexChar.block = Math.min(indexChar.maxblock, indexChar.block + (indexChar.skillplus[3] * indexChar.attack));
+            indexBBar.style.width = (indexChar.block / indexChar.maxblock) * 100 + '%';
         }
         else if (combo >= 1000 && skilllevels[index] == 2) {
             combo -= 1000;
