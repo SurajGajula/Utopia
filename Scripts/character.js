@@ -12,7 +12,7 @@ export class Character {
         this.skillplus = skillplus;
         this.skillplusplus = skillplusplus;
         this.block = 0;
-        this.attack.maxblock = health;
+        this.maxblock = health;
     }
     static async loadEnemy(enemyName) {
         const docClient = await getDynamoClient();
