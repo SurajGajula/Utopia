@@ -9,21 +9,6 @@ body {
     background-image: url('../Sprites/BG1.svg');
     background-size: cover;
 }
-#title {
-    position: fixed;
-    top: 20%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 120px;
-    color: #333;
-    text-align: center;
-}
-#startButton {
-    position: fixed;
-    top: 80%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
 #closeButton {
     position: fixed;
     top: 5%;
