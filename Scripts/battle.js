@@ -87,8 +87,8 @@ export async function damage(index, target) {
     attackSprite(index);
     document.getElementById('Skills').classList.add('hidden');
     for (let i = 0; i < hits; i++) {
-        spawnDamageNumber(target, damageAmount);
         calcDamage(target, damageAmount);
+        spawnDamageNumber(target, damageAmount);
         combo += comboAmount;
         displayCombo();
         await new Promise(resolve => setTimeout(resolve, 1000));
