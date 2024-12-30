@@ -194,7 +194,7 @@ function calcDamage(target, damageAmount){
         targetChar.block -= damageAmount;
         damageAmount = 0;
     }
-    targetBBar.style.width = ((targetChar.block - damageAmount) / targetChar.maxblock) * 100 + '%';
+    targetBBar.style.width = (targetChar.block / targetChar.maxblock) * 100 + '%';
     targetChar.health -= damageAmount;
     targetHBar.style.width = (targetChar.health / targetChar.max) * 100 + '%';
 }
