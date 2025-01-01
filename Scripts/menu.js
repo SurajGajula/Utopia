@@ -47,15 +47,19 @@ function showAllies(items) {
                 <img src="Sprites/${itemData.Name}.svg">
             </div>
             <div class="card-content">
-                <h3>${itemData.Name}</h3>
-                <p>Attack: ${itemData.Attack}</p>
-                <p>Health: ${itemData.Health}</p>
-                <p>Level: ${itemData.Level}</p>
-                <p>Exp: ${itemData.Exp}</p>
-                <div class="card-buttons">
-                    <button onclick="handleParty('${itemData.Name}', 0)">Party 1</button>
-                    <button onclick="handleParty('${itemData.Name}', 1)">Party 2</button>
-                    <button onclick="handleParty('${itemData.Name}', 2)">Party 3</button>
+                <div style="display: flex; justify-content: space-between;">
+                    <div class="card-info">
+                        <h3>${itemData.Name}</h3>
+                        <p>Attack: ${itemData.Attack}</p>
+                        <p>Health: ${itemData.Health}</p>
+                        <p>Level: ${itemData.Level}</p>
+                        <p>Exp: ${itemData.Exp}</p>
+                    </div>
+                    <div class="card-buttons" style="display: flex; gap: 10px; align-items: start;">
+                        <button onclick="handleParty('${itemData.Name}', 0)">Party 1</button>
+                        <button onclick="handleParty('${itemData.Name}', 1)">Party 2</button>
+                        <button onclick="handleParty('${itemData.Name}', 2)">Party 3</button>
+                    </div>
                 </div>
                 <p> ${itemData.SkillName}: Deals ${itemData.Attack} damage</p>
                 <p> ${itemData.SkillName}+: Deals ${itemData.Attack * itemData.SkillPlus[1]} 
