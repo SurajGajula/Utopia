@@ -57,6 +57,13 @@ function showAllies(items) {
                     <button onclick="handleParty('${itemData.Name}', 1)">Party 2</button>
                     <button onclick="handleParty('${itemData.Name}', 2)">Party 3</button>
                 </div>
+                <p> ${itemData.SkillName}: Deals ${itemData.Attack} damage</p>
+                <p> ${itemData.SkillName}+: Deals ${itemData.Attack * itemData.SkillPlus[1]} 
+                damage ${itemData.SkillPlus[0]} times with a ${itemData.SkillPlus[2]}x combo
+                multiplier and ${itemData.SkillPlus[0]}x block multiplier.</p>
+                <p> ${itemData.SkillName}++: Deals ${itemData.Attack * itemData.SkillPlusPlus[1]} 
+                damage ${itemData.SkillPlusPlus[0]} times with a ${itemData.SkillPlusPlus[2]}x combo
+                multiplier and ${itemData.SkillPlusPlus[0]}x block multiplier.</p>
             </div>
         `;
         container.appendChild(element);
