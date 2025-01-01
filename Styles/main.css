@@ -307,3 +307,8 @@ button:hover {
 .card-buttons button:hover {
     background-color: #f0f0f0;
 }
+.card-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
