@@ -288,6 +288,13 @@ button:hover {
     font-weight: bold;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
+.card-container {
+    display: flex;
+    justify-content: space-between;
+}
+.card-info {
+    flex: 1;
+}
 .card-buttons {
     display: flex;
     justify-content: flex-end;
