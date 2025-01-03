@@ -277,54 +277,6 @@ export async function storeParty(allyName, index) {
         throw error;
     }
 }
-export async function storePull(bannerName){
-    try {
-        const docClient = await getDynamoClient();
-        const updateParams = {
-            TableName: "Utopia",
-            Key: {
-                Name: "Pulls",
-                ID: sessionStorage.getItem('userSub')
-            },
-            UpdateExpression: "SET #count = #count - :hundred",
-            ExpressionAttributeNames: {
-                "#count": "Count"
-            },
-            ExpressionAttributeValues: {
-                ":hundred": 100
-            }
-        };
-        await docClient.update(updateParams).promise();
-        const params = {
-            TableName: "UtopiaBanners",
-            Key: {
-                Name: bannerName,
-                ID: "Sample"
-            }
-        };
-        const data = await docClient.get(params).promise();
-        const index = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xffffffff + 1) * data.Featured.length);
-        const allyName = data.Featured[index];
-        const allyParams = {
-            TableName: "Utopia",
-            Key: {
-                Name: allyName,
-                ID: sessionStorage.getItem('userSub')
-            },
-            UpdateExpression: "SET #potential = #potential + :one",
-            ExpressionAttributeNames: {
-                "#potential": "Potential"
-            },
-            ExpressionAttributeValues: {
-                ":one": 1
-            }
-        };
-        await docClient.update(allyParams).promise();
-    } catch (error) {
-        console.error('Error in storePull:', error);
-        throw error;
-    }
-}
 export async function loadBanners() {
     const docClient = await getDynamoClient();
     const params = {
@@ -356,5 +308,69 @@ export async function checkPulls() {
     } catch (error) {
         console.error("Error checking pulls:", error);
         return false;
+    }
+}
+export async function storePull(bannerName) {
+    try {
+        const docClient = await getDynamoClient();
+        
+        const params = {
+            TableName: "UtopiaBanners",
+            Key: {
+                Name: bannerName,
+                ID: "Sample"
+            }
+        };
+        const data = await docClient.get(params).promise();
+        
+        // Add debug logging
+        console.log('Banner data:', {
+            bannerName,
+            data: data.Item,
+            featured: data.Item?.Featured
+        });
+
+        if (!data.Item || !data.Item.Featured || !data.Item.Featured.length) {
+            throw new Error(`Banner ${bannerName} not found or has no featured items. Data: ${JSON.stringify(data.Item)}`);
+        }
+
+        const updateParams = {
+            TableName: "Utopia",
+            Key: {
+                Name: "Pulls",
+                ID: sessionStorage.getItem('userSub')
+            },
+            UpdateExpression: "SET #count = #count - :hundred",
+            ExpressionAttributeNames: {
+                "#count": "Count"
+            },
+            ExpressionAttributeValues: {
+                ":hundred": 100
+            }
+        };
+        await docClient.update(updateParams).promise();
+
+        const index = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xffffffff + 1) * data.Item.Featured.length);
+        const allyName = data.Item.Featured[index];
+
+        const allyParams = {
+            TableName: "Utopia",
+            Key: {
+                Name: allyName,
+                ID: sessionStorage.getItem('userSub')
+            },
+            UpdateExpression: "SET #potential = #potential + :one",
+            ExpressionAttributeNames: {
+                "#potential": "Potential"
+            },
+            ExpressionAttributeValues: {
+                ":one": 1
+            }
+        };
+        await docClient.update(allyParams).promise();
+        
+    } catch (error) {
+        console.error('Error in storePulls:', error);
+        throw error;
     }
 }
