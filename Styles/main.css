@@ -381,7 +381,6 @@ button:hover {
     height: 120%;
     object-fit: cover;
     margin-bottom: 5px;
-    margin-left: -10%;
 }
 .pull-card .name {
     font-size: 1.2vw;
