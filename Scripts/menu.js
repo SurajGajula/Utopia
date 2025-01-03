@@ -131,7 +131,6 @@ window.handlePull = async function (itemName) {
             }
             await Promise.all(pulls);
         } else {
-            console.log("Not enough pulls available");
             alert("You need at least 1000 pulls to perform a 10-pull");
         }
     } catch (error) {
