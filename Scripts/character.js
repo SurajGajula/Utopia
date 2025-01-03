@@ -349,7 +349,7 @@ export async function checkPulls() {
     };
     try {
         const data = await docClient.get(params).promise();
-        if (data.Item && data.Item.count >= 1000) {
+        if (data.Item && data.Item.Count >= 1000) {
             return true;
         }
         return false;
