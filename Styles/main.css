@@ -344,13 +344,10 @@ button:hover {
     border: none;
     font-size: 14px;
 }
-.pull-button button:hover {
-    background-color: #f0f0f0;
-}
 .pull-results-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 9vh 5vh;
+    gap: 8vh 4vh;
     padding: 2vh;
     width: 80vw;
     max-width: 1400px;
@@ -368,17 +365,18 @@ button:hover {
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     text-align: center;
+    transition: transform 0.2s;
     width: 100%;
     aspect-ratio: 1;
     max-height: 35vh;
 }
+.pull-card:hover {
+    transform: scale(1.05);
+}
 .pull-card img {
-    width: 150%;
-    height: 150%;
+    width: 90%;
+    height: 120%;
     object-fit: cover;
-    top: 50%; 
-    left: 50%;
-    position: absolute;
     margin-bottom: 5px;
 }
 .pull-card .name {
