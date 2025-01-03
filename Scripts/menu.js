@@ -123,6 +123,8 @@ window.handleParty = async function (itemName, index) {
     await storeParty(itemName, index);
 }
 window.handlePull = async function (itemName) {
+    const loadingOverlay = document.querySelector('.loading-overlay');  
+    loadingOverlay.classList.add('active');
     try {
         if (await checkPulls()) {
             const pulls = [];
@@ -130,9 +132,8 @@ window.handlePull = async function (itemName) {
                 pulls.push(storePull(itemName));
             }
             await Promise.all(pulls);
-        } else {
-            alert("You need at least 1000 pulls to perform a 10-pull");
         }
+        loadingOverlay.classList.remove('active');
     } catch (error) {
         console.error("Error during 10 pulls:", error);
         throw error;
