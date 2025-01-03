@@ -313,7 +313,6 @@ export async function checkPulls() {
 export async function storePull(bannerName) {
     try {
         const docClient = await getDynamoClient();
-        
         const params = {
             TableName: "UtopiaBanners",
             Key: {
@@ -322,18 +321,6 @@ export async function storePull(bannerName) {
             }
         };
         const data = await docClient.get(params).promise();
-        
-        // Add debug logging
-        console.log('Banner data:', {
-            bannerName,
-            data: data.Item,
-            featured: data.Item?.Featured
-        });
-
-        if (!data.Item || !data.Item.Featured || !data.Item.Featured.length) {
-            throw new Error(`Banner ${bannerName} not found or has no featured items. Data: ${JSON.stringify(data.Item)}`);
-        }
-
         const updateParams = {
             TableName: "Utopia",
             Key: {
@@ -349,10 +336,8 @@ export async function storePull(bannerName) {
             }
         };
         await docClient.update(updateParams).promise();
-
         const index = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xffffffff + 1) * data.Item.Featured.length);
         const allyName = data.Item.Featured[index];
-
         const allyParams = {
             TableName: "Utopia",
             Key: {
@@ -368,7 +353,6 @@ export async function storePull(bannerName) {
             }
         };
         await docClient.update(allyParams).promise();
-        
     } catch (error) {
         console.error('Error in storePulls:', error);
         throw error;

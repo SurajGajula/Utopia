@@ -56,6 +56,7 @@ function showAllies(items) {
                         <p>Health: ${item.Health}</p>
                         <p>Level: ${item.Level}</p>
                         <p>Exp: ${item.Exp}</p>
+                        <p>Potential: ${item.Potential}</p>
                     </div>
                     <div class="card-buttons">
                         <button onclick="handleParty('${item.Name}', 0)">Party 1</button>
