@@ -125,7 +125,8 @@ window.handleParty = async function (itemName, index) {
     await storeParty(itemName, index);
 }
 window.handlePull = async function (itemName) {
-    const loadingOverlay = document.querySelector('.loading-overlay');  
+    const loadingOverlay = document.querySelector('.loading-overlay');
+    document.getElementById('Banners').classList.add('hidden');  
     loadingOverlay.classList.add('active');
     try {
         if (await checkPulls()) {
@@ -133,12 +134,33 @@ window.handlePull = async function (itemName) {
             for (let i = 0; i < 10; i++) {
                 pulls.push(storePull(itemName));
             }
-            await Promise.all(pulls);
+            const results = await Promise.all(pulls);
+            await displayPullResults(results);
         }
-        await updatePullsDisplay();
         loadingOverlay.classList.remove('active');
+        document.getElementById('PullResults').classList.remove('hidden');
     } catch (error) {
         console.error("Error during 10 pulls:", error);
         throw error;
     }
 };
+async function displayPullResults(pulls) {
+    const pullResults = document.getElementById('PullResults');
+    pullResults.innerHTML = '';
+    const grid = document.createElement('div');
+    grid.classList.add('pull-results-grid');
+    pulls.forEach(characterName => {
+        const card = document.createElement('div');
+        card.classList.add('pull-card');
+        card.innerHTML = `
+            <img src="Sprites/${characterName}.svg" alt="${characterName}">
+            <div class="name">${characterName}</div>
+        `;
+        grid.appendChild(card);
+    });
+    pullResults.appendChild(grid);
+    pullResults.onclick = function() {
+        pullResults.classList.add('hidden');
+        document.getElementById('Banners').classList.remove('hidden');
+    };
+}

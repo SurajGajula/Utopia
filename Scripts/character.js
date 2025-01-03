@@ -353,6 +353,7 @@ export async function storePull(bannerName) {
             }
         };
         await docClient.update(allyParams).promise();
+        return allyName
     } catch (error) {
         console.error('Error in storePulls:', error);
         throw error;
