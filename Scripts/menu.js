@@ -1,5 +1,5 @@
 import { pSkill, startBattle } from "/Scripts/battle.js";
-import { loadAllies, loadEnemies, loadBanners, storeParty } from "/Scripts/character.js";
+import { loadAllies, loadEnemies, loadBanners, storeParty, checkPulls, storePull } from "/Scripts/character.js";
 export function handleButton1(button) {
     button.addEventListener('click', async () => {
         document.getElementById('MenuUI').classList.add('hidden');
@@ -123,5 +123,19 @@ window.handleParty = async function (itemName, index) {
     await storeParty(itemName, index);
 }
 window.handlePull = async function (itemName) {
-    await storePull(itemName);
-}
+    try {
+        if (await hasEnoughPulls()) {
+            const pulls = [];
+            for (let i = 0; i < 10; i++) {
+                pulls.push(storePull(itemName));
+            }
+            await Promise.all(pulls);
+        } else {
+            console.log("Not enough pulls available");
+            alert("You need at least 1000 pulls to perform a 10-pull");
+        }
+    } catch (error) {
+        console.error("Error during 10 pulls:", error);
+        throw error;
+    }
+};

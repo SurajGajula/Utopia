@@ -338,3 +338,23 @@ export async function loadBanners() {
         throw error;
     }
 }
+export async function checkPulls() {
+    const docClient = await getDynamoClient();
+    const params = {
+        TableName: 'Utopia',
+        Key: {
+            'ID': sessionStorage.getItem('userSub'),
+            'Name': 'Pulls'
+        }
+    };
+    try {
+        const data = await docClient.get(params).promise();
+        if (data.Item && data.Item.count >= 1000) {
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error("Error checking pulls:", error);
+        return false;
+    }
+}
