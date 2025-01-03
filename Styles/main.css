@@ -354,13 +354,15 @@ button:hover {
     padding: 20px;
     width: 90vw;
     max-width: 1600px;
-    margin: 0 auto;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    margin-top: 100px;
+    /* Ensure content stays within viewport */
+    max-height: 90vh;
+    overflow-y: auto;
 }
+
 .pull-card {
     background: #fff;
     border-radius: 8px;
@@ -371,20 +373,24 @@ button:hover {
     width: 100%;
     aspect-ratio: 1;
 }
+
 .pull-card:hover {
     transform: scale(1.05);
 }
+
 .pull-card img {
     width: 100%;
     height: 80%;
     object-fit: contain;
     margin-bottom: 10px;
 }
+
 .pull-card .name {
     font-size: 1.5vw;
     font-weight: bold;
     color: #333;
 }
+
 #PullResults {
     position: fixed;
     top: 0;
@@ -393,26 +399,37 @@ button:hover {
     bottom: 0;
     background: rgba(0, 0, 0, 0.8);
     z-index: 1000;
-    overflow-y: auto;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
+/* Hide scrollbar but keep functionality */
+.pull-results-grid::-webkit-scrollbar {
+    display: none;
+}
+.pull-results-grid {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 @media (max-height: 800px) {
     .pull-results-grid {
-        margin-top: 50px;
+        margin-top: 0; /* Remove margin-top */
         gap: 15px;
     }
     .pull-card .name {
         font-size: 14px;
     }
 }
+
 @media (max-width: 1400px) {
     .pull-results-grid {
         grid-template-columns: repeat(4, 1fr);
     }
 }
+
 @media (max-width: 1000px) {
     .pull-results-grid {
         grid-template-columns: repeat(3, 1fr);
