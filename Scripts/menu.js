@@ -35,6 +35,7 @@ export function handleClose(button) {
         document.getElementById('MenuUI').classList.remove('hidden');
         document.getElementById('Owned').classList.add('hidden');
         document.getElementById('Enemies').classList.add('hidden');
+        document.getElementById('Banners').classList.add('hidden');
     });
 }
 function showAllies(items) {
@@ -122,5 +123,5 @@ window.handleParty = async function (itemName, index) {
     await storeParty(itemName, index);
 }
 window.handlePull = async function (itemName) {
-    //await storePull(itemName);
+    await storePull(itemName);
 }
