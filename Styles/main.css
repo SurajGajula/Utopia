@@ -365,13 +365,9 @@ button:hover {
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     text-align: center;
-    transition: transform 0.2s;
     width: 100%;
     aspect-ratio: 1;
     max-height: 35vh;
-}
-.pull-card:hover {
-    transform: scale(1.05);
 }
 .pull-card img {
     width: 90%;
