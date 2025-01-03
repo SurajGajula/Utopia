@@ -113,7 +113,7 @@ function showBanners(items) {
                 <img src="Sprites/${item.Name}.svg">
             </div>
             <div class="pull-button">
-                <button onclick="handlePull('${item.Name}', 0)">10 Pull</button>
+                <button onclick="handlePull('${item.Name}')">10 Pull</button>
             </div>
         `;
         container.appendChild(element);

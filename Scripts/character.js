@@ -321,7 +321,7 @@ export async function storePull(bannerName){
         };
         await docClient.update(allyParams).promise();
     } catch (error) {
-        console.error('Error in storePulls:', error);
+        console.error('Error in storePull:', error);
         throw error;
     }
 }
