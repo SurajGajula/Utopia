@@ -376,6 +376,9 @@ button:hover {
     width: 150%;
     height: 150%;
     object-fit: cover;
+    top: 50%; 
+    left: 50%;
+    position: absolute;
     margin-bottom: 5px;
 }
 .pull-card .name {
