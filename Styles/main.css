@@ -326,6 +326,27 @@ button:hover {
 .card-buttons button:hover {
     background-color: #f0f0f0;
 }
+.pull-button {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 2;
+}
+.pull-button button {
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    border: none;
+    font-size: 14px;
+}
+.pull-button button:hover {
+    background-color: #f0f0f0;
+}
 .pull-results-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
