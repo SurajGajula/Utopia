@@ -124,7 +124,7 @@ window.handleParty = async function (itemName, index) {
 }
 window.handlePull = async function (itemName) {
     try {
-        if (await hasEnoughPulls()) {
+        if (await checkPulls()) {
             const pulls = [];
             for (let i = 0; i < 10; i++) {
                 pulls.push(storePull(itemName));
