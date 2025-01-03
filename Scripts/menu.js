@@ -1,5 +1,5 @@
 import { pSkill, startBattle } from "/Scripts/battle.js";
-import { loadAllies, loadEnemies, storeParty } from "/Scripts/character.js";
+import { loadAllies, loadEnemies, loadBanners, storeParty } from "/Scripts/character.js";
 export function handleButton1(button) {
     button.addEventListener('click', async () => {
         document.getElementById('MenuUI').classList.add('hidden');
@@ -17,9 +17,11 @@ export function handleButton2(button) {
     });
 }
 export function handleButton3(button) {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', async () => {
         document.getElementById('MenuUI').classList.add('hidden');
         document.getElementById('closeButton').classList.remove('hidden');
+        showBanners(await loadBanners());
+        document.getElementById('Banners').classList.remove('hidden');
     });
 }
 export async function handleSkill(button, index) {
@@ -41,40 +43,36 @@ function showAllies(items) {
     items.forEach(item => {
         const element = document.createElement('div');
         element.classList.add('item-card');
-        const itemData = item;
         element.innerHTML = `
             <div class="card-image">
-                <img src="Sprites/${itemData.Name}.svg">
+                <img src="Sprites/${item.Name}.svg">
             </div>
             <div class="card-content">
                 <div class="card-container">
                     <div class="card-info">
-                        <h3>${itemData.Name}</h3>
-                        <p>Attack: ${itemData.Attack}</p>
-                        <p>Health: ${itemData.Health}</p>
-                        <p>Level: ${itemData.Level}</p>
-                        <p>Exp: ${itemData.Exp}</p>
+                        <h3>${item.Name}</h3>
+                        <p>Attack: ${item.Attack}</p>
+                        <p>Health: ${item.Health}</p>
+                        <p>Level: ${item.Level}</p>
+                        <p>Exp: ${item.Exp}</p>
                     </div>
                     <div class="card-buttons">
-                        <button onclick="handleParty('${itemData.Name}', 0)">Party 1</button>
-                        <button onclick="handleParty('${itemData.Name}', 1)">Party 2</button>
-                        <button onclick="handleParty('${itemData.Name}', 2)">Party 3</button>
+                        <button onclick="handleParty('${item.Name}', 0)">Party 1</button>
+                        <button onclick="handleParty('${item.Name}', 1)">Party 2</button>
+                        <button onclick="handleParty('${item.Name}', 2)">Party 3</button>
                     </div>
                 </div>
-                <p> ${itemData.SkillName}: Deals ${itemData.Attack} damage</p>
-                <p> ${itemData.SkillName}+: Deals ${itemData.Attack * itemData.SkillPlus[1]} 
-                damage ${itemData.SkillPlus[0]} times with a ${itemData.SkillPlus[2]}x combo
-                multiplier and ${itemData.SkillPlus[0]}x block multiplier.</p>
-                <p> ${itemData.SkillName}++: Deals ${itemData.Attack * itemData.SkillPlusPlus[1]} 
-                damage ${itemData.SkillPlusPlus[0]} times with a ${itemData.SkillPlusPlus[2]}x combo
-                multiplier and ${itemData.SkillPlusPlus[0]}x block multiplier.</p>
+                <p> ${item.SkillName}: Deals ${item.Attack} damage</p>
+                <p> ${item.SkillName}+: Deals ${item.Attack * item.SkillPlus[1]} 
+                damage ${item.SkillPlus[0]} times with a ${item.SkillPlus[2]}x combo
+                multiplier and ${item.SkillPlus[0]}x block multiplier.</p>
+                <p> ${item.SkillName}++: Deals ${item.Attack * item.SkillPlusPlus[1]} 
+                damage ${item.SkillPlusPlus[0]} times with a ${item.SkillPlusPlus[2]}x combo
+                multiplier and ${item.SkillPlusPlus[0]}x block multiplier.</p>
             </div>
         `;
         container.appendChild(element);
     });
-}
-window.handleParty = async function (itemName, index) {
-    await storeParty(itemName, index);
 }
 function showEnemies(items) {
     const container = document.getElementById("Enemies");
@@ -83,24 +81,46 @@ function showEnemies(items) {
         const element = document.createElement('div');
         element.classList.add('item-card');
         element.classList.add('clickable');
-        const itemData = item;
         element.innerHTML = `
             <div class="card-image">
-                <img src="Sprites/${itemData.Name}.svg">
+                <img src="Sprites/${item.Name}.svg">
             </div>
             <div class="card-content">
-                <h3>${itemData.Name}</h3>
-                <p>Attack: ${itemData.Attack}</p>
-                <p>Health: ${itemData.Health}</p>
+                <h3>${item.Name}</h3>
+                <p>Attack: ${item.Attack}</p>
+                <p>Health: ${item.Health}</p>
             </div>
         `;
         element.addEventListener('click', async () => {
             document.getElementById('Enemies').classList.add('hidden');
             document.getElementById('closeButton').classList.add('hidden');
-            await startBattle(itemData.Name);
+            await startBattle(item.Name);
             document.getElementById('BattleUI').classList.remove('hidden');
         });
         element.style.cursor = 'pointer';
         container.appendChild(element);
     });
+}
+function showBanners(items) {
+    const container = document.getElementById("Banners");
+    container.innerHTML = '';
+    items.forEach(item => {
+        const element = document.createElement('div');
+        element.classList.add('item-banner');
+        element.innerHTML = `
+            <div class="card-image">
+                <img src="Sprites/${item.Name}.svg">
+            </div>
+            <div class="pull-button">
+                <button onclick="handlePull('${item.Name}', 0)">10 Pull</button>
+            </div>
+        `;
+        container.appendChild(element);
+    });
+}
+window.handleParty = async function (itemName, index) {
+    await storeParty(itemName, index);
+}
+window.handlePull = async function (itemName) {
+    //await storePull(itemName);
 }

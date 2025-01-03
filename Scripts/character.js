@@ -34,7 +34,7 @@ export class Character {
                 data.Item.SkillPlusPlus
             );
         } catch (err) {
-            console.error(err);
+            console.error("Error in load Enemies", err);
             throw err;
         }
     }
@@ -67,7 +67,7 @@ export class Character {
                 data.Item.SkillName
             );
         } catch (err) {
-            console.error(err);
+            console.error("Error in load Ally", err);
             throw err;
         }
     }
@@ -96,23 +96,17 @@ export async function loadAllies() {
 export async function loadEnemies() {
     const docClient = await getDynamoClient();
     const params = {
-        TableName: 'UtopiaEnemies',
-        KeyConditionExpression: '#id = :idValue',
-        ExpressionAttributeNames: {
-            '#id': 'ID'
-        },
-        ExpressionAttributeValues: {
-            ':idValue': 'Sample'
-        }
+        TableName: 'UtopiaEnemies'
     };
     try {
-        const data = await docClient.query(params).promise();
+        const data = await docClient.scan(params).promise();
         return data.Items;
     } catch (error) {
-        console.error(error);
+        console.error("Error in loadEnemies", error);
         throw error;
     }
 }
+
 export async function storeExp() {
     const docClient = await getDynamoClient();
     const params = {
@@ -128,7 +122,7 @@ export async function storeExp() {
             TableName: "Utopia",
             Key: {
                 Name: data.Item.Enemy,
-                ID: sessionStorage.getItem('userSub')
+                ID: 'Sample'
             }
         };
         const enemydata = await docClient.get(enemyparams).promise();
@@ -183,7 +177,7 @@ export async function storeExp() {
         });           
         await Promise.all(updateLevels);        
     } catch (err) {
-        console.error(err);
+        console.error("Error in storeEXP", err);
         throw err;
     }
 }
@@ -280,6 +274,67 @@ export async function storeParty(allyName, index) {
         return party;
     } catch (error) {
         console.error('Error in loadParty:', error);
+        throw error;
+    }
+}
+export async function storePull(bannerName){
+    try {
+        const docClient = await getDynamoClient();
+        const updateParams = {
+            TableName: "Utopia",
+            Key: {
+                Name: "Pulls",
+                ID: sessionStorage.getItem('userSub')
+            },
+            UpdateExpression: "SET #count = #count - :hundred",
+            ExpressionAttributeNames: {
+                "#count": "Count"
+            },
+            ExpressionAttributeValues: {
+                ":hundred": 100
+            }
+        };
+        await docClient.update(updateParams).promise();
+        const params = {
+            TableName: "UtopiaBanners",
+            Key: {
+                Name: bannerName,
+                ID: "Sample"
+            }
+        };
+        const data = await docClient.get(params).promise();
+        const index = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xffffffff + 1) * data.Featured.length);
+        const allyName = data.Featured[index];
+        const allyParams = {
+            TableName: "Utopia",
+            Key: {
+                Name: allyName,
+                ID: sessionStorage.getItem('userSub')
+            },
+            UpdateExpression: "SET #potential = #potential + :one",
+            ExpressionAttributeNames: {
+                "#potential": "Potential"
+            },
+            ExpressionAttributeValues: {
+                ":one": 1
+            }
+        };
+        await docClient.update(allyParams).promise();
+    } catch (error) {
+        console.error('Error in storePulls:', error);
+        throw error;
+    }
+}
+export async function loadBanners() {
+    const docClient = await getDynamoClient();
+    const params = {
+        TableName: 'UtopiaBanners'
+    };
+    try {
+        const data = await docClient.scan(params).promise();
+        return data.Items;
+    } catch (error) {
+        console.error("Error in loadBanners", error);
         throw error;
     }
 }
