@@ -126,6 +126,7 @@ window.handleParty = async function (itemName, index) {
 }
 window.handlePull = async function (itemName) {
     const loadingOverlay = document.querySelector('.loading-overlay');
+    document.getElementById('closeButton').classList.add('hidden');
     document.getElementById('Banners').classList.add('hidden');  
     loadingOverlay.classList.add('active');
     try {
@@ -161,6 +162,7 @@ async function displayPullResults(pulls) {
     pullResults.appendChild(grid);
     pullResults.onclick = function() {
         pullResults.classList.add('hidden');
+        document.getElementById('closeButton').classList.remove('hidden');
         document.getElementById('Banners').classList.remove('hidden');
     };
 }
