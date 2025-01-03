@@ -1,5 +1,6 @@
 import { pSkill, startBattle } from "/Scripts/battle.js";
 import { loadAllies, loadEnemies, loadBanners, storeParty, checkPulls, storePull } from "/Scripts/character.js";
+import { updatePullsDisplay } from "/Scripts/main.js";
 export function handleButton1(button) {
     button.addEventListener('click', async () => {
         document.getElementById('MenuUI').classList.add('hidden');
@@ -134,6 +135,7 @@ window.handlePull = async function (itemName) {
             }
             await Promise.all(pulls);
         }
+        await updatePullsDisplay();
         loadingOverlay.classList.remove('active');
     } catch (error) {
         console.error("Error during 10 pulls:", error);
