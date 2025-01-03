@@ -38,7 +38,7 @@ window.addEventListener('load', async () => {
         console.error('Failed to initialize AWS:', error);
     }
 });
-async function updatePullsDisplay() {
+export async function updatePullsDisplay() {
     try {
         const pullsCount = await loadPulls();
         const pullsDisplay = document.getElementById('pullsDisplay');
