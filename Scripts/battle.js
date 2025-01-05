@@ -1,4 +1,5 @@
 import { Character, storeExp } from '/Scripts/character.js';
+import { loadSprite } from './main';
 let hbar1, hbar2, hbar3, hbar4;
 let char1, char2, char3, char4;
 let bbar1, bbar2, bbar3, bbar4;
@@ -24,10 +25,10 @@ export async function startBattle(enemy) {
             Character.loadEnemy(enemy)
         ]);
         for (let i = 1; i <= 3; i++) {
-            document.querySelector(`#Ally${i}`).src = `Sprites/${[char1, char2, char3][i - 1].name}.svg`;
+            document.querySelector(`#Ally${i}`).src = loadSprite([char1, char2, char3][i - 1].name);
             document.querySelector(`#skill${i}`).textContent = [char1, char2, char3][i - 1].skillname;
         }
-        document.querySelector('#Enemy img').src = `Sprites/${enemy}.svg`;
+        document.querySelector('#Enemy img').src = loadSprite(char4.name);
     } catch (err) {
         console.error(err);
     }

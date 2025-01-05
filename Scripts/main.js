@@ -47,6 +47,20 @@ export async function updatePullsDisplay() {
         console.error('Error updating pulls display:', error);
     }
 }
+function initializeSpriteLoading() {
+    const spriteImages = document.querySelectorAll('[data-sprite]');
+    spriteImages.forEach(img => {
+        img.src = `${window.CLOUDFRONT_URL}/${img.dataset.sprite}`;
+    });
+}
+export function loadSprite(spriteName) {
+    const img = new Image();
+    img.src = `${window.ClOUDFRONT_URL}/${spriteName}`;
+    return img;
+}
+document.addEventListener('DOMContentLoaded', () => {
+    initializeSpriteLoading();
+});
 const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');
 const button3 = document.getElementById('button3');

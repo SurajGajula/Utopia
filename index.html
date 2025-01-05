@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Utopia</title>
     <link rel="stylesheet" href="Styles/main.css">
+    <script>
+        window.CLOUDFRONT_URL = 'https://djd89bql46v7d.cloudfront.net/sprites';
+    </script>
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1400.0.min.js"></script>
 </head>
 <body>
@@ -21,22 +24,22 @@
         <div class="TopUI">
             <div id="pullsDisplay"></div>
         </div>        
-        <img src="Sprites/Ally1.svg" class="svg-image">
+        <img data-sprite="Ally1.svg" class="svg-image">
     </div>
     <div id="Owned" class="hidden"></div>
     <div id="Enemies" class="hidden"></div>
-    <div id="Banners" class = "hidden"></div>
-    <div id="PullResults" class = "hidden"></div>
+    <div id="Banners" class="hidden"></div>
+    <div id="PullResults" class="hidden"></div>
     <div id="BattleUI" class="hidden">
         <div id="Info">
         </div>
         <div id="Allies">
-            <img id="Ally3" src="Sprites/Ally3.svg" class="svg-image">
-            <img id="Ally2" src="Sprites/Ally2.svg" class="svg-image">
-            <img id="Ally1" src="Sprites/Ally1.svg" class="svg-image">
+            <img id="Ally3" data-sprite="Ally3.svg" class="svg-image">
+            <img id="Ally2" data-sprite="Ally2.svg" class="svg-image">
+            <img id="Ally1" data-sprite="Ally1.svg" class="svg-image">
         </div>
         <div id="Enemy">
-            <img id ="Enemy1" src="Sprites/Enemy1.svg" class="svg-image">
+            <img id="Enemy1" data-sprite="Enemy1.svg" class="svg-image">
         </div>
         <div class="AllyBars">
             <div class="bar-container">
