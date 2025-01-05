@@ -53,11 +53,6 @@ function initializeSpriteLoading() {
         img.src = `${window.CLOUDFRONT_URL}/${img.dataset.sprite}`;
     });
 }
-export function loadSprite(spriteName) {
-    const img = new Image();
-    img.src = `${window.ClOUDFRONT_URL}/${spriteName}`;
-    return img;
-}
 document.addEventListener('DOMContentLoaded', () => {
     initializeSpriteLoading();
 });

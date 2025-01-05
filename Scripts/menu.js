@@ -86,7 +86,7 @@ function showEnemies(items) {
         element.classList.add('clickable');
         element.innerHTML = `
             <div class="card-image">
-                <img src="${window.CLOUDFRONT_URL}/${item.name}">
+                <img src="${window.CLOUDFRONT_URL}/${item.Name}">
             </div>
             <div class="card-content">
                 <h3>${item.Name}</h3>
