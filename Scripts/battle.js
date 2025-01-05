@@ -24,10 +24,10 @@ export async function startBattle(enemy) {
             Character.loadEnemy(enemy)
         ]);
         for (let i = 1; i <= 3; i++) {
-            document.querySelector(`#Ally${i}`).src =`${window.CLOUDFRONT_URL}/${[char1, char2, char3][i - 1].name})`;
+            document.querySelector(`#Ally${i}`).src =`${window.CLOUDFRONT_URL}/${[char1, char2, char3][i - 1].name}`;
             document.querySelector(`#skill${i}`).textContent = [char1, char2, char3][i - 1].skillname;
         }
-        document.querySelector('#Enemy img').src = `${window.CLOUDFRONT_URL}/${char4.name})`;
+        document.querySelector('#Enemy img').src = `${window.CLOUDFRONT_URL}/${char4.name}`;
     } catch (err) {
         console.error(err);
     }
