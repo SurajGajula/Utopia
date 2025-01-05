@@ -47,7 +47,7 @@ function showAllies(items) {
         element.classList.add('item-card');
         element.innerHTML = `
             <div class="card-image">
-                <img src="Sprites/${item.Name}.svg">
+                <img src="${window.CLOUDFRONT_URL}/${item.Name}">
             </div>
             <div class="card-content">
                 <div class="card-container">
@@ -86,7 +86,7 @@ function showEnemies(items) {
         element.classList.add('clickable');
         element.innerHTML = `
             <div class="card-image">
-                <img src="Sprites/${item.Name}.svg">
+                <img src="${window.CLOUDFRONT_URL}/${item.name}">
             </div>
             <div class="card-content">
                 <h3>${item.Name}</h3>
@@ -112,7 +112,7 @@ function showBanners(items) {
         element.classList.add('item-banner');
         element.innerHTML = `
             <div class="card-image">
-                <img src="Sprites/${item.Name}.svg">
+                 <img src="${window.CLOUDFRONT_URL}/${item.Name}">
             </div>
             <div class="pull-button">
                 <button onclick="handlePull('${item.Name}')">10 Pull</button>
@@ -127,7 +127,7 @@ window.handleParty = async function (itemName, index) {
 window.handlePull = async function (itemName) {
     const loadingOverlay = document.querySelector('.loading-overlay');
     document.getElementById('closeButton').classList.add('hidden');
-    document.getElementById('Banners').classList.add('hidden');  
+    document.getElementById('Banners').classList.add('hidden');
     loadingOverlay.classList.add('active');
     try {
         if (await checkPulls()) {
@@ -154,13 +154,13 @@ async function displayPullResults(pulls) {
         const card = document.createElement('div');
         card.classList.add('pull-card');
         card.innerHTML = `
-            <img src="Sprites/${characterName}.svg" alt="${characterName}">
+            <img src="${window.CLOUDFRONT_URL}/${characterName}">
             <div class="name">${characterName}</div>
         `;
         grid.appendChild(card);
     });
     pullResults.appendChild(grid);
-    pullResults.onclick = function() {
+    pullResults.onclick = function () {
         pullResults.classList.add('hidden');
         document.getElementById('closeButton').classList.remove('hidden');
         document.getElementById('Banners').classList.remove('hidden');

@@ -177,12 +177,14 @@ function displayUpgrade(index) {
 function attackSprite(index) {
     const elementId = index != 3 ? `Ally${index + 1}` : 'Enemy1';
     const target = document.getElementById(elementId);
-    const currentSrc = target.src;
-    if (currentSrc.includes('Attack')) {
-        target.src = currentSrc.replace('Attack', '');
-    } else {
-        target.src = currentSrc.replace('.svg', 'Attack.svg');
-    }
+    const baseSprite = target.dataset.sprite;
+    const isAttacking = target.src.includes('Attack');
+    
+    const newSpriteName = isAttacking 
+        ? baseSprite 
+        : `${baseSprite}Attack`;
+        
+    target.src = `${window.CLOUDFRONT_URL}/${newSpriteName}`;
 }
 function calcDamage(target, damageAmount){
     const targetHBar = [hbar1, hbar2, hbar3, hbar4][target];
