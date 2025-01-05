@@ -176,8 +176,12 @@ function displayUpgrade(index) {
 function attackSprite(index) {
     const elementId = index != 3 ? `Ally${index + 1}` : 'Enemy1';
     const target = document.getElementById(elementId);
-    const baseSprite = target.dataset.sprite;
     const isAttacking = target.src.includes('Attack');
+    const currentUrl = target.src;
+    const spriteName = currentUrl.split('/').pop();
+    const baseSprite = isAttacking 
+        ? spriteName.replace('Attack', '') 
+        : spriteName;
     
     const newSpriteName = isAttacking 
         ? baseSprite 
