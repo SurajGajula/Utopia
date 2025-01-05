@@ -1,6 +1,6 @@
-import { handleButton1, handleButton2, handleButton3, handleSkill, handleClose } from '/Scripts/menu.js';
-import { navigateToLogin, exchangeCodeForSub, initializeAWS } from '/Scripts/auth.js';
-import { dailyPulls, loadPulls } from '/Scripts/character.js';
+import { handleButton1, handleButton2, handleButton3, handleSkill, handleClose } from '/menu.js';
+import { navigateToLogin, exchangeCodeForSub, initializeAWS } from '/auth.js';
+import { dailyPulls, loadPulls } from '/character.js';
 if (!window.location.search.includes('code=')) {
     navigateToLogin();
 }

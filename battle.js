@@ -1,4 +1,4 @@
-import { Character, storeExp } from '/Scripts/character.js';
+import { Character, storeExp } from '/character.js';
 let hbar1, hbar2, hbar3, hbar4;
 let char1, char2, char3, char4;
 let bbar1, bbar2, bbar3, bbar4;
