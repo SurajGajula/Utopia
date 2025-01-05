@@ -1,4 +1,4 @@
-import { initializeAWS } from './auth.js';
+import { initializeAWS } from '/Scripts/auth.js';
 const getDynamoClient = async () => {
     await initializeAWS();
     return new AWS.DynamoDB.DocumentClient();

@@ -136,6 +136,7 @@ window.handlePull = async function (itemName) {
                 pulls.push(storePull(itemName));
             }
             const results = await Promise.all(pulls);
+            await updatePullsDisplay();
             await displayPullResults(results);
         }
         loadingOverlay.classList.remove('active');
