@@ -285,7 +285,20 @@ button:hover {
     text-shadow: 2px 2px 0 #000;
     margin: 5px 0;
 }
+#Updates {
+    background-color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    margin-right: 10px;
+    cursor: pointer;
+    border: none;
+}
 .TopUI {
+    display: flex;
+    align-items: center;
     position: fixed;
     top: 20px;
     right: 20px;
