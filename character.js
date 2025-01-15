@@ -359,3 +359,6 @@ export async function storePull(bannerName) {
         throw error;
     }
 }
+export async function loadUpdates() {
+    
+}

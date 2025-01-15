@@ -300,8 +300,6 @@ button:hover {
     align-items: center;
 }
 .TopUI {
-    display: flex;
-    align-items: center;
     position: fixed;
     top: 20px;
     right: 20px;
