@@ -296,16 +296,20 @@ button:hover {
     cursor: pointer;
     border: none;
     width: 30px;
-    height: 30px;
+    height: 30px !important;
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: unset;
 }
 .TopUI {
     position: fixed;
     top: 20px;
     right: 20px;
     z-index: 1000;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px; 
 }
 #pullsDisplay {
     background-color: white;
