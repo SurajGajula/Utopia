@@ -287,7 +287,7 @@ button:hover {
 }
 #updatesButton {
     background-color: white;
-    padding: 5px 10px;
+    padding: 10px;
     border-radius: 5px;
     font-size: 18px;
     font-weight: bold;
@@ -295,6 +295,9 @@ button:hover {
     margin-right: 10px;
     cursor: pointer;
     border: none;
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 .TopUI {
     display: flex;
@@ -303,6 +306,7 @@ button:hover {
     top: 20px;
     right: 20px;
     z-index: 1000;
+    height: 44px;
 }
 #pullsDisplay {
     background-color: white;
@@ -311,6 +315,9 @@ button:hover {
     font-size: 24px;
     font-weight: bold;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 .card-container {
     display: flex;
