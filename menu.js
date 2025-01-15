@@ -178,23 +178,16 @@ async function showPullResults(pulls) {
 function showUpdates(updates) {
     const updatesContainer = document.getElementById('Updates');
     updatesContainer.innerHTML = '';
-    
     updates.forEach(update => {
         const updateElement = document.createElement('div');
         updateElement.classList.add('update');
-        
-        let alliesText = update.Allies ? update.Allies.join(', ') : 'None';
-        let enemiesText = update.Enemies ? update.Enemies.join(', ') : 'None';
-        let featuresText = update.Features ? update.Features.join(', ') : 'None';
-
         updateElement.innerHTML = `
-            <h2>Version ${update.Version}</h2>
-            <p><strong>New Allies:</strong> ${alliesText}</p>
-            <p><strong>New Enemies:</strong> ${enemiesText}</p>
-            <p><strong>New Features:</strong> ${featuresText}</p>
+            <h2>Version ${parseFloat(update.Version).toFixed(1)}</h2>
+            <p><strong>New Allies:</strong> ${update.Allies}</p>
+            <p><strong>New Enemies:</strong> ${update.Enemies}</p>
+            <p><strong>New Features:</strong> ${update.Features}</p>
             <hr>
         `;
-        
         updatesContainer.appendChild(updateElement);
     });
 }
