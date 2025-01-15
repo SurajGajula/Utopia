@@ -287,14 +287,11 @@ button:hover {
 }
 #updatesButton {
     background-color: white;
-    padding: 10px;
+    padding: 10px 20px;
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 24px;
     font-weight: bold;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    margin-right: 10px;
-    cursor: pointer;
-    border: none;
     height: 100%;
     display: flex;
     align-items: center;
