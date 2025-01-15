@@ -360,5 +360,15 @@ export async function storePull(bannerName) {
     }
 }
 export async function loadUpdates() {
-    
+    const docClient = await getDynamoClient();
+    const params = {
+        TableName: 'UtopiaUpdates'
+    };
+    try {
+        const data = await docClient.scan(params).promise();
+        return data.Items;
+    } catch (error) {
+        console.error("Error in loadUpdates", error);
+        throw error;
+    }
 }
