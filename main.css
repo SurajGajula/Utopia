@@ -301,7 +301,6 @@ button:hover {
     top: 20px;
     right: 20px;
     z-index: 1000;
-    height: 44px;
 }
 #pullsDisplay {
     background-color: white;
