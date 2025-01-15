@@ -1,5 +1,5 @@
 import { pSkill, startBattle } from "/battle.js";
-import { loadAllies, loadEnemies, loadBanners, storeParty, checkPulls, storePull } from "/character.js";
+import { loadAllies, loadEnemies, loadBanners, storeParty, checkPulls, storePull, loadUpdates } from "/character.js";
 import { updatePullsDisplay } from "/main.js";
 export function handleButton1(button) {
     button.addEventListener('click', async () => {
@@ -43,6 +43,8 @@ export async function handleUpdates(button) {
     button.addEventListener('click', async () => {
         document.getElementById('MenuUI').classList.add('hidden');
         document.getElementById('closeButton').classList.remove('hidden');
+        showUpdates(await loadUpdates());
+        document.getElementById('Updates').classList.remove('hidden');
     });
 }
 function showAllies(items) {
@@ -143,7 +145,7 @@ window.handlePull = async function (itemName) {
             }
             const results = await Promise.all(pulls);
             await updatePullsDisplay();
-            await displayPullResults(results);
+            await showPullResults(results);
         }
         loadingOverlay.classList.remove('active');
         document.getElementById('PullResults').classList.remove('hidden');
@@ -152,7 +154,7 @@ window.handlePull = async function (itemName) {
         throw error;
     }
 };
-async function displayPullResults(pulls) {
+async function showPullResults(pulls) {
     const pullResults = document.getElementById('PullResults');
     pullResults.innerHTML = '';
     const grid = document.createElement('div');
@@ -172,4 +174,27 @@ async function displayPullResults(pulls) {
         document.getElementById('closeButton').classList.remove('hidden');
         document.getElementById('Banners').classList.remove('hidden');
     };
+}
+function showUpdates(updates) {
+    const updatesContainer = document.getElementById('Updates');
+    updatesContainer.innerHTML = '';
+    
+    updates.forEach(update => {
+        const updateElement = document.createElement('div');
+        updateElement.classList.add('update');
+        
+        let alliesText = update.Allies ? update.Allies.join(', ') : 'None';
+        let enemiesText = update.Enemies ? update.Enemies.join(', ') : 'None';
+        let featuresText = update.Features ? update.Features.join(', ') : 'None';
+
+        updateElement.innerHTML = `
+            <h2>Version ${update.Version}</h2>
+            <p><strong>New Allies:</strong> ${alliesText}</p>
+            <p><strong>New Enemies:</strong> ${enemiesText}</p>
+            <p><strong>New Features:</strong> ${featuresText}</p>
+            <hr>
+        `;
+        
+        updatesContainer.appendChild(updateElement);
+    });
 }
