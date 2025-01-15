@@ -39,6 +39,12 @@ export function handleClose(button) {
         document.getElementById('Banners').classList.add('hidden');
     });
 }
+export async function handleUpdates(button) {
+    button.addEventListener('click', async () => {
+        document.getElementById('MenuUI').classList.add('hidden');
+        document.getElementById('closeButton').classList.remove('hidden');
+    });
+}
 function showAllies(items) {
     const container = document.getElementById("Owned");
     container.innerHTML = '';
