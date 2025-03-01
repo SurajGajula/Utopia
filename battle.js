@@ -85,7 +85,6 @@ export async function damage(index, target) {
         }
         count -= 1;
     }
-    attackSprite(index);
     document.getElementById('Skills').classList.add('hidden');
     for (let i = 0; i < hits; i++) {
         calcDamage(target, damageAmount);
@@ -94,7 +93,6 @@ export async function damage(index, target) {
         displayCombo();
         await new Promise(resolve => setTimeout(resolve, 1000));
     }
-    attackSprite(index);
     if (index != 3) {
         if (combo >= 100 && skilllevels[index] == 1) {
             displayUpgrade(index);
@@ -173,22 +171,7 @@ function displayUpgrade(index) {
         skillBtn.textContent = skillBtn.textContent.replace(/\+/g, '');
     }
 }
-function attackSprite(index) {
-    const elementId = index != 3 ? `Ally${index + 1}` : 'Enemy1';
-    const target = document.getElementById(elementId);
-    const isAttacking = target.src.includes('Attack');
-    const currentUrl = target.src;
-    const spriteName = currentUrl.split('/').pop();
-    const baseSprite = isAttacking 
-        ? spriteName.replace('Attack', '') 
-        : spriteName;
-    
-    const newSpriteName = isAttacking 
-        ? baseSprite 
-        : `${baseSprite}Attack`;
-        
-    target.src = `${window.CLOUDFRONT_URL}/${newSpriteName}`;
-}
+
 function calcDamage(target, damageAmount){
     const targetHBar = [hbar1, hbar2, hbar3, hbar4][target];
     const targetBBar = [bbar1, bbar2, bbar3, bbar4][target];
