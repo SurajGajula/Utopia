@@ -133,8 +133,7 @@ async function eSkill() {
     displayUpgrade(2);
 }
 function spawnDamageNumber(target, damageAmount) {
-    const elementId = target != 3 ? `Ally${target + 1}` : 'Enemy';
-    const targetElement = document.querySelector(`#${elementId}`);
+    const targetElement = document.querySelector(`#Enemy`);
     const damageElement = document.createElement('div');
     damageElement.className = 'damage-number';
     damageElement.textContent = damageAmount;
@@ -144,7 +143,7 @@ function spawnDamageNumber(target, damageAmount) {
     const rect = targetElement.getBoundingClientRect();
     damageElement.style.position = 'absolute';
     if (target != 3) {
-        damageElement.style.left = `${rect.left + 25}px`;
+        damageElement.style.left = `${rect.left - 125}px`;
         damageElement.style.top = `${rect.top}px`;
     } else {
         damageElement.style.left = `${rect.right - 125}px`;

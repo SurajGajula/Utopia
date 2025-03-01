@@ -67,11 +67,12 @@ button:hover {
     height: 600px;
 }
 .EnemyBar {
-    width: 800px;
+    width: 1000px;
     height: auto;
     position: fixed;
     top: 50px;
-    right: 50px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
 }
@@ -260,9 +261,8 @@ button:hover {
 }
 #Info {
     position: absolute;
-    top: 30px;
-    left: 36.25%;
-    transform: translateX(-50%);
+    bottom: 250px;
+    left: 50px;
     text-align: center;
     z-index: 1;
 }
@@ -270,9 +270,9 @@ button:hover {
     color: white;
     font-size: 24px;
     font-weight: bold;
-    font-weight: bold;
     text-shadow: 2px 2px 0 #000;
     margin: 5px 0;
+    text-align: left;
 }
 #updatesButton {
     background-color: white;
