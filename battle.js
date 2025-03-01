@@ -140,7 +140,7 @@ function spawnDamageNumber(target, damageAmount) {
     const rect = targetElement.getBoundingClientRect();
     damageElement.style.position = 'absolute';
     if (target != 3) {
-        damageElement.style.left = `${rect.left + 37.5}px`;
+        damageElement.style.left = `${rect.left + 50}px`;
         damageElement.style.top = `${rect.top + 50}px`;
     } else {
         damageElement.style.left = `${rect.right - 125}px`;
