@@ -67,10 +67,10 @@ button:hover {
     height: 600px;
 }
 .EnemyBar {
-    width: 1000px;
+    width: 90%;
     height: auto;
     position: fixed;
-    top: 50px;
+    top: 25px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
