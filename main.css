@@ -247,7 +247,7 @@ button:hover {
 .damage-number {
     position: absolute;
     color: white;
-    font-size: 24px;
+    font-size: 48px;
     font-weight: bold;
     text-shadow: 2px 2px 0 #000;
     pointer-events: none;
@@ -261,11 +261,12 @@ button:hover {
 }
 #Info {
     position: absolute;
-    bottom: 250px;
+    bottom: 275px;
     left: 50px;
     text-align: center;
     z-index: 1;
 }
+
 #Info div {
     color: white;
     font-size: 24px;
