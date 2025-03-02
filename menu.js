@@ -29,6 +29,8 @@ export function handleButton4(button) {
     button.addEventListener('click', async () => {
         document.getElementById('MenuUI').classList.add('hidden');
         document.getElementById('closeButton').classList.remove('hidden');
+        showCity();
+        document.getElementById('CityUI').classList.remove('hidden');
     });
 }
 export async function handleSkill(button, index) {
@@ -197,4 +199,20 @@ function showUpdates(updates) {
         `;
         updatesContainer.appendChild(updateElement);
     });
+}
+function showCity() {
+    const cityContainer = document.getElementById('CityUI');
+    cityContainer.innerHTML = '';
+    const gridContainer = document.createElement('div');
+    gridContainer.classList.add('city-grid');
+    
+    for (let i = 0; i < 100; i++) {
+        const block = document.createElement('div');
+        block.classList.add('city-block');
+        block.addEventListener('click', () => {
+            block.classList.toggle('selected');
+        });
+        gridContainer.appendChild(block);
+    }
+    cityContainer.appendChild(gridContainer);
 }
