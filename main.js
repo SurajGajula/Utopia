@@ -9,7 +9,6 @@ import {
 } from '/menu.js';
 import { navigateToLogin, exchangeCodeForSub, initializeAWS } from '/auth.js';
 import { dailyPulls, loadPulls } from '/character.js';
-import { handleButton4 } from './menu';
 if (!window.location.search.includes('code=')) {
     navigateToLogin();
 }
