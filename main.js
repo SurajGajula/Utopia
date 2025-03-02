@@ -1,6 +1,15 @@
-import { handleButton1, handleButton2, handleButton3, handleSkill, handleClose, handleUpdates } from '/menu.js';
+import { 
+    handleButton1, 
+    handleButton2, 
+    handleButton3, 
+    handleButton4, 
+    handleSkill, 
+    handleClose, 
+    handleUpdates 
+} from '/menu.js';
 import { navigateToLogin, exchangeCodeForSub, initializeAWS } from '/auth.js';
 import { dailyPulls, loadPulls } from '/character.js';
+import { handleButton4 } from './menu';
 if (!window.location.search.includes('code=')) {
     navigateToLogin();
 }
@@ -59,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');
 const button3 = document.getElementById('button3');
+const button4 = document.getElementById('button4');
 const skill1 = document.getElementById('skill1');
 const skill2 = document.getElementById('skill2');
 const skill3 = document.getElementById('skill3');
@@ -67,6 +77,7 @@ const updatesButton = document.getElementById('updatesButton');
 handleButton1(button1);
 handleButton2(button2);
 handleButton3(button3);
+handleButton4(button4);
 handleSkill(skill1, 0);
 handleSkill(skill2, 1);
 handleSkill(skill3, 2);

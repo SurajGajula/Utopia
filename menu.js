@@ -25,6 +25,12 @@ export function handleButton3(button) {
         document.getElementById('Banners').classList.remove('hidden');
     });
 }
+export function handleButton4(button) {
+    button.addEventListener('click', async () => {
+        document.getElementById('MenuUI').classList.add('hidden');
+        document.getElementById('closeButton').classList.remove('hidden');
+    });
+}
 export async function handleSkill(button, index) {
     button.addEventListener('click', async () => {
         await pSkill(index);

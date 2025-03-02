@@ -29,14 +29,14 @@ body {
 #MenuUI .RightUI {
     display: flex;
     flex-direction: column;
-    gap: 50px;
+    gap: 25px;
     align-items: center;
     order: 1;
-    margin-top: 50px;
+    margin-top: 25px;
     margin-right: 100px;
 }
 #MenuUI button {
-    height: 200px;
+    height: 150px;
 }
 button {
     padding: 10px 20px;
