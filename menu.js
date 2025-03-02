@@ -46,6 +46,7 @@ export function handleClose(button) {
         document.getElementById('Enemies').classList.add('hidden');
         document.getElementById('Banners').classList.add('hidden');
         document.getElementById('Updates').classList.add('hidden');
+        document.getElementById('CityUI').classList.add('hidden');
     });
 }
 export async function handleUpdates(button) {
