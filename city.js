@@ -11,7 +11,7 @@ class Block {
     }
 
     changeColor() {
-        this.color = '#4A4A4A'; // Change to green
+        this.color = '#00FF00'; // Change to green
     }
 }
 
