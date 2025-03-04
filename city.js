@@ -14,3 +14,5 @@ class Block {
         this.color = '#4A4A4A'; // Change to green
     }
 }
+
+export { City, Block };

@@ -1,6 +1,8 @@
 import { pSkill, startBattle } from "/battle.js";
 import { loadAllies, loadEnemies, loadBanners, storeParty, checkPulls, storePull, loadUpdates } from "/character.js";
 import { updatePullsDisplay } from "/main.js";
+import { City, Block } from './city.js';
+
 export function handleButton1(button) {
     button.addEventListener('click', async () => {
         document.getElementById('MenuUI').classList.add('hidden');
