@@ -207,13 +207,18 @@ function showCity() {
     const gridContainer = document.createElement('div');
     gridContainer.classList.add('city-grid');
     
-    for (let i = 0; i < 100; i++) {
-        const block = document.createElement('div');
-        block.classList.add('city-block');
-        block.addEventListener('click', () => {
-            block.classList.toggle('selected');
+    const city = new City(10); // Create a 10x10 city grid
+    city.grid.forEach((row, rowIndex) => {
+        row.forEach((block, colIndex) => {
+            const blockElement = document.createElement('div');
+            blockElement.classList.add('city-block');
+            blockElement.style.backgroundColor = block.color;
+            blockElement.addEventListener('click', () => {
+                block.changeColor();
+                blockElement.style.backgroundColor = block.color;
+            });
+            gridContainer.appendChild(blockElement);
         });
-        gridContainer.appendChild(block);
-    }
+    });
     cityContainer.appendChild(gridContainer);
 }
