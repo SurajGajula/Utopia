@@ -289,8 +289,8 @@ button:hover {
     text-align: left;
 }
 #updatesButton {
-    width: 10px;
-    height: 10px;
+    width: 45px !important;
+    height: 45px !important;
     padding: 5px;
     border-radius: 5px;
     font-size: 18px;
@@ -483,7 +483,7 @@ button:hover {
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
 .city-block.selected {
-    background-color: #4A4A4A;
+    background-color: #fff;
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
@@ -495,19 +495,18 @@ button:hover {
 }
 
 #CityUI .color-menu button {
-    font-size: 16px;
-    padding: 15px 10px;
-    width: 100px;
-    border: 2px solid #00ffcc;
-    border-radius: 8px;
-    background-color: #1a1a1a;
-    color: #00ffcc;
+    font-size: 48px;
+    padding: 10px 20px;
+    width: 600px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    color: #1a1a1a;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 #CityUI .color-menu button:hover {
-    background-color: #00ffcc;
-    color: #1a1a1a;
-    box-shadow: 0 0 15px #00ffcc;
+    background-color: #f0f0f0;
+    box-shadow: 0 0 15px #fff;
 }
