@@ -244,11 +244,14 @@ function showCity() {
 }
 
 document.addEventListener('keydown', (event) => {
-    if (event.key === '1') {
-        document.getElementById('skill1').click();
-    } else if (event.key === '2') {
-        document.getElementById('skill2').click();
-    } else if (event.key === '3') {
-        document.getElementById('skill3').click();
+    const skill1 = document.getElementById('skill1');
+    const skill2 = document.getElementById('skill2');
+    const skill3 = document.getElementById('skill3');
+    if (event.key === '1' && !skill1.classList.contains('hidden')) {
+        skill1.click();
+    } else if (event.key === '2' && !skill2.classList.contains('hidden')) {
+        skill2.click();
+    } else if (event.key === '3' && !skill3.classList.contains('hidden')) {
+        skill3.click();
     }
 });
