@@ -490,6 +490,9 @@ button:hover {
     border-radius: 4px;
     transition: all 0.3s ease;
     cursor: pointer;
+    box-shadow: 0 0 15px #ccc;
+    gap: 2.5px;
+    border-radius: 2px;
 }
 .city-block:hover {
     transform: scale(1.05);
@@ -522,4 +525,12 @@ button:hover {
 #CityUI .color-menu button:hover {
     background-color: #f0f0f0;
     box-shadow: 0 0 15px #e0e0e0;
+}
+
+#buildingButton {
+    box-shadow: 0 0 15px #ccc;
+}
+
+#buildingButton:active {
+    box-shadow: 0 0 15px #ccc;
 }
