@@ -286,7 +286,7 @@ function showCity() {
     });
 
     const totalsDisplay = document.getElementById('totalsDisplay');
-    document.querySelector('color-menu').appendChild(totalsDisplay);
+    document.querySelector('.color-menu').appendChild(totalsDisplay);
     updateTotals();
 }
 
