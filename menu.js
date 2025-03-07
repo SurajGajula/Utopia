@@ -289,7 +289,7 @@ function showCity() {
             gridContainer.appendChild(blockElement);
         });
     });
-    totalsDisplay = document.getElementById('totalsDisplay');
+    const totalsDisplay = document.getElementById('totalsDisplay');
     document.getElementById('CityUI').appendChild(totalsDisplay);
     updateTotals();
 }
