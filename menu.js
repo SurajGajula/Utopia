@@ -205,9 +205,8 @@ function showUpdates(updates) {
 }
 function showCity() {
     const cityContainer = document.getElementById('CityUI');
-    cityContainer.innerHTML = '';
-    const gridContainer = document.createElement('div');
-    gridContainer.classList.add('city-grid');
+    const gridContainer = document.getElementById('cityGrid');
+    gridContainer.innerHTML = '';
 
     const grassButton = document.getElementById('grassButton');
     const buildingButton = document.getElementById('buildingButton');
@@ -256,7 +255,6 @@ function showCity() {
             gridContainer.appendChild(blockElement);
         });
     });
-    cityContainer.appendChild(gridContainer);
 }
 
 document.addEventListener('keydown', (event) => {

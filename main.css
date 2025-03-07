@@ -289,7 +289,8 @@ button:hover {
     text-align: left;
 }
 #updatesButton {
-    background-color: white;
+    width: 45px;
+    height: 45px;
     padding: 5px;
     border-radius: 5px;
     font-size: 18px;
@@ -298,12 +299,16 @@ button:hover {
     margin-right: 10px;
     cursor: pointer;
     border: none;
-    width: 45px;
-    height: 45px !important;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: unset;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+#updatesButton:hover {
+    background-color: #ccc;
+    box-shadow: 0 0 15px #ccc;
 }
 .TopUI {
     position: fixed;
