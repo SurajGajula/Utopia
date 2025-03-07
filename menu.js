@@ -211,18 +211,22 @@ function showCity() {
 
     const colorMenu = document.createElement('div');
     colorMenu.classList.add('color-menu');
-    const greenButton = document.createElement('button');
-    greenButton.textContent = 'Green';
-    greenButton.addEventListener('click', () => {
+    const grassButton = document.createElement('button');
+    grassButton.textContent = 'Grass';
+    grassButton.style.fontSize = '12px';
+    grassButton.style.padding = '5px';
+    grassButton.addEventListener('click', () => {
         selectedColor = '#00FF00';
     });
-    const grayButton = document.createElement('button');
-    grayButton.textContent = 'Gray';
-    grayButton.addEventListener('click', () => {
+    const buildingButton = document.createElement('button');
+    buildingButton.textContent = 'Building';
+    buildingButton.style.fontSize = '12px';
+    buildingButton.style.padding = '5px';
+    buildingButton.addEventListener('click', () => {
         selectedColor = '#4A4A4A';
     });
-    colorMenu.appendChild(greenButton);
-    colorMenu.appendChild(grayButton);
+    colorMenu.appendChild(grassButton);
+    colorMenu.appendChild(buildingButton);
     cityContainer.appendChild(colorMenu);
 
     let selectedColor = '#00FF00';
@@ -247,11 +251,11 @@ document.addEventListener('keydown', (event) => {
     const skill1 = document.getElementById('skill1');
     const skill2 = document.getElementById('skill2');
     const skill3 = document.getElementById('skill3');
-    if (event.key === '1' && !skill1.classList.contains('hidden')) {
+    if (event.key === '1' && skill1.offsetParent !== null) {
         skill1.click();
-    } else if (event.key === '2' && !skill2.classList.contains('hidden')) {
+    } else if (event.key === '2' && skill2.offsetParent !== null) {
         skill2.click();
-    } else if (event.key === '3' && !skill3.classList.contains('hidden')) {
+    } else if (event.key === '3' && skill3.offsetParent !== null) {
         skill3.click();
     }
 });
