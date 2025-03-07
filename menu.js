@@ -1,7 +1,7 @@
 import { pSkill, startBattle } from "/battle.js";
 import { loadAllies, loadEnemies, loadBanners, storeParty, checkPulls, storePull, loadUpdates } from "/character.js";
 import { updatePullsDisplay } from "/main.js";
-import { City, Block } from './city.js';
+import { City } from './city.js';
 
 export function handleButton1(button) {
     button.addEventListener('click', async () => {
@@ -245,7 +245,7 @@ function showCity() {
     colorMenu.appendChild(buildingButton);
     cityContainer.appendChild(colorMenu);
 
-    let selectedColor = null; // No color selected by default
+    let selectedColor = null;
 
     const city = new City(10);
     city.grid.forEach((row, rowIndex) => {
