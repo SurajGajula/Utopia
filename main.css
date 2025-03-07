@@ -468,7 +468,7 @@ button:hover {
 }
 #CityUI {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
     height: 100vh;
     width: 100vw;
@@ -538,7 +538,7 @@ button:hover {
 .left-panel {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     margin-right: 20px;
     width: 200px;
 }
@@ -548,5 +548,5 @@ button:hover {
 }
 
 #totalsDisplay {
-    width: 100%;
+    width: 200px;
 }
