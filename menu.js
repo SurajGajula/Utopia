@@ -225,21 +225,16 @@ function showCity() {
         }, { oxygen: 0, water: 0, food: 0, population: 0, energy: 0 });
 
         const totalsDisplay = document.getElementById('totalsDisplay');
-        totalsDisplay.innerHTML = '';
-        const grid = document.createElement('div');
-        grid.classList.add('pull-results-grid');
-        const card = document.createElement('div');
-        card.classList.add('pull-card');
-        card.innerHTML = `
-            <h3>Totals</h3>
-            <p>Oxygen: ${totals.oxygen}</p>
-            <p>Water: ${totals.water}</p>
-            <p>Food: ${totals.food}</p>
-            <p>Population: ${totals.population}</p>
-            <p>Energy: ${totals.energy}</p>
+        totalsDisplay.innerHTML = `
+            <div class="card">
+                <h3>Totals</h3>
+                <p>Oxygen: ${totals.oxygen}</p>
+                <p>Water: ${totals.water}</p>
+                <p>Food: ${totals.food}</p>
+                <p>Population: ${totals.population}</p>
+                <p>Energy: ${totals.energy}</p>
+            </div>
         `;
-        grid.appendChild(card);
-        totalsDisplay.appendChild(grid);
     };
 
     if (grassButton && buildingButton) {
@@ -289,6 +284,7 @@ function showCity() {
             gridContainer.appendChild(blockElement);
         });
     });
+
     const totalsDisplay = document.getElementById('totalsDisplay');
     document.getElementById('CityUI').appendChild(totalsDisplay);
     updateTotals();
