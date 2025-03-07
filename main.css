@@ -52,7 +52,7 @@ button {
     border: 2px solid #ccc;
     border-radius: 8px;
     background-color: #1a1a1a;
-    color: #ccc;
+    color: white;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -508,5 +508,5 @@ button:hover {
 
 #CityUI .color-menu button:hover {
     background-color: #f0f0f0;
-    box-shadow: 0 0 15px #fff;
+    box-shadow: 0 0 15px #ccc;
 }
