@@ -39,16 +39,20 @@ body {
     height: 150px;
 }
 button {
-    padding: 10px 20px;
-    font-size: 48px;
+    padding: 15px 10px;
+    font-size: 16px;
+    width: 100px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background-color: #1a1a1a;
+    color: #ccc;
     cursor: pointer;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: white;
-    width: 600px;
+    transition: all 0.3s ease;
 }
 button:hover {
-    background-color: #f0f0f0;
+    background-color: #ccc;
+    color: #1a1a1a;
+    box-shadow: 0 0 15px #ccc;
 }
 .hidden {
     display: none !important;
@@ -471,14 +475,14 @@ button:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
-.color-menu {
+#CityUI .color-menu {
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-right: 20px;
 }
 
-.color-menu button {
+#CityUI .color-menu button {
     font-size: 16px;
     padding: 15px 10px;
     width: 100px;
@@ -490,7 +494,7 @@ button:hover {
     transition: all 0.3s ease;
 }
 
-.color-menu button:hover {
+#CityUI .color-menu button:hover {
     background-color: #00ffcc;
     color: #1a1a1a;
     box-shadow: 0 0 15px #00ffcc;

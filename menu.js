@@ -209,13 +209,9 @@ function showCity() {
     const gridContainer = document.createElement('div');
     gridContainer.classList.add('city-grid');
 
-    const colorMenu = document.createElement('div');
-    colorMenu.classList.add('color-menu');
-    const grassButton = document.createElement('button');
-    grassButton.textContent = 'Grass';
-    grassButton.style.fontSize = '12px';
-    grassButton.style.padding = '10px 5px';
-    grassButton.style.width = '50px';
+    const grassButton = document.getElementById('grassButton');
+    const buildingButton = document.getElementById('buildingButton');
+
     grassButton.addEventListener('click', () => {
         if (selectedColor === '#00FF00') {
             selectedColor = null;
@@ -226,11 +222,7 @@ function showCity() {
             buildingButton.style.boxShadow = 'none';
         }
     });
-    const buildingButton = document.createElement('button');
-    buildingButton.textContent = 'Building';
-    buildingButton.style.fontSize = '12px';
-    buildingButton.style.padding = '10px 5px';
-    buildingButton.style.width = '50px';
+
     buildingButton.addEventListener('click', () => {
         if (selectedColor === '#4A4A4A') {
             selectedColor = null;
@@ -241,9 +233,6 @@ function showCity() {
             grassButton.style.boxShadow = 'none';
         }
     });
-    colorMenu.appendChild(grassButton);
-    colorMenu.appendChild(buildingButton);
-    cityContainer.appendChild(colorMenu);
 
     let selectedColor = null;
 
