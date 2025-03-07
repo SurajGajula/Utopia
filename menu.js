@@ -212,27 +212,29 @@ function showCity() {
     const grassButton = document.getElementById('grassButton');
     const buildingButton = document.getElementById('buildingButton');
 
-    grassButton.addEventListener('click', () => {
-        if (selectedColor === '#00FF00') {
-            selectedColor = null;
-            grassButton.style.boxShadow = 'none';
-        } else {
-            selectedColor = '#00FF00';
-            grassButton.style.boxShadow = '0 0 10px #00FF00';
-            buildingButton.style.boxShadow = 'none';
-        }
-    });
+    if (grassButton && buildingButton) {
+        grassButton.addEventListener('click', () => {
+            if (selectedColor === '#00FF00') {
+                selectedColor = null;
+                grassButton.style.boxShadow = 'none';
+            } else {
+                selectedColor = '#00FF00';
+                grassButton.style.boxShadow = '0 0 10px #00FF00';
+                buildingButton.style.boxShadow = 'none';
+            }
+        });
 
-    buildingButton.addEventListener('click', () => {
-        if (selectedColor === '#4A4A4A') {
-            selectedColor = null;
-            buildingButton.style.boxShadow = 'none';
-        } else {
-            selectedColor = '#4A4A4A';
-            buildingButton.style.boxShadow = '0 0 10px #4A4A4A';
-            grassButton.style.boxShadow = 'none';
-        }
-    });
+        buildingButton.addEventListener('click', () => {
+            if (selectedColor === '#4A4A4A') {
+                selectedColor = null;
+                buildingButton.style.boxShadow = 'none';
+            } else {
+                selectedColor = '#4A4A4A';
+                buildingButton.style.boxShadow = '0 0 10px #4A4A4A';
+                grassButton.style.boxShadow = 'none';
+            }
+        });
+    }
 
     let selectedColor = null;
 
