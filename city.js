@@ -5,4 +5,7 @@ class City {
     }
 }
 
+class Block {
+}
+
 export { City };
