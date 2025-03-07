@@ -289,8 +289,8 @@ button:hover {
     text-align: left;
 }
 #updatesButton {
-    width: 45px;
-    height: 45px;
+    width: 10px;
+    height: 10px;
     padding: 5px;
     border-radius: 5px;
     font-size: 18px;
