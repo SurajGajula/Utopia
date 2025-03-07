@@ -204,7 +204,6 @@ function showUpdates(updates) {
     });
 }
 function showCity() {
-    const cityContainer = document.getElementById('CityUI');
     const gridContainer = document.getElementById('cityGrid');
     gridContainer.innerHTML = '';
 

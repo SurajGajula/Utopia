@@ -52,7 +52,7 @@ button {
     border: 2px solid #ccc;
     border-radius: 8px;
     background-color: #1a1a1a;
-    color: white;
+    color: #1a1a1a;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -483,7 +483,7 @@ button:hover {
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
 .city-block.selected {
-    background-color: #fff;
+    background-color: #d3d3d3;
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
