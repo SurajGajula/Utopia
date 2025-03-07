@@ -225,7 +225,16 @@ function showCity() {
         }, { oxygen: 0, water: 0, food: 0, population: 0, energy: 0 });
 
         const totalsDisplay = document.getElementById('totalsDisplay');
-        totalsDisplay.innerHTML = `Oxygen: ${totals.oxygen}, Water: ${totals.water}, Food: ${totals.food}, Population: ${totals.population}, Energy: ${totals.energy}`;
+        totalsDisplay.innerHTML = `
+            <div class="card">
+                <h3>Totals</h3>
+                <p>Oxygen: ${totals.oxygen}</p>
+                <p>Water: ${totals.water}</p>
+                <p>Food: ${totals.food}</p>
+                <p>Population: ${totals.population}</p>
+                <p>Energy: ${totals.energy}</p>
+            </div>
+        `;
     };
 
     if (grassButton && buildingButton) {
@@ -241,12 +250,12 @@ function showCity() {
         });
 
         buildingButton.addEventListener('click', () => {
-            if (selectedColor === '#4A4A4A') {
+            if (selectedColor === '#f0f0f0') {
                 selectedColor = null;
                 buildingButton.style.boxShadow = 'none';
             } else {
-                selectedColor = '#4A4A4A';
-                buildingButton.style.boxShadow = '0 0 10px #4A4A4A';
+                selectedColor = '#f0f0f0';
+                buildingButton.style.boxShadow = '0 0 10px #f0f0f0';
                 grassButton.style.boxShadow = 'none';
             }
         });
