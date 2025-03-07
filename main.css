@@ -538,5 +538,15 @@ button:hover {
 .left-panel {
     display: flex;
     flex-direction: column;
+    align-items: center;
     margin-right: 20px;
+    width: 200px;
+}
+
+#CityUI .color-menu {
+    margin-bottom: 20px;
+}
+
+#totalsDisplay {
+    width: 100%;
 }
