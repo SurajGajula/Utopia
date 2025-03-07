@@ -210,6 +210,24 @@ function showCity() {
     const grassButton = document.getElementById('grassButton');
     const buildingButton = document.getElementById('buildingButton');
 
+    let selectedColor = null;
+
+    const city = new City(10);
+
+    const updateTotals = () => {
+        const totals = city.grid.flat().reduce((acc, block) => {
+            acc.oxygen += block.oxygen;
+            acc.water += block.water;
+            acc.food += block.food;
+            acc.population += block.population;
+            acc.energy += block.energy;
+            return acc;
+        }, { oxygen: 0, water: 0, food: 0, population: 0, energy: 0 });
+
+        const totalsDisplay = document.getElementById('totalsDisplay');
+        totalsDisplay.innerHTML = `Oxygen: ${totals.oxygen}, Water: ${totals.water}, Food: ${totals.food}, Population: ${totals.population}, Energy: ${totals.energy}`;
+    };
+
     if (grassButton && buildingButton) {
         grassButton.addEventListener('click', () => {
             if (selectedColor === '#00FF00') {
@@ -234,9 +252,6 @@ function showCity() {
         });
     }
 
-    let selectedColor = null;
-
-    const city = new City(10);
     city.grid.forEach((row, rowIndex) => {
         row.forEach((block, colIndex) => {
             const blockElement = document.createElement('div');
@@ -246,6 +261,12 @@ function showCity() {
                 if (selectedColor) {
                     block.color = selectedColor;
                     blockElement.style.backgroundColor = block.color;
+                    if (selectedColor === '#00FF00') {
+                        block.changeGrass();
+                    } else if (selectedColor === '#4A4A4A') {
+                        block.changeBuilding();
+                    }
+                    updateTotals();
                     selectedColor = null;
                     grassButton.style.boxShadow = 'none';
                     buildingButton.style.boxShadow = 'none';
@@ -254,6 +275,12 @@ function showCity() {
             gridContainer.appendChild(blockElement);
         });
     });
+
+    const totalsDisplay = document.createElement('div');
+    totalsDisplay.id = 'totalsDisplay';
+    totalsDisplay.style.marginTop = '20px';
+    document.getElementById('CityUI').appendChild(totalsDisplay);
+    updateTotals();
 }
 
 document.addEventListener('keydown', (event) => {

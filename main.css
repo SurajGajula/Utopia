@@ -14,6 +14,19 @@ body {
     top: 5%;
     left: 2.5%;
     width: 75px;
+    padding: 10px 20px;
+    font-size: 48px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    color: #1a1a1a;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+#closeButton:hover {
+    background-color: #ccc;
+    color: #1a1a1a;
+    box-shadow: 0 0 15px #ccc;
 }
 #MenuUI {
     display: flex;
@@ -483,7 +496,7 @@ button:hover {
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
 .city-block.selected {
-    background-color: #d3d3d3;
+    background-color: #e0e0e0;
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
@@ -508,5 +521,5 @@ button:hover {
 
 #CityUI .color-menu button:hover {
     background-color: #f0f0f0;
-    box-shadow: 0 0 15px #ccc;
+    box-shadow: 0 0 15px #e0e0e0;
 }
