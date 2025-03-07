@@ -214,22 +214,38 @@ function showCity() {
     const grassButton = document.createElement('button');
     grassButton.textContent = 'Grass';
     grassButton.style.fontSize = '12px';
-    grassButton.style.padding = '5px';
+    grassButton.style.padding = '10px 5px';
+    grassButton.style.width = '50px';
     grassButton.addEventListener('click', () => {
-        selectedColor = '#00FF00';
+        if (selectedColor === '#00FF00') {
+            selectedColor = null;
+            grassButton.style.boxShadow = 'none';
+        } else {
+            selectedColor = '#00FF00';
+            grassButton.style.boxShadow = '0 0 10px #00FF00';
+            buildingButton.style.boxShadow = 'none';
+        }
     });
     const buildingButton = document.createElement('button');
     buildingButton.textContent = 'Building';
     buildingButton.style.fontSize = '12px';
-    buildingButton.style.padding = '5px';
+    buildingButton.style.padding = '10px 5px';
+    buildingButton.style.width = '50px';
     buildingButton.addEventListener('click', () => {
-        selectedColor = '#4A4A4A';
+        if (selectedColor === '#4A4A4A') {
+            selectedColor = null;
+            buildingButton.style.boxShadow = 'none';
+        } else {
+            selectedColor = '#4A4A4A';
+            buildingButton.style.boxShadow = '0 0 10px #4A4A4A';
+            grassButton.style.boxShadow = 'none';
+        }
     });
     colorMenu.appendChild(grassButton);
     colorMenu.appendChild(buildingButton);
     cityContainer.appendChild(colorMenu);
 
-    let selectedColor = '#00FF00';
+    let selectedColor = null; // No color selected by default
 
     const city = new City(10);
     city.grid.forEach((row, rowIndex) => {
@@ -238,8 +254,13 @@ function showCity() {
             blockElement.classList.add('city-block');
             blockElement.style.backgroundColor = block.color;
             blockElement.addEventListener('click', () => {
-                block.color = selectedColor;
-                blockElement.style.backgroundColor = block.color;
+                if (selectedColor) {
+                    block.color = selectedColor;
+                    blockElement.style.backgroundColor = block.color;
+                    selectedColor = null;
+                    grassButton.style.boxShadow = 'none';
+                    buildingButton.style.boxShadow = 'none';
+                }
             });
             gridContainer.appendChild(blockElement);
         });
