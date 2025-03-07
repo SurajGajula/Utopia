@@ -7,11 +7,11 @@ class City {
 
 class Block {
     constructor() {
-        this.color = '#1A1A1A'; // Default color
+        this.color = '#1A1A1A';
     }
 
     changeColor() {
-        this.color = '#00FF00'; // Change to green
+        this.color = '#00FF00';
     }
 }
 

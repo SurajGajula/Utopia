@@ -208,15 +208,33 @@ function showCity() {
     cityContainer.innerHTML = '';
     const gridContainer = document.createElement('div');
     gridContainer.classList.add('city-grid');
-    
-    const city = new City(10); // Create a 10x10 city grid
+
+    const colorMenu = document.createElement('div');
+    colorMenu.classList.add('color-menu');
+    const greenButton = document.createElement('button');
+    greenButton.textContent = 'Green';
+    greenButton.addEventListener('click', () => {
+        selectedColor = '#00FF00';
+    });
+    const grayButton = document.createElement('button');
+    grayButton.textContent = 'Gray';
+    grayButton.addEventListener('click', () => {
+        selectedColor = '#4A4A4A';
+    });
+    colorMenu.appendChild(greenButton);
+    colorMenu.appendChild(grayButton);
+    cityContainer.appendChild(colorMenu);
+
+    let selectedColor = '#00FF00';
+
+    const city = new City(10);
     city.grid.forEach((row, rowIndex) => {
         row.forEach((block, colIndex) => {
             const blockElement = document.createElement('div');
             blockElement.classList.add('city-block');
             blockElement.style.backgroundColor = block.color;
             blockElement.addEventListener('click', () => {
-                block.changeColor();
+                block.color = selectedColor;
                 blockElement.style.backgroundColor = block.color;
             });
             gridContainer.appendChild(blockElement);
@@ -224,3 +242,13 @@ function showCity() {
     });
     cityContainer.appendChild(gridContainer);
 }
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === '1') {
+        document.getElementById('skill1').click();
+    } else if (event.key === '2') {
+        document.getElementById('skill2').click();
+    } else if (event.key === '3') {
+        document.getElementById('skill3').click();
+    }
+});
