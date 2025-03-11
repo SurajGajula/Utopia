@@ -160,7 +160,6 @@ function displayUpgrade(index) {
 
 function calcDamage(target, damageAmount){
     const targetHBar = [hbar1, hbar2, hbar3, hbar4][target];
-    const targetBBar = [bbar1, bbar2, bbar3, bbar4][target];
     const targetChar = [char1, char2, char3, char4][target];
     targetChar.health -= damageAmount;
     targetHBar.style.width = (targetChar.health / targetChar.max) * 100 + '%';
