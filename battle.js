@@ -1,20 +1,14 @@
 import { Character, storeExp } from '/character.js';
 let hbar1, hbar2, hbar3, hbar4;
 let char1, char2, char3, char4;
-let bbar1, bbar2, bbar3, bbar4;
 let count, combo;
 let comboDisplay;
 let skilllevels;
 export async function startBattle(enemy) {
     const healthBars = Array.from(document.querySelectorAll('.health-bar'));
     [hbar1, hbar2, hbar3, hbar4] = healthBars;
-    const blockBars = Array.from(document.querySelectorAll('.block-bar'));
-    [bbar1, bbar2, bbar3, bbar4] = blockBars;
     healthBars.forEach(bar => {
         bar.style.width = '100%';
-    });
-    blockBars.forEach(bar => {
-        bar.style.width = '0%';
     });
     try {
         [char1, char2, char3, char4] = await Promise.all([
@@ -49,7 +43,6 @@ async function endBattle(result) {
 }
 export async function damage(index, target) {
     const indexChar = [char1, char2, char3, char4][index];
-    const indexBBar = [bbar1, bbar2, bbar3, bbar4][index];
     let hits = 1;
     let damageAmount = indexChar.attack;
     let comboAmount = 10;
@@ -60,8 +53,6 @@ export async function damage(index, target) {
             hits = indexChar.skillplus[0];
             damageAmount *= indexChar.skillplus[1];
             comboAmount *= indexChar.skillplus[2];
-            indexChar.block = Math.min(indexChar.maxblock, indexChar.block + (indexChar.skillplus[3] * indexChar.attack));
-            indexBBar.style.width = (indexChar.block / indexChar.maxblock) * 100 + '%';
         }
         else if (combo >= 1000 && skilllevels[index] == 2) {
             combo -= 1000;
@@ -171,15 +162,6 @@ function calcDamage(target, damageAmount){
     const targetHBar = [hbar1, hbar2, hbar3, hbar4][target];
     const targetBBar = [bbar1, bbar2, bbar3, bbar4][target];
     const targetChar = [char1, char2, char3, char4][target];
-    if (damageAmount > targetChar.block){
-        damageAmount -= targetChar.block;
-        targetChar.block = 0;
-    }
-    else {
-        targetChar.block -= damageAmount;
-        damageAmount = 0;
-    }
-    targetBBar.style.width = (targetChar.block / targetChar.maxblock) * 100 + '%';
     targetChar.health -= damageAmount;
     targetHBar.style.width = (targetChar.health / targetChar.max) * 100 + '%';
 }

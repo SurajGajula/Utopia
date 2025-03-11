@@ -118,17 +118,6 @@ button:hover {
     transition: width 0.3s ease-in-out;
     z-index: 1;
 }
-.block-bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 20px;
-    background-color: transparent;
-    border: 3px solid #0066ff;
-    border-radius: 5px;
-    z-index: 2;
-}
 .health-text {
     position: absolute;
     width: 100%;

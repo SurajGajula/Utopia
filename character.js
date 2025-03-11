@@ -11,8 +11,6 @@ export class Character {
         this.max = health;
         this.skillplus = skillplus;
         this.skillplusplus = skillplusplus;
-        this.block = 0;
-        this.maxblock = health;
         this.skillname = skillname;
     }
     static async loadEnemy(enemyName) {
