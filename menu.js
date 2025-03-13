@@ -209,6 +209,7 @@ function showCity() {
 
     const grassButton = document.getElementById('grassButton');
     const buildingButton = document.getElementById('buildingButton');
+    const waterButton = document.getElementById('waterButton');
 
     let selectedColor = null;
 
@@ -237,7 +238,7 @@ function showCity() {
         `;
     };
 
-    if (grassButton && buildingButton) {
+    if (grassButton && buildingButton && waterButton) {
         grassButton.addEventListener('click', () => {
             if (selectedColor === '#00FF00') {
                 selectedColor = null;
@@ -246,6 +247,7 @@ function showCity() {
                 selectedColor = '#00FF00';
                 grassButton.style.boxShadow = '0 0 10px #00FF00';
                 buildingButton.style.boxShadow = 'none';
+                waterButton.style.boxShadow = 'none';
             }
         });
 
@@ -257,6 +259,19 @@ function showCity() {
                 selectedColor = '#f0f0f0';
                 buildingButton.style.boxShadow = '0 0 10px #f0f0f0';
                 grassButton.style.boxShadow = 'none';
+                waterButton.style.boxShadow = 'none';
+            }
+        });
+
+        waterButton.addEventListener('click', () => {
+            if (selectedColor === '#0066ff') {
+                selectedColor = null;
+                waterButton.style.boxShadow = 'none';
+            } else {
+                selectedColor = '#0066ff';
+                waterButton.style.boxShadow = '0 0 10px #0066ff';
+                grassButton.style.boxShadow = 'none';
+                buildingButton.style.boxShadow = 'none';
             }
         });
     }
@@ -274,11 +289,14 @@ function showCity() {
                         block.changeGrass();
                     } else if (selectedColor === '#f0f0f0') {
                         block.changeBuilding();
+                    } else if (selectedColor === '#0066ff') {
+                        block.changeWater();
                     }
                     updateTotals();
                     selectedColor = null;
                     grassButton.style.boxShadow = 'none';
                     buildingButton.style.boxShadow = 'none';
+                    waterButton.style.boxShadow = 'none';
                 }
             });
             gridContainer.appendChild(blockElement);
