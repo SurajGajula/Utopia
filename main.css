@@ -158,6 +158,17 @@ button:hover {
     height: 60px;
     font-size: 24px;
     margin: 10px 0;
+    background-color: white;
+    color: #1a1a1a;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+#Skills button:hover {
+    background-color: #ccc;
+    color: #1a1a1a;
+    box-shadow: 0 0 15px #ccc;
 }
 
 .AllyBars {
