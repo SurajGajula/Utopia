@@ -1,9 +1,7 @@
 import { Character, storeExp } from '/character.js';
 let hbar1, hbar2, hbar3, hbar4;
 let char1, char2, char3, char4;
-let count, combo;
-let comboDisplay;
-let skilllevels;
+let count;
 export async function startBattle(enemy) {
     const healthBars = Array.from(document.querySelectorAll('.health-bar'));
     [hbar1, hbar2, hbar3, hbar4] = healthBars;
@@ -24,15 +22,7 @@ export async function startBattle(enemy) {
     } catch (err) {
         console.error(err);
     }
-    comboDisplay = document.createElement('div');
-    comboDisplay.textContent = `Combo: ${combo}`;
-    const infoDiv = document.getElementById('Info');
-    infoDiv.innerHTML = '';
-    infoDiv.appendChild(comboDisplay);
     count = 0;
-    combo = 0;
-    skilllevels = [0, 0, 0];
-    displayCombo();
 }
 async function endBattle(result) {
     if (result) {
@@ -45,55 +35,11 @@ export async function damage(index, target) {
     const indexChar = [char1, char2, char3, char4][index];
     let hits = 1;
     let damageAmount = indexChar.attack;
-    let comboAmount = 10;
-    if (index != 3) {
-        if (combo >= 100 && skilllevels[index] == 1) {
-            skilllevels[index] += 1;
-            combo -= 100;
-            hits = indexChar.skillplus[0];
-            damageAmount *= indexChar.skillplus[1];
-            comboAmount *= indexChar.skillplus[2];
-        }
-        else if (combo >= 1000 && skilllevels[index] == 2) {
-            combo -= 1000;
-            hits = indexChar.skillplusplus[0];
-        }
-        else if (skilllevels[index] == 0) {
-            skilllevels[index] += 1;
-        }
-    }
-    else {
-        if (count % 9 === 6) {
-            hits = indexChar.skillplus[0];
-            damageAmount *= indexChar.skillplus[1];
-            comboAmount *= indexChar.skillplus[2];
-        } 
-        else if (count % 9 === 0) {
-            hits = indexChar.skillplusplus[0];
-            damageAmount *= indexChar.skillplusplus[1];
-            comboAmount *= indexChar.skillplusplus[2];
-        }
-        count -= 1;
-    }
     document.getElementById('Skills').classList.add('hidden');
     for (let i = 0; i < hits; i++) {
         calcDamage(target, damageAmount);
         spawnDamageNumber(target, damageAmount);
-        combo += comboAmount;
-        displayCombo();
         await new Promise(resolve => setTimeout(resolve, 1000));
-    }
-    if (index != 3) {
-        if (combo >= 100 && skilllevels[index] == 1) {
-            displayUpgrade(index);
-        }
-        else if (combo >= 1000 && skilllevels[index] == 2) {
-            displayUpgrade(index);
-        }
-        else {
-            skilllevels[index] = 0;
-            displayUpgrade(index);
-        }
     }
     if (char4.health <= 0) {
         return endBattle(true);
@@ -116,12 +62,7 @@ async function eSkill() {
     const target = Math.floor(Math.random() * 3);
     const skill = Math.floor(Math.random() * 3);
     await damage(3, target, skill);
-    displayCombo();
     document.getElementById('Skills').classList.remove('hidden');
-    skilllevels = [0, 0, 0];
-    displayUpgrade(0);
-    displayUpgrade(1);
-    displayUpgrade(2);
 }
 function spawnDamageNumber(target, damageAmount) {
     const targetElement = document.querySelector(`#Enemy`);
@@ -145,17 +86,6 @@ function spawnDamageNumber(target, damageAmount) {
     setTimeout(() => {
         document.body.removeChild(damageElement);
     }, 1000);
-}
-function displayCombo() {
-    comboDisplay.textContent = `Combo: ${combo}`;
-}
-function displayUpgrade(index) {
-    const skillBtn = document.getElementById(`skill${index + 1}`);
-    if (skilllevels[index] != 0) {
-        skillBtn.textContent += '+';
-    } else {
-        skillBtn.textContent = skillBtn.textContent.replace(/\+/g, '');
-    }
 }
 
 function calcDamage(target, damageAmount){

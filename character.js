@@ -4,22 +4,20 @@ const getDynamoClient = async () => {
     return new AWS.DynamoDB.DocumentClient();
 };
 export class Character {
-    constructor(name, health, attack, skillplus, skillplusplus, skillname = null) {
+    constructor(name, health, attack, skillname = null) {
         this.name = name;
         this.health = health;
         this.attack = attack;
         this.max = health;
-        this.skillplus = skillplus;
-        this.skillplusplus = skillplusplus;
         this.skillname = skillname;
     }
     static async loadEnemy(enemyName) {
         const docClient = await getDynamoClient();
         const params = {
-            TableName: "UtopiaEnemies",
+            TableName: "Utopia",
             Key: {
                 Name: enemyName,
-                ID: 'Sample'
+                ID: sessionStorage.getItem('userSub')
             }
         };
         try {
@@ -28,8 +26,7 @@ export class Character {
                 data.Item.Name,
                 data.Item.Health,
                 data.Item.Attack,
-                data.Item.SkillPlus,
-                data.Item.SkillPlusPlus
+                data.Item.SkillName
             );
         } catch (err) {
             console.error("Error in load Enemies", err);
@@ -60,8 +57,6 @@ export class Character {
                 data.Item.Name,
                 data.Item.Health,
                 data.Item.Attack,
-                data.Item.SkillPlus,
-                data.Item.SkillPlusPlus,
                 data.Item.SkillName
             );
         } catch (err) {
@@ -94,7 +89,15 @@ export async function loadAllies() {
 export async function loadEnemies() {
     const docClient = await getDynamoClient();
     const params = {
-        TableName: 'UtopiaEnemies'
+        TableName: 'Utopia',
+        FilterExpression: 'attribute_exists(#defeated) AND #id = :idValue',
+        ExpressionAttributeNames: {
+            '#defeated': 'Defeated',
+            '#id': 'ID'
+        },
+        ExpressionAttributeValues: {
+            ':idValue': sessionStorage.getItem('userSub')
+        }
     };
     try {
         const data = await docClient.scan(params).promise();
@@ -336,21 +339,6 @@ export async function storePull(bannerName) {
         await docClient.update(updateParams).promise();
         const index = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xffffffff + 1) * data.Item.Featured.length);
         const allyName = data.Item.Featured[index];
-        const allyParams = {
-            TableName: "Utopia",
-            Key: {
-                Name: allyName,
-                ID: sessionStorage.getItem('userSub')
-            },
-            UpdateExpression: "SET #potential = #potential + :one",
-            ExpressionAttributeNames: {
-                "#potential": "Potential"
-            },
-            ExpressionAttributeValues: {
-                ":one": 1
-            }
-        };
-        await docClient.update(allyParams).promise();
         return allyName
     } catch (error) {
         console.error('Error in storePulls:', error);

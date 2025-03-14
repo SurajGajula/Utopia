@@ -1,7 +1,6 @@
 import { pSkill, startBattle } from "/battle.js";
 import { loadAllies, loadEnemies, loadBanners, storeParty, checkPulls, storePull, loadUpdates } from "/character.js";
 import { updatePullsDisplay } from "/main.js";
-import { City } from './city.js';
 
 export function handleButton1(button) {
     button.addEventListener('click', async () => {
@@ -25,14 +24,6 @@ export function handleButton3(button) {
         document.getElementById('closeButton').classList.remove('hidden');
         showBanners(await loadBanners());
         document.getElementById('Banners').classList.remove('hidden');
-    });
-}
-export function handleButton4(button) {
-    button.addEventListener('click', async () => {
-        document.getElementById('MenuUI').classList.add('hidden');
-        document.getElementById('closeButton').classList.remove('hidden');
-        showCity();
-        document.getElementById('CityUI').classList.remove('hidden');
     });
 }
 export async function handleSkill(button, index) {
@@ -77,7 +68,6 @@ function showAllies(items) {
                         <p>Health: ${item.Health}</p>
                         <p>Level: ${item.Level}</p>
                         <p>Exp: ${item.Exp}</p>
-                        <p>Potential: ${item.Potential}</p>
                     </div>
                     <div class="card-buttons">
                         <button onclick="handleParty('${item.Name}', 0)">Party 1</button>
@@ -86,12 +76,6 @@ function showAllies(items) {
                     </div>
                 </div>
                 <p> ${item.SkillName}: Deals ${item.Attack} damage</p>
-                <p> ${item.SkillName}+: Deals ${item.Attack * item.SkillPlus[1]} 
-                damage ${item.SkillPlus[0]} times with a ${item.SkillPlus[2]}x combo
-                multiplier and ${item.SkillPlus[0]}x block multiplier.</p>
-                <p> ${item.SkillName}++: Deals ${item.Attack * item.SkillPlusPlus[1]} 
-                damage ${item.SkillPlusPlus[0]} times with a ${item.SkillPlusPlus[2]}x combo
-                multiplier and ${item.SkillPlusPlus[0]}x block multiplier.</p>
             </div>
         `;
         container.appendChild(element);
@@ -202,110 +186,6 @@ function showUpdates(updates) {
         `;
         updatesContainer.appendChild(updateElement);
     });
-}
-function showCity() {
-    const gridContainer = document.getElementById('cityGrid');
-    gridContainer.innerHTML = '';
-
-    const grassButton = document.getElementById('grassButton');
-    const buildingButton = document.getElementById('buildingButton');
-    const waterButton = document.getElementById('waterButton');
-
-    let selectedColor = null;
-
-    const city = new City(10);
-
-    const updateTotals = () => {
-        const totals = city.grid.flat().reduce((acc, block) => {
-            acc.oxygen += block.oxygen;
-            acc.water += block.water;
-            acc.food += block.food;
-            acc.population += block.population;
-            acc.energy += block.energy;
-            return acc;
-        }, { oxygen: 0, water: 0, food: 0, population: 0, energy: 0 });
-
-        const totalsDisplay = document.getElementById('totalsDisplay');
-        totalsDisplay.innerHTML = `
-            <div class="card">
-                <h3>Totals</h3>
-                <p>Oxygen: ${totals.oxygen}</p>
-                <p>Water: ${totals.water}</p>
-                <p>Food: ${totals.food}</p>
-                <p>Population: ${totals.population}</p>
-                <p>Energy: ${totals.energy}</p>
-            </div>
-        `;
-    };
-
-    if (grassButton && buildingButton && waterButton) {
-        grassButton.addEventListener('click', () => {
-            if (selectedColor === '#00FF00') {
-                selectedColor = null;
-                grassButton.style.boxShadow = 'none';
-            } else {
-                selectedColor = '#00FF00';
-                grassButton.style.boxShadow = '0 0 10px #00FF00';
-                buildingButton.style.boxShadow = 'none';
-                waterButton.style.boxShadow = 'none';
-            }
-        });
-
-        buildingButton.addEventListener('click', () => {
-            if (selectedColor === '#f0f0f0') {
-                selectedColor = null;
-                buildingButton.style.boxShadow = 'none';
-            } else {
-                selectedColor = '#f0f0f0';
-                buildingButton.style.boxShadow = '0 0 10px #f0f0f0';
-                grassButton.style.boxShadow = 'none';
-                waterButton.style.boxShadow = 'none';
-            }
-        });
-
-        waterButton.addEventListener('click', () => {
-            if (selectedColor === '#0066ff') {
-                selectedColor = null;
-                waterButton.style.boxShadow = 'none';
-            } else {
-                selectedColor = '#0066ff';
-                waterButton.style.boxShadow = '0 0 10px #0066ff';
-                grassButton.style.boxShadow = 'none';
-                buildingButton.style.boxShadow = 'none';
-            }
-        });
-    }
-
-    city.grid.forEach((row, rowIndex) => {
-        row.forEach((block, colIndex) => {
-            const blockElement = document.createElement('div');
-            blockElement.classList.add('city-block');
-            blockElement.style.backgroundColor = block.color;
-            blockElement.addEventListener('click', () => {
-                if (selectedColor) {
-                    block.color = selectedColor;
-                    blockElement.style.backgroundColor = block.color;
-                    if (selectedColor === '#00FF00') {
-                        block.changeGrass();
-                    } else if (selectedColor === '#f0f0f0') {
-                        block.changeBuilding();
-                    } else if (selectedColor === '#0066ff') {
-                        block.changeWater();
-                    }
-                    updateTotals();
-                    selectedColor = null;
-                    grassButton.style.boxShadow = 'none';
-                    buildingButton.style.boxShadow = 'none';
-                    waterButton.style.boxShadow = 'none';
-                }
-            });
-            gridContainer.appendChild(blockElement);
-        });
-    });
-
-    const totalsDisplay = document.getElementById('totalsDisplay');
-    document.querySelector('.color-menu').appendChild(totalsDisplay);
-    updateTotals();
 }
 
 document.addEventListener('keydown', (event) => {
