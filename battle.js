@@ -50,6 +50,7 @@ export async function damage(index, target) {
     count += 1;
     if (count % 3 == 0 && index != 3) {
         eSkill();
+        count -= 1;
     }
     else {
         document.getElementById('Skills').classList.remove('hidden');
