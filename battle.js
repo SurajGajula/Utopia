@@ -16,7 +16,7 @@ export async function startBattle(enemy) {
             Character.loadEnemy(enemy)
         ]);
         for (let i = 1; i <= 3; i++) {
-            document.querySelector(`#skill${i}`).textContent = [char1, char2, char3][i - 1].Skill[0];
+            document.querySelector(`#skill${i}`).textContent = [char1, char2, char3][i - 1].skill[0];
         }
         document.querySelector('#Enemy img').src = `${window.CLOUDFRONT_URL}/${char4.name}`;
     } catch (err) {
