@@ -74,7 +74,7 @@ function showAllies(items) {
                         <button onclick="handleParty('${item.Name}', 2)">Party 3</button>
                     </div>
                 </div>
-                <p> ${item.SkillName}: Deals ${item.Attack} damage</p>
+                <p> ${item.Skill[0]}: Deals ${item.Attack} damage</p>
             </div>
         `;
         container.appendChild(element);

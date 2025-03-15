@@ -4,12 +4,12 @@ const getDynamoClient = async () => {
     return new AWS.DynamoDB.DocumentClient();
 };
 export class Character {
-    constructor(name, health, attack, skillname = null) {
+    constructor(name, health, attack, skill = null) {
         this.name = name;
         this.health = health;
         this.attack = attack;
         this.max = health;
-        this.skillname = skillname;
+        this.skill = skill;
     }
     static async loadEnemy(enemyName) {
         const docClient = await getDynamoClient();
@@ -26,7 +26,7 @@ export class Character {
                 data.Item.Name,
                 data.Item.Health,
                 data.Item.Attack,
-                data.Item.SkillName
+                data.Item.Skill
             );
         } catch (err) {
             console.error("Error in load Enemies", err);
@@ -57,7 +57,7 @@ export class Character {
                 data.Item.Name,
                 data.Item.Health,
                 data.Item.Attack,
-                data.Item.SkillName
+                data.Item.Skill
             );
         } catch (err) {
             console.error("Error in load Ally", err);
